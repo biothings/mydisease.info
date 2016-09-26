@@ -1,0 +1,11 @@
+https://www.nlm.nih.gov/research/umls/mapping_projects/snomedct_to_icd10cm.html
+
+
+http://www.disgenet.org/ds/DisGeNET/results/map_umls_2_mesh.tsv.gz
+
+
+phenotype_annotation.tab: contains annotations from the HPO-team (mostly referring to OMIM), Orphanet, and DECIPHER
+http://human-phenotype-ontology.github.io/downloads.html
+http://compbio.charite.de/jenkins/job/hpo.annotations/lastStableBuild/
+
+OMIM
