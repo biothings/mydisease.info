@@ -5,6 +5,7 @@ __METADATA__ = {
     "src_name": 'Disease Ontoloy',
     "src_url": 'http://disease-ontology.org/',
     "field": "disease_ontoloy",
+    "version": "2016-09-26",
     "license": "CC-BY-3.0",
     "license_url": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/master/DO_LICENSE.txt"
 }

@@ -4,7 +4,7 @@ from mydisease import DATA_DIR
 __METADATA__ = {
     "src_name": 'MeSH',
     "src_url": 'https://www.nlm.nih.gov/mesh/',
-    "release": "2016",
+    "version": "2016",
     "field": "mesh",
     "license": "",
     "license_url": ""

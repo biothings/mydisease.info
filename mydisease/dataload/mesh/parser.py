@@ -146,7 +146,7 @@ def load_mesh_supp():
 
     attributes = {'HM': "mapped_to",
                   'MR': "last_updated",
-                  'NM': "tree",
+                  'NM': "term",
                   'NO': "note",
                   'RECTYPE': "record_type",
                   'ST': "semantic_type",

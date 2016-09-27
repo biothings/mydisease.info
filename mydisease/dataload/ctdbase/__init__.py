@@ -1,8 +1,9 @@
 import os
 
 __METADATA__ = {
-    "src_name": 'CTD Base',
+    "src_name": 'CTDBase',
     "src_url": 'http://ctdbase.org/',
+    "version": "August 2016",
     "field": "ctdbase",
     "license": "custom",
     "license_url": "http://ctdbase.org/about/legal.jsp"
@@ -23,14 +24,14 @@ rlist = ["chemicals", "genes", "pathways", "GO_BP", "GO_CC", "GO_MF"]
 
 relationships = dict(zip(rlist, file_paths))
 
-# Disease vocabulary (MEDIC)
-# not sure what to do with this yet
-# http://ctdbase.org/reports/CTD_diseases.csv.gz
-# http://ctdbase.org/reports/CTD_diseases.obo.gz
 
-# Exposure–event associations New!
-# do this
-#
+def disease_url_format(did):
+    """
+    the MeSH® Unique ID or OMIM ID of the disease (e.g., “MESH:D018270” or “OMIM:211750”).
+    You must include the MESH: or OMIM: database prefix.
+    """
+    return "http://ctdbase.org/detail.go?type=disease&acc={did}".format(did=did)
+
 
 """
 Chemical–disease associations
