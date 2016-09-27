@@ -36,6 +36,7 @@ def parse_all():
     from mydisease.dataload.mesh import parser as mesh_parser
     # from mydisease.dataload.omim import parser as omim_parser
     from mydisease.dataload.orphanet import parser as orphanet_parser
+    from mydisease.dataload.pharmacotherapydb import parser as pharmacotherapydb_parser
 
     ctdbase_parser.parse()
     diseaseontology_parser.parse()
@@ -44,6 +45,19 @@ def parse_all():
     mesh_parser.parse()
     # omim_parser.parse()
     orphanet_parser.parse()
+    pharmacotherapydb_parser.parse()
+
+
+def merge_one(db_name):
+    mydisease = MongoClient().mydisease.mydisease
+    g = build_id_graph()
+    db = MongoClient().mydisease[db_name]
+    if db.count() == 0:
+        print("Warning: {} is empty".format(db))
+    for doc in db.find():
+        doids = get_equiv_doid(g, doc['_id'])
+        for doid in doids:
+            mydisease.update_one({'_id': doid}, {'$push': {db_name: doc}}, upsert=True)
 
 
 def merge(mongo_collection=None, drop=True):
@@ -65,6 +79,7 @@ def merge(mongo_collection=None, drop=True):
 
     # fill in from other sources
     for db_name in tqdm(set(db_names) - {'disease_ontoloy'}):
+        print(db_name)
         db = MongoClient().mydisease[db_name]
         if db.count() == 0:
             print("Warning: {} is empty".format(db))
