@@ -1,1 +1,1 @@
-db_names = ['ctdbase','disease_ontoloy','disgenet', 'hpo', 'mesh', 'omim', 'orphanet', 'pharmacotherapydb']
+db_names = ['ctdbase','disease_ontoloy','disgenet', 'hpo', 'mesh', 'ndfrt', 'omim', 'orphanet', 'pharmacotherapydb']

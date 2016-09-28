@@ -34,6 +34,7 @@ def parse_all():
     from mydisease.dataload.disgenet import parser as disgenet_parser
     from mydisease.dataload.hpo import parser as hpo_parser
     from mydisease.dataload.mesh import parser as mesh_parser
+    from mydisease.dataload.ndfrt import parser as ndfrt_parser
     # from mydisease.dataload.omim import parser as omim_parser
     from mydisease.dataload.orphanet import parser as orphanet_parser
     from mydisease.dataload.pharmacotherapydb import parser as pharmacotherapydb_parser
@@ -43,6 +44,7 @@ def parse_all():
     disgenet_parser.parse()
     hpo_parser.parse()
     mesh_parser.parse()
+    ndfrt_parser.parse()
     # omim_parser.parse()
     orphanet_parser.parse()
     pharmacotherapydb_parser.parse()
