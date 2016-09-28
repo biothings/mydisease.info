@@ -23,21 +23,19 @@ def get_mapping():
                 "indications": {
                     "properties": {
                         "category": {
-                            "type": "string",
+                            "type": "string"
                         },
                         "drug": {
                             "type": "string"
                         },
                         "drugbank_id": {
-                            "type": "string",
+                            "type": "string"
                         },
                         "n_curators": {
-                            "type": "integer",
-                            "index": "no"
+                            "type": "integer"
                         },
                         "n_resources": {
-                            "type": "integer",
-                            "index": "no"
+                            "type": "integer"
                         }
                     }
                 }

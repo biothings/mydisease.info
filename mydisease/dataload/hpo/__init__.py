@@ -1,4 +1,5 @@
 import os
+
 from mydisease import DATA_DIR
 
 __METADATA__ = {
@@ -13,6 +14,114 @@ __METADATA__ = {
 # downloaded from: http://human-phenotype-ontology.github.io/downloads.html
 url = "http://purl.obolibrary.org/obo/hp.obo"
 file_path = os.path.join(DATA_DIR, "hp.obo")
+
+
+def get_mapping():
+    mapping = {
+        "hpo": {
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "creation_date": {
+                    "type": "string"
+                },
+                "subset": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "is_a": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                },
+                "is_anonymous": {
+                    "type": "string"
+                },
+                "synonym": {
+                    "type": "string"
+                },
+                "xref": {
+                    "properties": {
+                        "eurenomics": {
+                            "type": "string"
+                        },
+                        "mesh": {
+                            "type": "string"
+                        },
+                        "pmid": {
+                            "type": "string"
+                        },
+                        "ki": {
+                            "type": "string"
+                        },
+                        "ncit": {
+                            "type": "string"
+                        },
+                        "nihr": {
+                            "type": "string"
+                        },
+                        "hp": {
+                            "type": "string"
+                        },
+                        "eom": {
+                            "type": "string"
+                        },
+                        "snomedct": {
+                            "type": "string"
+                        },
+                        "icd10cm": {
+                            "type": "string"
+                        },
+                        "neuromics": {
+                            "type": "string"
+                        },
+                        "icm": {
+                            "type": "string"
+                        },
+                        "orcid": {
+                            "type": "string"
+                        },
+                        "goc": {
+                            "type": "string"
+                        },
+                        "umls_cui": {
+                            "type": "string"
+                        },
+                        "mp": {
+                            "type": "string"
+                        },
+                        "uk": {
+                            "type": "string"
+                        },
+                        "meddra": {
+                            "type": "string"
+                        },
+                        "utoronto": {
+                            "type": "string"
+                        },
+                        "epcc": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "alt_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "def": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+    return mapping
+
 
 jsonld = {"hpo": {
     "@context": {

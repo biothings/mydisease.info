@@ -1,4 +1,5 @@
 import os
+
 from mydisease import DATA_DIR
 
 __METADATA__ = {
@@ -13,6 +14,54 @@ __METADATA__ = {
 # downloaded from: http://ctdbase.org/downloads/
 url = "http://purl.obolibrary.org/obo/doid.obo"
 file_path = os.path.join(DATA_DIR, "doid.obo")
+
+
+def get_mapping():
+    mapping = {
+        'disease_ontoloy': {
+            'properties': {'_id': {'type': 'string'},
+                           'alt_id': {'type': 'string'},
+                           'comment': {'type': 'string'},
+                           'created_by': {'type': 'string'},
+                           'creation_date': {'type': 'string'},
+                           'def': {'type': 'string'},
+                           'is_a': {'type': 'string'},
+                           'name': {'type': 'string'},
+                           'subset': {'type': 'string'},
+                           'synonym': {'type': 'string'},
+                           'xref': {
+                               'properties': {
+                                   'csp': {'type': 'string'},
+                                   'ctv3': {'type': 'string'},
+                                   'efo': {'type': 'string'},
+                                   'efopat_id': {'type': 'string'},
+                                   'hp': {'type': 'string'},
+                                   'https': {'type': 'string'},
+                                   'icd10cm': {'type': 'string'},
+                                   'icd9cm': {'type': 'string'},
+                                   'kegg': {'type': 'string'},
+                                   'ls': {'type': 'string'},
+                                   'meddra': {'type': 'string'},
+                                   'mesh': {'type': 'string'},
+                                   'nci': {'type': 'string'},
+                                   'nci2009_04d': {'type': 'string'},
+                                   'omim': {'type': 'string'},
+                                   'omm': {'type': 'string'},
+                                   'orphanet': {'type': 'string'},
+                                   'pmid': {'type': 'string'},
+                                   'sn': {'type': 'string'},
+                                   'snomedct': {'type': 'string'},
+                                   'snomedct_us_2016_03_01': {'type': 'string'},
+                                   'stedman': {'type': 'string'},
+                                   'umls_cui': {'type': 'string'},
+                                   'url': {'type': 'string'}
+                               }
+                           }
+                           }
+        }
+    }
+    return mapping
+
 
 jsonld = {"doid": {
     "@context": {

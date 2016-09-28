@@ -8,9 +8,22 @@ from tqdm import tqdm
 
 from . import relationships
 
+columns_rename = {'GOID': 'go',
+                  'InferenceGeneSymbols': 'inference_gene_symbols',
+                  'PathwayID': 'pathway',
+                  'CasRN': 'casrn',
+                  'ChemicalID': 'chemical',
+                  'DirectEvidence': 'direct_evidence',
+                  'InferenceGeneSymbol': 'inference_gene_symbol',
+                  'InferenceScore': 'inference_score',
+                  'OmimIDs': 'omim',
+                  'GeneID': 'gene',
+                  'InferenceChemicalName': 'inference_chemical_name',
+                  'PubMedIDs': 'pubmed'}
+
 
 def parse_diseaseid(did: str):
-    """ 
+    """
     The 'DiseaseID' column sometimes starts with the identifier prefix, and sometime doesnt
     prefixes are {'MESH:','OMIM:'}
     if an ID starts with 'C' or 'D', its MESH, if its an integer: 'OMIM'
@@ -64,9 +77,9 @@ def parse_df(db, df, relationship: str):
     columns_keep = get_columns_to_keep(relationship)
     total = len(set(df.DiseaseID))
     for diseaseID, subdf in tqdm(df.groupby("DiseaseID"), total=total):
-        sub = subdf[columns_keep].to_dict(orient="records")
+        sub = subdf[columns_keep].rename(columns=columns_rename).to_dict(orient="records")
         sub = [{k: v for k, v in s.items() if v == v} for s in sub]  # get rid of nulls
-        db.update_one({'_id': diseaseID}, {'$set': {relationship: sub}}, upsert=True)
+        db.update_one({'_id': diseaseID}, {'$set': {relationship.lower(): sub}}, upsert=True)
 
 
 def process_genes(db, f):

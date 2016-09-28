@@ -1,4 +1,5 @@
 import os
+
 from mydisease import DATA_DIR
 
 __METADATA__ = {
@@ -39,3 +40,150 @@ hpo_path = os.path.join(DATA_DIR, os.path.split(hpo_url)[1])
 # Rare diseases with their associated genes
 gene_url = "http://www.orphadata.org/data/xml/en_product6.xml"
 gene_path = os.path.join(DATA_DIR, os.path.split(gene_url)[1])
+
+
+def get_mapping():
+    mapping = {
+        "orphanet": {
+            "properties": {
+                "mapping": {
+                    "properties": {
+                        "NTBT": {
+                            "type": "string"
+                        },
+                        "E": {
+                            "type": "string"
+                        },
+                        "BTNT": {
+                            "type": "string"
+                        },
+                        "ND": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "ave_age_of_onset": {
+                    "type": "string"
+                },
+                "preferred_label": {
+                    "type": "string"
+                },
+                "reason_for_obsolescence": {
+                    "type": "string"
+                },
+                "part_of": {
+                    "type": "string"
+                },
+                "disease_gene_associations": {
+                    "properties": {
+                        "gene_symbol": {
+                            "type": "string"
+                        },
+                        "loci": {
+                            "type": "string"
+                        },
+                        "dga_type": {
+                            "type": "string"
+                        },
+                        "gene_name": {
+                            "type": "string"
+                        },
+                        "dga_status": {
+                            "type": "string"
+                        },
+                        "gene_type": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "ave_age_of_death": {
+                    "type": "string"
+                },
+                "phenotypes": {
+                    "properties": {
+                        "phenotype_id": {
+                            "type": "string"
+                        },
+                        "phenotype_name": {
+                            "type": "string"
+                        },
+                        "frequency": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "definition_citation": {
+                    "type": "string"
+                },
+                "definitions": {
+                    "type": "string"
+                },
+                "type_of_inheritance": {
+                    "type": "string"
+                },
+                "xref": {
+                    "properties": {
+                        "mesh": {
+                            "type": "string"
+                        },
+                        "icd10cm": {
+                            "type": "string"
+                        },
+                        "meddra": {
+                            "type": "string"
+                        },
+                        "umls_cui": {
+                            "type": "string"
+                        },
+                        "omim": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "prevalence": {
+                    "properties": {
+                        "prevalence_class": {
+                            "type": "string"
+                        },
+                        "prevalence_type": {
+                            "type": "string"
+                        },
+                        "mean_value": {
+                            "type": "long"
+                        },
+                        "source": {
+                            "type": "string"
+                        },
+                        "prevalence_validation_status": {
+                            "type": "string"
+                        },
+                        "prevalence_qualification": {
+                            "type": "string"
+                        },
+                        "prevalence_geographic": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "parents": {
+                    "type": "string"
+                },
+                "tree_view": {
+                    "type": "string"
+                },
+                "definition": {
+                    "type": "string"
+                },
+                "alternative_term": {
+                    "type": "string"
+                },
+                "synonyms": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+    return mapping

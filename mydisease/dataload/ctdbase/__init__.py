@@ -33,6 +33,113 @@ def disease_url_format(did):
     return "http://ctdbase.org/detail.go?type=disease&acc={did}".format(did=did)
 
 
+def get_mapping():
+    mapping = {
+        __METADATA__['field']: {
+            "properties": {
+                "chemicals": {
+                    "properties": {
+                        "casrn": {
+                            "type": "string"
+                        },
+                        "chemical": {
+                            "type": "string"
+                        },
+                        "inference_gene_symbol": {
+                            "type": "string"
+                        },
+                        "inference_score": {
+                            "type": "long"
+                        },
+                        "omim": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "pathways": {
+                    "properties": {
+                        "inference_gene_symbol": {
+                            "type": "string"
+                        },
+                        "pathway": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "go_bp": {
+                    "properties": {
+                        "inference_gene_symbols": {
+                            "type": "string"
+                        },
+                        "go": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "go_cc": {
+                    "properties": {
+                        "inference_gene_symbols": {
+                            "type": "string"
+                        },
+                        "go": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "go_mf": {
+                    "properties": {
+                        "inference_gene_symbols": {
+                            "type": "string"
+                        },
+                        "go": {
+                            "type": "string"
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    return mapping
+
+
+jsonld = {
+    "ctdbase": {
+    },
+    "ctdbase/chemicals": {
+        "@context": {
+            "casrn": "",
+            "chemical": "",
+            "inference_gene_symbol": "",
+            "omim": "",
+        }
+    },
+    "ctdbase/pathways": {
+        "@context": {
+            "inference_gene_symbol": "",
+            "pathway": "",
+        }
+    },
+    "ctdbase/go_bp": {
+        "@context": {
+            "inference_gene_symbols": "",
+            "go": "",
+        }
+    },
+    "ctdbase/go_cc": {
+        "@context": {
+            "inference_gene_symbols": "",
+            "go": "",
+        }
+    },
+    "ctdbase/go_mf": {
+        "@context": {
+            "inference_gene_symbols": "",
+            "go": "",
+        }
+    },
+}
+
 """
 Chemical–disease associations
 ChemicalName
