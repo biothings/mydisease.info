@@ -17,7 +17,7 @@ url_gene_disease = "http://www.disgenet.org/ds/DisGeNET/results/curated_gene_dis
 file_path_gene_disease = os.path.join(DATA_DIR, "curated_gene_disease_associations.tsv.gz")
 
 # The file contains All SNP-gene-disease associations in DisGeNET.
-url_snp_disease = "http://www.disgenet.org/ds/DisGeNET/results/all_snps_sentences_pubmeds.tsv.gz"
+url_snp_disease = "http://www.disgenet.org/ds/DisGeNET/results/all_variant_disease_pmid_associations.tsv.gz"
 file_path_snp_disease = os.path.join(DATA_DIR, "all_variant_disease_pmid_associations.tsv.gz")
 
 # mondo mapping file
