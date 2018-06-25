@@ -110,35 +110,79 @@ def process_chemical(file_path_chemical):
         d.append(drecord)
     return {x['_id']: x['chemical'] for x in d}
 
+def calculate_mondo_mismatch():
+    d_go_bp = process_go(file_path_disease_go_bp)
+    d_go_mf = process_go(file_path_disease_go_mf)
+    d_go_cc = process_go(file_path_disease_go_cc)
+    d_pathway = process_pathway(file_path_disease_pathway)
+    mesh_omim_2_mondo = construct_mesh_omim_to_mondo_library(file_path_mondo)
+    matched = []
+    mismatched = []
+    for disease_id in set(list(d_go_bp.keys()) + list(d_go_mf.keys()) + list(d_go_cc.keys()) + list(d_pathway.keys())):
+        if disease_id in mesh_omim_2_mondo:
+            matched.append(disease_id)
+        else:
+            mismatched.append(disease_id)
+    return {'matched': matched, 'mismatch': mismatched}
+
 def load_data():
     d_go_bp = process_go(file_path_disease_go_bp)
     d_go_mf = process_go(file_path_disease_go_mf)
     d_go_cc = process_go(file_path_disease_go_cc)
     d_pathway = process_pathway(file_path_disease_pathway)
-    d_chemical = process_chemical(file_path_disease_chemical)
+    #d_chemical = process_chemical(file_path_disease_chemical)
     mesh_omim_2_mondo = construct_mesh_omim_to_mondo_library(file_path_mondo)
-    for disease_id in set(list(d_go_bp.keys()) + list(d_go_mf.keys()) + list(d_go_cc.keys()) + list(d_pathway.keys()) + list(d_chemical.keys())):
+    #for disease_id in set(list(d_go_bp.keys()) + list(d_go_mf.keys()) + list(d_go_cc.keys()) + list(d_pathway.keys()) + list(d_chemical.keys())):
+    for disease_id in set(list(d_go_bp.keys()) + list(d_go_mf.keys()) + list(d_go_cc.keys()) + list(d_pathway.keys())):
         if disease_id in mesh_omim_2_mondo:
             mondo_id = mesh_omim_2_mondo[disease_id]
             for _mondo in mondo_id:
-                _doc = {'_id': _mondo,
-                        'ctd': {
-                            'bp_related_to_disease': d_go_bp.get(disease_id, {}),
-                            'mf_related_to_disease': d_go_mf.get(disease_id, {}),
-                            'cc_related_to_disease': d_go_cc.get(disease_id, {}),
-                            'pathway_related_to_disease': d_pathway.get(disease_id, {})
-                            }
-                       }
+                if disease_id.startswith('MESH'):
+                    _doc = {'_id': _mondo,
+                            'ctd': {
+                                'mesh': disease_id.split(':')[1],
+                                'bp_related_to_disease': d_go_bp.get(disease_id, {}),
+                                'mf_related_to_disease': d_go_mf.get(disease_id, {}),
+                                'cc_related_to_disease': d_go_cc.get(disease_id, {}),
+                                'pathway_related_to_disease': d_pathway.get(disease_id, {}),
+                                'chemical_related_to_disease': d_chemical.get(disease_id, {})
+                                }
+                           }
+                else:
+                    _doc = {'_id': _mondo,
+                            'ctd': {
+                                'omim': disease_id.split(':')[1],
+                                'bp_related_to_disease': d_go_bp.get(disease_id, {}),
+                                'mf_related_to_disease': d_go_mf.get(disease_id, {}),
+                                'cc_related_to_disease': d_go_cc.get(disease_id, {}),
+                                'pathway_related_to_disease': d_pathway.get(disease_id, {}),
+                                'chemical_related_to_disease': d_chemical.get(disease_id, {})
+                                }
+                           }
                 _doc = (dict_sweep(unlist(_doc), [None]))
                 yield _doc
         else:
-            _doc = {'_id': disease_id,
-                    'ctd': {
-                        'bp_related_to_disease': d_go_bp.get(disease_id, {}),
-                        'mf_related_to_disease': d_go_mf.get(disease_id, {}),
-                        'cc_related_to_disease': d_go_cc.get(disease_id, {}),
-                        'pathway_related_to_disease': d_pathway.get(disease_id, {})
-                        }
-                   }
+            if disease_id.startswith('MESH'):
+                _doc = {'_id': disease_id,
+                        'ctd': {
+                            'mesh': disease_id.split(':')[1],
+                            'bp_related_to_disease': d_go_bp.get(disease_id, {}),
+                            'mf_related_to_disease': d_go_mf.get(disease_id, {}),
+                            'cc_related_to_disease': d_go_cc.get(disease_id, {}),
+                            'pathway_related_to_disease': d_pathway.get(disease_id, {}),
+                            'chemical_related_to_disease': d_chemical.get(disease_id, {})
+                            }
+                       }
+            else:
+                _doc = {'_id': _mondo,
+                        'ctd': {
+                            'omim': disease_id.split(':')[1],
+                            'bp_related_to_disease': d_go_bp.get(disease_id, {}),
+                            'mf_related_to_disease': d_go_mf.get(disease_id, {}),
+                            'cc_related_to_disease': d_go_cc.get(disease_id, {}),
+                            'pathway_related_to_disease': d_pathway.get(disease_id, {}),
+                            'chemical_related_to_disease': d_chemical.get(disease_id, {})
+                            }
+                       }
             _doc = (dict_sweep(unlist(_doc), [None]))
             yield _doc
