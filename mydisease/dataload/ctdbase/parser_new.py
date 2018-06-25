@@ -115,9 +115,9 @@ def load_data():
     d_go_mf = process_go(file_path_disease_go_mf)
     d_go_cc = process_go(file_path_disease_go_cc)
     d_pathway = process_pathway(file_path_disease_pathway)
-    #d_chemical = process_chemical(file_path_disease_chemical)
+    d_chemical = process_chemical(file_path_disease_chemical)
     mesh_omim_2_mondo = construct_mesh_omim_to_mondo_library(file_path_mondo)
-    for disease_id in set(list(d_go_bp.keys()) + list(d_go_mf.keys()) + list(d_go_cc.keys()) + list(d_pathway.keys())):
+    for disease_id in set(list(d_go_bp.keys()) + list(d_go_mf.keys()) + list(d_go_cc.keys()) + list(d_pathway.keys()) + list(d_chemical.keys())):
         if disease_id in mesh_omim_2_mondo:
             mondo_id = mesh_omim_2_mondo[disease_id]
             for _mondo in mondo_id:
