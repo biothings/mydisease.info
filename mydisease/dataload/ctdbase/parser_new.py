@@ -103,7 +103,7 @@ def process_chemical(file_path_chemical):
         # the record in these fields are separated by '|', need to convert them into list
         df_disease_chemical = df_disease_chemical.where((pd.notnull(df_disease_chemical)), None)
         for field_id in ['direct_evidence', 'omim_id', 'pubmed']:
-            df_disease_chemical[field_id] = df_disease_chemical[field_id].apply(lambda x: x.split('|') if '|' in x else x)
+            df_disease_chemical[field_id] = df_disease_chemical[field_id].apply(lambda x: x.split('|') if x and '|' in x else x)
             #df_disease_chemical[field_id] = df_disease_chemical[field_id].apply(lambda x: None if type(x) == float else x)
         for did, subdf in df_disease_chemical.groupby('DiseaseID'):
             records = subdf.to_dict(orient='records')
