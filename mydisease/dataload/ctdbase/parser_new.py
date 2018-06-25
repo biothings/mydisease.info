@@ -88,26 +88,29 @@ def process_pathway(file_path_pathway):
     return {x['_id']: x['pathway'] for x in d}
 
 def process_chemical(file_path_chemical):
+    chunksize = 100000
+    i = 0
+    j = 1
     # read in the data frame
-    df_disease_chemical = pd.read_csv(file_path_chemical, sep=',', comment='#', compression='gzip', names=['chemical_name', 'mesh_chemical_id', 'cas_registry_number', 'DiseaseName', 'DiseaseID', 'direct_evidence', 'inference_gene_symbol', 'inference_score', 'omim_id', 'pubmed'])
-    # add new column called source
-    df_disease_chemical['source'] = 'CTD'
-    # rename the disease ID, add prefix to it
-    df_disease_chemical['DiseaseID'] = df_disease_chemical['DiseaseID'].map(parse_diseaseid)
-    # the record in these fields are separated by '|', need to convert them into list
-    for field_id in ['direct_evidence', 'omim_id', 'pubmed']:
-        field_split = df_disease_chemical[field_id].dropna().astype(str).str.split("|")
-        # change list of 1 into string
-        for i, _item in enumerate(field_split):
-            if len(_item) == 1:
-                field_split[i] = _item[0]
-        df_disease_chemical[field_id][field_split.index] = field_split
     d = []
-    for did, subdf in df_disease_chemical.groupby('DiseaseID'):
-        records = subdf.to_dict(orient='records')
-        chemical_related = [{k: v for k, v in record.items() if k not in {'DiseaseName', 'DiseaseID'}} for record in records]
-        drecord = {'_id': did, 'chemical': go_related}
-        d.append(drecord)
+    for df_disease_chemical in pd.read_csv(file_path_chemical, chunksize=chunksize, iterator=True, sep=',', comment='#', compression='gzip', names=['chemical_name', 'mesh_chemical_id', 'cas_registry_number', 'DiseaseName', 'DiseaseID', 'direct_evidence', 'inference_gene_symbol', 'inference_score', 'omim_id', 'pubmed']):
+        df_disease_chemical.index += j
+        i += 1
+        # add new column called source
+        df_disease_chemical['source'] = 'CTD'
+        # rename the disease ID, add prefix to it
+        df_disease_chemical['DiseaseID'] = df_disease_chemical['DiseaseID'].map(parse_diseaseid)
+        # the record in these fields are separated by '|', need to convert them into list
+        df_disease_chemical = df_disease_chemical.where((pd.notnull(df_disease_chemical)), None)
+        for field_id in ['direct_evidence', 'omim_id', 'pubmed']:
+            df_disease_chemical[field_id] = df_disease_chemical[field_id].apply(lambda x: x.split('|') if '|' in x else x)
+            #df_disease_chemical[field_id] = df_disease_chemical[field_id].apply(lambda x: None if type(x) == float else x)
+        for did, subdf in df_disease_chemical.groupby('DiseaseID'):
+            records = subdf.to_dict(orient='records')
+            chemical_related = [{k: v for k, v in record.items() if k not in {'DiseaseName', 'DiseaseID'}} for record in records]
+            drecord = {'_id': did, 'chemical': chemical_related}
+            d.append(drecord)
+        j = df_disease_chemical.index[-1] + 1
     return {x['_id']: x['chemical'] for x in d}
 
 def calculate_mondo_mismatch():
@@ -129,8 +132,11 @@ def load_data():
     d_go_bp = process_go(file_path_disease_go_bp)
     d_go_mf = process_go(file_path_disease_go_mf)
     d_go_cc = process_go(file_path_disease_go_cc)
+    print('loaded go data')
     d_pathway = process_pathway(file_path_disease_pathway)
+    print('loaded pathway data')
     d_chemical = process_chemical(file_path_disease_chemical)
+    print('loaded chemical data')
     mesh_omim_2_mondo = construct_mesh_omim_to_mondo_library(file_path_mondo)
     for disease_id in set(list(d_go_bp.keys()) + list(d_go_mf.keys()) + list(d_go_cc.keys()) + list(d_pathway.keys()) + list(d_chemical.keys())):
     #for disease_id in set(list(d_go_bp.keys()) + list(d_go_mf.keys()) + list(d_go_cc.keys()) + list(d_pathway.keys())):
