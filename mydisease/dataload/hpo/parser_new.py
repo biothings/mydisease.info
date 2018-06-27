@@ -25,7 +25,7 @@ def construct_orphanet_omim_to_mondo_library(file_path_mondo):
 
 def process_disease2hp(file_path_disease_hpo):
     df_disease_hpo = pd.read_csv(file_path_disease_hpo, sep="\t")
-    df_disease_hpo = df_disease_hpo.rename(index=str, columns={"DB_Name": "disease_name", "HPO_ID": "hpo"})
+    df_disease_hpo = df_disease_hpo.rename(index=str, columns={"DB_Name": "disease_name"})
     df_disease_hpo['#DB'].replace('ORPHA', 'ORPHANET',inplace=True)
     df_disease_hpo['disease_id'] = df_disease_hpo.apply(lambda row: row["#DB"] + ":" + str(row["DB_Object_ID"]), axis=1)
     df_disease_hpo = df_disease_hpo.where((pd.notnull(df_disease_hpo)), None)
@@ -39,12 +39,12 @@ def process_disease2hp(file_path_disease_hpo):
                 # name the field based on pathway database
                 if k == 'sex':
                     record_dict[k.lower()] = v.lower()
-                elif k not in {'Date_Created', '#DB', 'DB_Object_ID', 'DB_Reference', 'disease_id'}:
+                elif k not in {'Date_Created', '#DB', 'DB_Object_ID', 'DB_Reference', 'disease_id', 'disease_name'}:
                     record_dict[k.lower()] = v
             pathway_related.append(record_dict)
-        drecord = {'_id': did, 'hpo': pathway_related}
+        drecord = {'_id': did, 'hpo': pathway_related, 'disease_name': records[0]['disease_name']}
         d.append(drecord)
-    return {x['_id']: x['hpo'] for x in d}
+    return {x['_id']: [x['hpo'], x['disease_name']] for x in d}
 
 
 def calculate_mondo_mismatch():
@@ -70,15 +70,17 @@ def load_data():
                 if disease_id.startswith('OMIM'):
                     _doc = {'_id': _mondo,
                             'hpo': {
+                                'disease_name': d_hpo.get(disease_id, {})[1],
                                 'omim': disease_id.split(':')[1],
-                                'phenotype_related_to_disease': d_hpo.get(disease_id, {})
+                                'phenotype_related_to_disease': d_hpo.get(disease_id, {})[0]
                                 }
                            }
                 elif disease_id.startswith('ORPHANET'):
                     _doc = {'_id': _mondo,
                             'hpo': {
+                                'disease_name': d_hpo.get(disease_id, {})[1],
                                 'orphanet': disease_id.split(':')[1],
-                                'phenotype_related_to_disease': d_hpo.get(disease_id, {})
+                                'phenotype_related_to_disease': d_hpo.get(disease_id, {})[0]
                                 }
                            }
                 else:
@@ -90,22 +92,25 @@ def load_data():
             if disease_id.startswith('OMIM'):
                 _doc = {'_id': disease_id,
                         'hpo': {
+                            'disease_name': d_hpo.get(disease_id, {})[1],
                             'omim': disease_id.split(':')[1],
-                            'phenotype_related_to_disease': d_hpo.get(disease_id, {})
+                            'phenotype_related_to_disease': d_hpo.get(disease_id, {})[0]
                             }
                         }
             elif disease_id.startswith('ORPHANET'):
                 _doc = {'_id': disease_id,
                         'hpo': {
+                            'disease_name': d_hpo.get(disease_id, {})[1],
                             'orphanet': disease_id.split(':')[1],
-                            'phenotype_related_to_disease': d_hpo.get(disease_id, {})
+                            'phenotype_related_to_disease': d_hpo.get(disease_id, {})[0]
                             }
                         }
             else:
                 _doc = {'_id': disease_id,
                         'hpo': {
+                            'disease_name': d_hpo.get(disease_id, {})[1],
                             'decipher': disease_id.split(':')[1],
-                            'phenotype_related_to_disease': d_hpo.get(disease_id, {})
+                            'phenotype_related_to_disease': d_hpo.get(disease_id, {})[0]
                             }
                         }
             _doc = (dict_sweep(unlist(_doc), [None]))
