@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from biothings.web.settings.default import *
-from web.api.query_builder import ESQueryBuilder
+
+from web.api.handlers import (DiseaseHandler, MetadataHandler, QueryHandler,
+                              StatusHandler)
 from web.api.query import ESQuery
+from web.api.query_builder import ESQueryBuilder
 from web.api.transform import ESResultTransformer
-from web.api.handlers import DiseaseHandler, QueryHandler, MetadataHandler, StatusHandler
 
 # *****************************************************************************
 # Elasticsearch variables
@@ -13,7 +15,7 @@ ES_HOST = 'localhost:9200'
 # elasticsearch index name
 ES_INDEX = 'mydisease_current'
 # elasticsearch document type
-ES_DOC_TYPE = 'disease'
+ES_DOC_TYPE = '_doc'
 
 API_VERSION = 'v1'
 
@@ -49,6 +51,7 @@ ES_QUERY = ESQuery
 # ES results for this app
 # *****************************************************************************
 ES_RESULT_TRANSFORMER = ESResultTransformer
+
 
 GA_ACTION_QUERY_GET = 'query_get'
 GA_ACTION_QUERY_POST = 'query_post'
