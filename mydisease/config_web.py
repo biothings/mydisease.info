@@ -15,7 +15,8 @@ ES_HOST = 'localhost:9200'
 # elasticsearch index name
 ES_INDEX = 'mydisease_current'
 # elasticsearch document type
-ES_DOC_TYPE = '_doc'
+# ES_DOC_TYPE = '_doc'
+ES_DOC_TYPE = 'disease'
 
 API_VERSION = 'v1'
 
