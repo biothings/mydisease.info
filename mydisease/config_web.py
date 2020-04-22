@@ -24,5 +24,3 @@ GA_ACTION_QUERY_POST = 'query_post'
 GA_ACTION_ANNOTATION_GET = 'disease_get'
 GA_ACTION_ANNOTATION_POST = 'disease_post'
 GA_TRACKER_URL = 'MyDisease.info'
-
-STATUS_CHECK_ID = ''
