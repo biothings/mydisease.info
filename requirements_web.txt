@@ -1,2 +1,1 @@
-# biothings
-biothings[web_extra]
+biothings[web_extra]==0.7.0
