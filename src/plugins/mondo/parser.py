@@ -28,7 +28,7 @@ def _map_line_to_json(item):
             for _xref in item['meta']['xrefs']:
                 prefix = _xref['val'].split(':')[0]
                 # these ids are naturally displayed as CURIES
-                if prefix in ['DOID', 'HP', 'MP', 'OBI']:
+                if prefix in ['DOID', 'HP', 'MP', 'OBI', 'EFO']:
                     xref[prefix.lower()] = _xref['val']
                 # these are not ids, but are urls
                 elif prefix in ['http', 'https']:
@@ -39,6 +39,7 @@ def _map_line_to_json(item):
         one_disease_json = {
             "_id": mondo_id,
             "mondo": {
+                "mondo": mondo_id,
                 "label": disease_label,
                 "definition": disease_definition,
                 "xrefs": xref
