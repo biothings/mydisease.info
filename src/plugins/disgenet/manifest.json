@@ -1,0 +1,18 @@
+{
+    "version": "1.0",
+    "requires" : ["pandas"],
+    "dumper" : {
+        "data_url" : [
+            "http://purl.obolibrary.org/obo/mondo.json",
+            "https://www.disgenet.org/static/disgenet_ap1/files/downloads/all_gene_disease_associations.tsv.gz",
+            "https://www.disgenet.org/static/disgenet_ap1/files/downloads/all_variant_disease_pmid_associations.tsv.gz",
+            "https://www.disgenet.org/static/disgenet_ap1/files/downloads/disease_mappings.tsv.gz"
+        ],
+        "uncompress" : false,
+        "release" : "version:get_release"
+    },
+    "uploader" : {
+        "parser" : "parser:load_data",
+        "on_duplicates" : "ignore"
+    }
+}
