@@ -127,6 +127,8 @@ def process_xrefs(file_path_disease_mapping):
                                                   .replace('icd9cm', 'icd9').replace('mondoid', 'mondo')] = _record['code']
             if _record['vocabulary'].lower() == 'do':
                 drecord['xrefs']['doid'] = 'DOID:' + str(_record['code'])
+            if _record['vocabulary'].lower() == 'efo':
+                drecord['xrefs']['efo'] = 'EFO:' + str(_record['code'])
         d.append(drecord)
     return {x['_id']: x['xrefs'] for x in d}
 
