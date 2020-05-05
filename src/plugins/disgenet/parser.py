@@ -144,7 +144,7 @@ def construct_umls_to_mondo_library(file_path_mondo):
 
 def load_data(data_folder):
     file_path_mondo = os.path.join(data_folder, "mondo.json")
-    file_path_gene_disease = os.path.join(data_folder, "curated_gene_disease_associations.tsv")
+    file_path_gene_disease = os.path.join(data_folder, "curated_gene_disease_associations.tsv.gz")
     file_path_snp_disease = os.path.join(data_folder, "all_variant_disease_pmid_associations.tsv.gz")
     file_path_disease_mapping = os.path.join(data_folder, "disease_mappings.tsv.gz")
     d_gene = process_gene(file_path_gene_disease)
