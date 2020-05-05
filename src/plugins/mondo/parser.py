@@ -25,6 +25,8 @@ def _map_line_to_json(item):
         # extract synonyms
         if 'meta' in item and 'synonyms' in item['meta']:
             synonyms = {rec['val'] for rec in item['meta']['synonyms'] if 'val' in rec}
+        else:
+            synonyms = None
         # parseing xrefs data
         xref = {}
         if 'meta' in item and 'xrefs' in item['meta']:
