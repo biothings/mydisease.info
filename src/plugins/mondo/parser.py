@@ -47,7 +47,7 @@ def _map_line_to_json(item):
         obj = (dict_sweep(unlist(one_disease_json), [None]))
         return obj
 
-def load_data(input_file):
+def load_data(data_folder):
     input_file = os.path.join(data_folder, "mondo.json")
     with open(input_file) as f:
         data = json.loads(f.read())
