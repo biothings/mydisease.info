@@ -1,0 +1,16 @@
+{
+    "version": "1.0",
+    "dumper" : {
+        "data_url" : [
+            "http://purl.obolibrary.org/obo/mondo.json",
+            "http://ctdbase.org/reports/CTD_chemicals_diseases.csv.gz",
+            "http://ctdbase.org/reports/CTD_diseases_pathways.csv.gz"
+        ],
+        "uncompress" : false,
+        "release" : "version:get_release"
+    },
+    "uploader" : {
+        "parser" : "parser:load_data",
+        "on_duplicates" : "ignore"
+    }
+}
