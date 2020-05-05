@@ -1,4 +1,5 @@
 import json
+import os
 
 from biothings.utils.dataload import dict_sweep, unlist
 
@@ -47,6 +48,7 @@ def _map_line_to_json(item):
         return obj
 
 def load_data(input_file):
+    input_file = os.path.join(data_folder, "mondo.json")
     with open(input_file) as f:
         data = json.loads(f.read())
         mondo_docs = data['graphs'][0]['nodes']
