@@ -57,6 +57,7 @@ def process_gene(file_path_gene_disease):
     source_col = df_gene_disease.source
     new_source_col = []
     for _row in source_col:
+        _row = _row.split(';')
         if _row and len(_row) == 1:
             new_source_col.append(_row[0])
         else:
@@ -93,6 +94,7 @@ def process_snp(file_path_snp_disease):
     source_col = df_snp.source
     new_source_col = []
     for _row in source_col:
+        _row = _row.split(';')
         if _row and len(_row) == 1:
             new_source_col.append(_row[0])
         else:
@@ -114,14 +116,17 @@ def process_snp(file_path_snp_disease):
     return {x['_id']: x['variants_related_to_disease'] for x in d}
 
 def process_xrefs(file_path_disease_mapping):
-    df_disease_mapping = pd.read_csv(file_path_disease_mapping, sep="\t", comment="#", compression="gzip")
+    df_disease_mapping = pd.read_csv(file_path_disease_mapping, sep="|", comment="#", compression="gzip")
     d = []
     for did, subdf in df_disease_mapping.groupby("diseaseId"):
         records = subdf.to_dict(orient='records')
         drecord = {'_id': did.replace("umls", "umls_cui"), 'xrefs': {'umls': did.replace("umls", "umls_cui"), 'disease_name': records[0]['name']}}
         for _record in records:
             drecord['xrefs'][_record['vocabulary'].lower().replace('msh', 'mesh').replace('do', 'doid')
-                                                  .replace('ordoid', 'ordo').replace('hpo', 'hp').replace('icd9cm', 'icd9')] = _record['code']
+                                                  .replace('ordoid', 'ordo').replace('hpo', 'hp')
+                                                  .replace('icd9cm', 'icd9').replace('mondoid', 'mondo')] = _record['code']
+            if _record['vocabulary'].lower() == 'do':
+                drecord['xrefs']['doid'] = 'DOID:' + str(_record['code'])
         d.append(drecord)
     return {x['_id']: x['xrefs'] for x in d}
 
@@ -152,7 +157,18 @@ def load_data(data_folder):
     d_xrefs = process_xrefs(file_path_disease_mapping)
     umls_2_mondo = construct_umls_to_mondo_library(file_path_mondo)
     for umls_id in set(list(d_gene.keys()) + list(d_snp.keys())):
-        if umls_id in umls_2_mondo:
+        if 'mondo' in d_xrefs[umls_id]:
+            _doc = {
+                '_id': d_xrefs[umls_id]['mondo'],
+                'disgenet': {
+                    'xrefs': d_xrefs.get(umls_id, {}),
+                    'genes_related_to_disease': d_gene.get(umls_id, {}),
+                    'variants_related_to_disease': d_snp.get(umls_id, {})
+                }
+            }
+            _doc = (dict_sweep(unlist(_doc), [None]))
+            yield _doc
+        elif umls_id in umls_2_mondo:
             mondo_id = umls_2_mondo[umls_id]
             for _mondo in mondo_id:
                 _doc = {'_id': _mondo,
