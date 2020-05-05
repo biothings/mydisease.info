@@ -157,7 +157,7 @@ def load_data(data_folder):
     d_xrefs = process_xrefs(file_path_disease_mapping)
     umls_2_mondo = construct_umls_to_mondo_library(file_path_mondo)
     for umls_id in set(list(d_gene.keys()) + list(d_snp.keys())):
-        if 'mondo' in d_xrefs[umls_id]:
+        if umls_id in d_xrefs and 'mondo' in d_xrefs[umls_id]:
             _doc = {
                 '_id': d_xrefs[umls_id]['mondo'],
                 'disgenet': {
