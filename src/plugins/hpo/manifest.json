@@ -1,0 +1,15 @@
+{
+    "version": "1.0",
+    "dumper" : {
+        "data_url" : [
+            "http://purl.obolibrary.org/obo/mondo.json",
+            "http://compbio.charite.de/jenkins/job/hpo.annotations.current/lastSuccessfulBuild/artifact/current/phenotype.hpoa"
+        ],
+        "uncompress" : false,
+        "release" : "version:get_release"
+    },
+    "uploader" : {
+        "parser" : "parser:load_data",
+        "on_duplicates" : "ignore"
+    }
+}
