@@ -22,6 +22,9 @@ def _map_line_to_json(item):
             disease_definition = item['meta']['definition']['val']
         else:
             disease_definition = None
+        # extract synonyms
+        if 'meta' in item and 'synonyms' in item['meta']:
+            synonyms = {rec['val'] for rec in item['meta']['synonyms'] if 'val' in rec}
         # parseing xrefs data
         xref = {}
         if 'meta' in item and 'xrefs' in item['meta']:
@@ -42,7 +45,8 @@ def _map_line_to_json(item):
                 "mondo": mondo_id,
                 "label": disease_label,
                 "definition": disease_definition,
-                "xrefs": xref
+                "xrefs": xref,
+                'synonyms': list(synonyms)
             }
         }
         obj = (dict_sweep(unlist(one_disease_json), [None]))
