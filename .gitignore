@@ -1,4 +1,3 @@
-src/
 data/
 *.egg-info*
 *.ipynb_checkpoints*
@@ -26,3 +25,4 @@ __pycache__
 *.dmp
 *.dump
 *.fas
+config.py
