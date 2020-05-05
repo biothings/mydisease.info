@@ -48,7 +48,7 @@ def _map_line_to_json(item):
                 "label": disease_label,
                 "definition": disease_definition,
                 "xrefs": xref,
-                'synonyms': list(synonyms)
+                'synonyms': list(synonyms) if synonyms else None
             }
         }
         obj = (dict_sweep(unlist(one_disease_json), [None]))
