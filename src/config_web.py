@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 
 # *****************************************************************************
 # Elasticsearch variables
 # *****************************************************************************
 # elasticsearch server transport url
-ES_HOST = 'localhost:9200'
+ES_HOST = 'es6.biothings.io'
 # elasticsearch index name
 ES_INDEX = 'mydisease_current'
 # elasticsearch document type
@@ -24,3 +23,10 @@ GA_ACTION_QUERY_POST = 'query_post'
 GA_ACTION_ANNOTATION_GET = 'disease_get'
 GA_ACTION_ANNOTATION_POST = 'disease_post'
 GA_TRACKER_URL = 'MyDisease.info'
+
+STATUS_CHECK = {
+    'id': 'MONDO:0021004',
+    'index': 'mydisease_current',
+    'doc_type': 'disease'
+}
+    
