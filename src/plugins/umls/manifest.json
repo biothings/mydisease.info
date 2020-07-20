@@ -1,0 +1,18 @@
+{
+    "version": "0.1",
+    "__metadata__": {
+        "license_url": "https://uts.nlm.nih.gov//license.html",
+        "url": "https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/index.html"
+    },
+    "requires" : ["requests"],
+    "dumper" : {
+        "data_url" : ["http://localhost:8081/dataupload/src/MRSTY.RRF",
+                      "http://localhost:8081/dataupload/src/MRCONSO.RRF"],
+        "uncompress" : false,
+        "release": "version:get_release"
+    },
+    "uploader" : {
+        "parser" : "parser:load_data",
+        "on_duplicates" : "ignore"
+    }
+}
