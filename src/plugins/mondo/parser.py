@@ -52,7 +52,8 @@ def _map_line_to_json(item, relationships):
                 "definition": disease_definition,
                 "xrefs": xref,
                 'synonyms': list(synonyms) if synonyms else None,
-                "parents": list(relationships[mondo_id]) if mondo_id in relationships else None
+                "parents": list(relationships['parents'][mondo_id]) if mondo_id in relationships['parents'] else None,
+                "children": list(relationships['children'][mondo_id]) if mondo_id in relationships['children'] else None
             }
         }
         obj = (dict_sweep(unlist(one_disease_json), [None]))
@@ -60,7 +61,10 @@ def _map_line_to_json(item, relationships):
 
 
 def parse_edges(edges):
-    res = defaultdict(set)
+    res = {
+        "parents": defaultdict(set),
+        "children": defaultdict(set)
+    }
     for edge in edges:
         if edge['pred'] == "is_a":
             if edge['sub'].startswith('http://purl.obolibrary.org/obo/MONDO_'):
@@ -71,7 +75,8 @@ def parse_edges(edges):
                 parent_id = "MONDO:" + edge['obj'].split('_')[-1]
             else:
                 continue
-            res[child_id].add(parent_id)
+            res['parents'][child_id].add(parent_id)
+            res['children'][parent_id].add(child_id)
     return res
 
 
