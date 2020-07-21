@@ -1,9 +1,11 @@
 import json
 import os
+from collections import defaultdict
 
 from biothings.utils.dataload import dict_sweep, unlist
 
-def _map_line_to_json(item):
+
+def _map_line_to_json(item, relationships):
     # each input JSON doc contains an 'id' field which is in the form of URI
     # need to first check whether the id is 'MONDO'
     if 'id' in item and item['id'].startswith('http://purl.obolibrary.org/obo/MONDO_'):
@@ -24,7 +26,8 @@ def _map_line_to_json(item):
             disease_definition = None
         # extract synonyms
         if 'meta' in item and 'synonyms' in item['meta']:
-            synonyms = {rec['val'] for rec in item['meta']['synonyms'] if 'val' in rec}
+            synonyms = {rec['val']
+                        for rec in item['meta']['synonyms'] if 'val' in rec}
         else:
             synonyms = None
         # parseing xrefs data
@@ -48,16 +51,40 @@ def _map_line_to_json(item):
                 "label": disease_label,
                 "definition": disease_definition,
                 "xrefs": xref,
-                'synonyms': list(synonyms) if synonyms else None
+                'synonyms': list(synonyms) if synonyms else None,
+                "parents": list(relationships['parents'][mondo_id]) if mondo_id in relationships['parents'] else None,
+                "children": list(relationships['children'][mondo_id]) if mondo_id in relationships['children'] else None
             }
         }
         obj = (dict_sweep(unlist(one_disease_json), [None]))
         return obj
+
+
+def parse_edges(edges):
+    res = {
+        "parents": defaultdict(set),
+        "children": defaultdict(set)
+    }
+    for edge in edges:
+        if edge['pred'] == "is_a":
+            if edge['sub'].startswith('http://purl.obolibrary.org/obo/MONDO_'):
+                child_id = "MONDO:" + edge['sub'].split('_')[-1]
+            else:
+                continue
+            if edge['obj'].startswith('http://purl.obolibrary.org/obo/MONDO_'):
+                parent_id = "MONDO:" + edge['obj'].split('_')[-1]
+            else:
+                continue
+            res['parents'][child_id].add(parent_id)
+            res['children'][parent_id].add(child_id)
+    return res
+
 
 def load_data(data_folder):
     input_file = os.path.join(data_folder, "mondo.json")
     with open(input_file) as f:
         data = json.loads(f.read())
         mondo_docs = data['graphs'][0]['nodes']
+        relationships = parse_edges(data['graphs'][0]['edges'])
         for record in mondo_docs:
-            yield _map_line_to_json(record)
+            yield _map_line_to_json(record, relationships)
