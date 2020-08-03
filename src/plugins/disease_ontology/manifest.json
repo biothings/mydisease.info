@@ -1,6 +1,6 @@
 {
     "version": "0.2",
-    "requires" : ["pandas"],
+    "requires" : ["pandas","networkx","obonet"],
     "__metadata__": {
         "license_url": "https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/master/DO_LICENSE.txt",
         "url": "https://disease-ontology.org/"
