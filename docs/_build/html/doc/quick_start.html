@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick start &#8212; mydisease.info v1 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mydisease_doc.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/jquery.dataTables.min.css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/mydisease_doc.js"></script>
+    <script src="../_static/jquery.dataTables.min.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">mydisease.info v1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Quick start</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="quick-start">
+<h1>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://mydisease.info">MyDisease.info</a> provides two simple web services: one for querying disease objects and the other for disease annotation retrieval by common IDs (e.g. mondo, doid, etc.). Both return results in <a class="reference external" href="http://json.org">JSON</a> format.</p>
+<div class="section" id="disease-query-service">
+<h2>Disease query service<a class="headerlink" href="#disease-query-service" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="url">
+<h3>URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mydisease</span><span class="o">.</span><span class="n">info</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">query</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://mydisease.info/v1/query?q=GIST
+http://mydisease.info/v1/query?q=_exists_:ctd
+http://mydisease.info/v1/query?q=q=disgenet.genes_related_to_disease.gene_name:OFD1&amp;fields=disgenet
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>View nicely formatted JSON result in your browser with this handy add-on: <a class="reference external" href="https://chrome.google.com/webstore/detail/bcjindcccaagfpapjjmafapmmgkkhgoa">JSON formatter</a> for Chrome or <a class="reference external" href="https://addons.mozilla.org/en-US/firefox/addon/jsonview/">JSONView</a> for Firefox.</p>
+</div>
+</div>
+<div class="section" id="to-learn-more">
+<h3>To learn more<a class="headerlink" href="#to-learn-more" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>You can read <a class="reference external" href="doc/disease_query_service.html">the full description of our query syntax here</a>.</p></li>
+<li><p>Try it live on <a class="reference external" href="http://mydisease.info/v1/api">interactive API page</a>.</p></li>
+<li><p>Batch queries? Yes, you can. do it with <a class="reference external" href="doc/disease_query_service.html#batch-queries-via-post">a POST request</a>.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="disease-annotation-service">
+<h2>Disease annotation service<a class="headerlink" href="#disease-annotation-service" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>URL<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mydisease</span><span class="o">.</span><span class="n">info</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">disease</span><span class="o">/&lt;</span><span class="n">disease_id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;disease_id&gt;</span></code> can be any one of the following common disease identifiers:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://mondo.monarchinitiative.org/">MONDO</a>,</p></li>
+<li><p><cite>Disease Ontology ID &lt;https://disease-ontology.org/&gt;</cite>.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h3>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://mydisease.info/v1/disease/MONDO:0016575
+http://mydisease.info/v1/disease/MONDO:0020753?fields=mondo
+http://mydisease.info/v1/disease/MONDO:0011996?fields=disease_ontology
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>To learn more<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>You can read <a class="reference external" href="doc/disease_annotation_service.html">the full description of our query syntax here</a>.</p></li>
+<li><p>Try it live on <a class="reference external" href="http://mydisease.info/v1/api">interactive API page</a>.</p></li>
+<li><p>Yes, batch queries via <a class="reference external" href="doc/disease_annotation_service.html#batch-queries-via-post">POST request</a> as well.</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Quick start</a><ul>
+<li><a class="reference internal" href="#disease-query-service">Disease query service</a><ul>
+<li><a class="reference internal" href="#url">URL</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#to-learn-more">To learn more</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#disease-annotation-service">Disease annotation service</a><ul>
+<li><a class="reference internal" href="#id1">URL</a></li>
+<li><a class="reference internal" href="#id2">Examples</a></li>
+<li><a class="reference internal" href="#id3">To learn more</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/doc/quick_start.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">mydisease.info v1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Quick start</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, The Su and Wu Labs.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
