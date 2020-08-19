@@ -53,6 +53,61 @@
 <p>We currently obtain disease annotation data from several data resources and
 keep them up-to-date, so that you don’t have to do it:</p>
 <div class='metadata-table'><p>Total Diseases loaded: <strong>N/A</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 11%" />
+<col style="width: 20%" />
+<col style="width: 13%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Source</p></th>
+<th class="head"><p>version</p></th>
+<th class="head"><p># of diseases</p></th>
+<th class="head"><p>key name*</p></th>
+<th class="head"><p>data notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="http://ctdbase.org/">CTD</a></p></td>
+<td><p>-</p></td>
+<td><p>0</p></td>
+<td><p>ctd</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><a href="#id5"><span class="problematic" id="id6">`MONDO`_</span></a></p></td>
+<td><p>-</p></td>
+<td><p>0</p></td>
+<td><p>mondo</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://hpo.jax.org/">HPO</a></p></td>
+<td><p>-</p></td>
+<td><p>0</p></td>
+<td><p>hpo</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.nlm.nih.gov/research/umls/index.html">UMLS</a></p></td>
+<td><p>-</p></td>
+<td><p>0</p></td>
+<td><p>umls</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://disease-ontology.org/">Disease_Ontology</a></p></td>
+<td><p>-</p></td>
+<td><p>0</p></td>
+<td><p>disease_ontology</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.disgenet.org/">DisGenet</a></p></td>
+<td><p>-</p></td>
+<td><p>0</p></td>
+<td><p>disgenet</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </div><p>* key name: this is the key for the specific annotation data in a disease object.</p>
 <p>The most updated information can be accessed <a class="reference external" href="http://mydisease.info/v1/metadata">here</a>.</p>
 <div class="admonition note">
@@ -122,7 +177,7 @@ check out <a class="reference external" href="http://mydisease.info/v1/disease/M
 <p>Each individual disease object contains an “<strong>_id</strong>” field as the primary key.  Where possible, MyDisease.info disease objects use <a class="reference external" href="https://mondo.monarchinitiative.org/">MONDO</a> as their “<strong>_id</strong>”.  If a MONDO isn’t available, any one of the following datasource IDs may be used:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><cite>Disease Ontology ID &lt;https://disease-ontology.org/&gt;</cite>.</p></li>
+<li><p><a class="reference external" href="https://disease-ontology.org/">Disease_Ontology_ID</a></p></li>
 </ul>
 </div></blockquote>
 </div>
