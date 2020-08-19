@@ -64,7 +64,7 @@ jQuery(document).ready(function () {
     if ((jQuery('#all-releases').length)) {
         // load releases
         jQuery.ajax({
-            url: 'https://biothings-releases.s3.amazonaws.com/mydisease.info/versions.json',
+            url: 'https://biothings-releases.s3-us-west-2.amazonaws.com/mydisease-disease/versions.json',
             cache: false,
             type: "GET",
             dataType: "json",

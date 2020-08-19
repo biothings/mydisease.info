@@ -29,4 +29,6 @@ STATUS_CHECK = {
     'index': 'mydisease_current',
     'doc_type': 'disease'
 }
-    
+
+ANNOTATION_DEFAULT_SCOPES = [
+    '_id', 'disease_ontology.doid', 'mondo.xrefs.mesh']
