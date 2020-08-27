@@ -75,6 +75,8 @@ def load_data(data_folder):
             rec["synonym"] = get_synonyms(rec)
             if rec.get("def"):
                 rec["definition"] = rec.pop("def")
+            if rec.get("name"):
+                rec["label"] = rec.pop("name")
             if rec.get("created_by"):
                 rec.pop("created_by")
             if rec.get("creation_date"):
