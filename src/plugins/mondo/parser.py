@@ -96,4 +96,4 @@ def load_data(data_folder):
                     rels[m] = dict(n)
                 rec.update(rels)
                 rec.pop("relationship")
-            yield rec
+            yield {"_id": rec.pop("_id"), "mondo": rec}
