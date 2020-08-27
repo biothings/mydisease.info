@@ -1,7 +1,9 @@
 {
     "version": "1.0",
     "dumper": {
-        "data_url": [],
+        "data_url": [
+            "http://purl.obolibrary.org/obo/mondo.json"
+        ],
         "uncompress": false,
         "release": "version:get_release"
     },
