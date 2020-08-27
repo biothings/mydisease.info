@@ -1,2 +1,2 @@
 def get_release(self):
-    return "2020.4"
+    return "2020.7"
