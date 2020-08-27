@@ -1,12 +1,14 @@
 {
-    "version": "0.1",
-    "dumper" : {
-        "data_url" : ["http://purl.obolibrary.org/obo/mondo.json"],
-        "uncompress" : false,
-        "release" : "version:get_release"
+    "version": "1.1",
+    "dumper": {
+        "data_url": [
+            "http://purl.obolibrary.org/obo/mondo.obo"
+        ],
+        "uncompress": false,
+        "release": "version:get_release"
     },
-    "uploader" : {
-        "parser" : "parser:load_data",
-        "on_duplicates" : "ignore"
+    "uploader": {
+        "parser": "parser:load_data",
+        "on_duplicates": "ignore"
     }
 }
