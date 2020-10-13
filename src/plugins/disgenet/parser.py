@@ -151,7 +151,7 @@ def process_snp(file_path_snp_disease):
 
 def process_xrefs(file_path_disease_mapping):
     df_disease_mapping = pd.read_csv(
-        file_path_disease_mapping, sep="|", comment="#", compression="gzip"
+        file_path_disease_mapping, sep="\t", comment="#", compression="gzip"
     )
     d = []
     for did, subdf in df_disease_mapping.groupby("diseaseId"):
