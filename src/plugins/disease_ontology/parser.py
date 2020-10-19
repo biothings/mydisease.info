@@ -23,6 +23,7 @@ def load_annotations(data_folder):
     graph = obonet.read_obo(url)
     all_doids = list(graph.nodes())
     doid_mondo_dict = create_doid_mondo_dict(all_doids)
+    id_list = []
     for id_, data in graph.nodes(data=True):
         disease_ontology = {
             "doid": id_,
@@ -40,7 +41,9 @@ def load_annotations(data_folder):
             "_id": doid_mondo_dict[id_] if id_ in doid_mondo_dict else id_,
             "disease_ontology": disease_ontology,
         }
-        yield(current_dict)
+        if(current_dict["_id"] not in id_list):
+            id_list.append(current_dict["_id"])
+            yield(current_dict)
 
 
 # dictionary where keys are xref keys in Disease Ontology and values are xref
