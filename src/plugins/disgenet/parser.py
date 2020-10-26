@@ -134,6 +134,9 @@ def process_snp(file_path_snp_disease):
         records = subdf.to_dict(orient="records")
         # change string value to integers
         for record in records:
+            for v in record.values():
+                if isinstance(v, np.int64):
+                    v = int(v)
             if "pubmed" in record and record["pubmed"]:
                 record["pubmed"] = int(record["pubmed"])
             if "pos" in record and record["pos"]:
