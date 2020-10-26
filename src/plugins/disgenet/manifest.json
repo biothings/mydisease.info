@@ -1,18 +1,26 @@
 {
     "version": "1.0",
-    "requires" : ["pandas"],
-    "dumper" : {
-        "data_url" : [
+    "requires": [
+        "pandas"
+    ],
+    "__metadata__": {
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "licence": "CC BY 4.0",
+        "url": "https://www.disgenet.org/static/disgenet_ap1/files/downloads/readme.txt"
+    },
+    "dumper": {
+        "data_url": [
             "http://purl.obolibrary.org/obo/mondo.json",
-            "https://www.disgenet.org/static/disgenet_ap1/files/downloads/curated_gene_disease_associations.tsv.gz",
+            "https://www.disgenet.org/static/disgenet_ap1/files/downloads/all_gene_disease_pmid_associations.tsv.gz",
             "https://www.disgenet.org/static/disgenet_ap1/files/downloads/all_variant_disease_pmid_associations.tsv.gz",
             "https://www.disgenet.org/static/disgenet_ap1/files/downloads/disease_mappings.tsv.gz"
         ],
-        "uncompress" : false,
-        "release" : "version:get_release"
+        "uncompress": false,
+        "release": "version:get_release",
+        "schedule": "0 0 * * 1"
     },
-    "uploader" : {
-        "parser" : "parser:load_data",
-        "on_duplicates" : "ignore"
+    "uploader": {
+        "parser": "parser:load_data",
+        "on_duplicates": "ignore"
     }
 }
