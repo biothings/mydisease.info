@@ -1,2 +1,11 @@
 def get_release(self):
-    return "2020.7"
+    import requests
+
+    res = requests.get("http://ctdbase.org/reports/CTD_chemicals_diseases.csv.gz")
+    try:
+        last_modified = res.headers.get(
+            "Last-Modified", "Thu, 01 Oct 2020 20:17:32 GMT"
+        )
+        return last_modified.split(",")[-1].split(":")[0][:-2].strip()
+    except:
+        return "Thu, 01 Oct 2020 20:17:32 GMT"
