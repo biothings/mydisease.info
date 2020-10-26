@@ -1,6 +1,7 @@
 from collections import defaultdict
 from biothings.utils.dataload import dict_sweep, unlist
 import pandas as pd
+import numpy as np
 import json
 import os
 
@@ -86,7 +87,10 @@ def process_gene(file_path_gene_disease):
         for record in records:
             for k, v in record.items():
                 if k in ["gene_name", "DSI", "DPI", "score", "EI"]:
-                    doc[k] = v
+                    if isinstance(v, np.int64):
+                        doc[k] = int(v)
+                    else:
+                        doc[k] = v
                 elif k in ["YearInitial", "YearFinal"]:
                     doc[k] = int(v) if v else v
                 elif k == "pubmed" and v:

@@ -8,6 +8,6 @@ def get_release(self):
         last_modified = res.headers.get(
             "Last-Modified", "Thu, 07 May 2020 13:40:12 GMT"
         )
-        return last_modified
+        return last_modified.split(",")[-1].split(":")[0][:-2].strip()
     except:
-        return "Thu, 07 May 2020 13:40:12 GMT"
+        return "07 May 2020"
