@@ -5,5 +5,5 @@ def get_release(self):
     for line in doc.iter_lines():
         line = line.decode("utf-8")
         if line.startswith("data-version:"):
-            version = line.split(":")[-1].strip()
+            version = line.split(":")[-1].split("/")[-2]
             return version
