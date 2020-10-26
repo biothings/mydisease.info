@@ -86,11 +86,10 @@ def process_gene(file_path_gene_disease):
         doc = {"source": grp[1], "gene_id": grp[2], "pubmed": set()}
         for record in records:
             for k, v in record.items():
+                if isinstance(v, np.int64):
+                    record[k] = int(v)
                 if k in ["gene_name", "DSI", "DPI", "score", "EI"]:
-                    if isinstance(v, np.int64):
-                        doc[k] = int(v)
-                    else:
-                        doc[k] = v
+                    doc[k] = v
                 elif k in ["YearInitial", "YearFinal"]:
                     doc[k] = int(v) if v else v
                 elif k == "pubmed" and v:
@@ -134,9 +133,9 @@ def process_snp(file_path_snp_disease):
         records = subdf.to_dict(orient="records")
         # change string value to integers
         for record in records:
-            for v in record.values():
+            for k, v in record.items():
                 if isinstance(v, np.int64):
-                    v = int(v)
+                    record[k] = int(v)
             if "pubmed" in record and record["pubmed"]:
                 record["pubmed"] = int(record["pubmed"])
             if "pos" in record and record["pos"]:
@@ -173,6 +172,9 @@ def process_xrefs(file_path_disease_mapping):
             },
         }
         for _record in records:
+            for k, v in _record.items():
+                if isinstance(v, np.int64):
+                    _record[k] = int(v)
             drecord["xrefs"][
                 _record["vocabulary"]
                 .lower()
