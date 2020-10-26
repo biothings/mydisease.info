@@ -5,7 +5,8 @@
             "http://purl.obolibrary.org/obo/mondo.obo"
         ],
         "uncompress": false,
-        "release": "version:get_release"
+        "release": "version:get_release",
+        "schedule": "0 0 1,15 * *"
     },
     "uploader": {
         "parser": "parser:load_data",
