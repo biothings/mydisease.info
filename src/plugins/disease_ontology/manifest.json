@@ -6,7 +6,7 @@
         "url": "https://disease-ontology.org/"
     },
     "dumper" : {
-        "data_url" : ["https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/master/src/ontology/doid.obo"],
+        "data_url" : ["https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/main/src/ontology/doid.obo"],
         "uncompress" : false,
         "schedule" : "0 0 1,15 * *"
     },
