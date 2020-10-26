@@ -94,6 +94,7 @@ def process_gene(file_path_gene_disease):
                     doc[k] = int(v) if v else v
                 elif k == "pubmed" and v:
                     doc[k].add(int(v))
+        doc["pubmed"] = list(doc["pubmed"])
         d[grp[0].replace("umls", "umls_cui")].append(doc)
     return d
 
