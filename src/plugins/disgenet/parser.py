@@ -74,23 +74,25 @@ def process_gene(file_path_gene_disease):
     # source field could be multiple data sources concatenated by ";", break them into a list
     df_gene_disease = df_gene_disease.where((pd.notnull(df_gene_disease)), None)
     df_gene_disease.source = to_list(df_gene_disease.source)
-    df_gene_disease.diseaseType = to_list(df_gene_disease.diseaseType)
-    df_gene_disease.diseaseSemanticType = to_list(df_gene_disease.diseaseSemanticType)
-    d = []
+    # df_gene_disease.diseaseType = to_list(df_gene_disease.diseaseType)
+    # df_gene_disease.diseaseSemanticType = to_list(df_gene_disease.diseaseSemanticType)
+    d = defaultdict(list)
     # rename pandas columns
     df_gene_disease = df_gene_disease.rename(columns=rename_gene)
-    for did, subdf in df_gene_disease.groupby("umls"):
+    # for each gene, group the results based on source, and merge all pubmed IDs together
+    for grp, subdf in df_gene_disease.groupby(["umls", "source", "gene_id"]):
         records = subdf.to_dict(orient="records")
-        gene_related = [
-            {k: v for k, v in record.items() if k not in {"umls", "disease_name"}}
-            for record in records
-        ]
-        drecord = {
-            "_id": did.replace("umls", "umls_cui"),
-            "genes_related_to_disease": gene_related,
-        }
-        d.append(drecord)
-    return {x["_id"]: x["genes_related_to_disease"] for x in d}
+        doc = {"source": grp[1], "gene_id": grp[2], "pubmed": set()}
+        for record in records:
+            for k, v in record.items():
+                if k in ["gene_name", "DSI", "DPI", "score", "EI"]:
+                    doc[k] = v
+                elif k in ["YearInitial", "YearFinal"]:
+                    doc[k] = int(v) if v else v
+                elif k == "pubmed" and v:
+                    doc[k].add(int(v))
+        d[grp[0].replace("umls", "umls_cui")].append(doc)
+    return d
 
 
 def process_snp(file_path_snp_disease):
