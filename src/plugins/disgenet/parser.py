@@ -83,7 +83,7 @@ def process_gene(file_path_gene_disease):
     # for each gene, group the results based on source, and merge all pubmed IDs together
     for grp, subdf in df_gene_disease.groupby(["umls", "source", "gene_id"]):
         records = subdf.to_dict(orient="records")
-        doc = {"source": grp[1], "gene_id": grp[2], "pubmed": set()}
+        doc = {"source": grp[1], "gene_id": int(grp[2]), "pubmed": set()}
         for record in records:
             for k, v in record.items():
                 if isinstance(v, np.int64):
