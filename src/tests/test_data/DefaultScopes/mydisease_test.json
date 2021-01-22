@@ -1,0 +1,1094 @@
+{
+  "aliases": {},
+  "mappings": {
+    "disease": {
+      "dynamic": "false",
+      "_meta": {
+        "build_date": "2020-10-26T14:32:26.857778",
+        "biothing_type": "disease",
+        "src": {
+          "ctd": {
+            "code": {
+              "folder": "src/plugins/ctd",
+              "repo": "https://github.com/biothings/mydisease.info",
+              "commit": "24f1258",
+              "branch": "development",
+              "url": "https://github.com/biothings/mydisease.info/tree/24f1258a670bbae4c99dc33d5ef3d37ff1f5bf84/src/plugins/ctd"
+            },
+            "stats": {
+              "ctd": 7216
+            },
+            "version": "01 Oct 2020"
+          },
+          "mondo": {
+            "code": {
+              "folder": "src/plugins/mondo",
+              "repo": "https://github.com/biothings/mydisease.info",
+              "commit": "5a9883a",
+              "branch": "development",
+              "url": "https://github.com/biothings/mydisease.info/tree/5a9883a362a3b474e40d750b1e531ae59f557ad1/src/plugins/mondo"
+            },
+            "stats": {
+              "mondo": 22335
+            },
+            "version": "2020-10-21"
+          },
+          "hpo": {
+            "code": {
+              "folder": "src/plugins/hpo",
+              "repo": "https://github.com/biothings/mydisease.info",
+              "commit": "bd98613",
+              "branch": "development",
+              "url": "https://github.com/biothings/mydisease.info/tree/bd98613181c32817370fada3b8ade5cf7536a503/src/plugins/hpo"
+            },
+            "stats": {
+              "hpo": 9745
+            },
+            "version": "2020-10-13"
+          },
+          "umls": {
+            "code": {
+              "folder": "src/plugins/umls",
+              "repo": "https://github.com/biothings/mydisease.info",
+              "commit": "a73e197",
+              "branch": "development",
+              "url": "https://github.com/biothings/mydisease.info/tree/a73e19716e9e5653eb127d011a3070d97adf48c1/src/plugins/umls"
+            },
+            "stats": {
+              "umls": 95974
+            },
+            "version": "2020AA",
+            "license_url": "https://uts.nlm.nih.gov//license.html",
+            "url": "https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/index.html"
+          },
+          "covid_phenotypes": {
+            "code": {
+              "folder": "src/plugins/covid_phenotypes",
+              "repo": "https://github.com/biothings/mydisease.info",
+              "commit": "e98ab5b",
+              "branch": "development",
+              "url": "https://github.com/biothings/mydisease.info/tree/e98ab5b37aad5e946992926c88b512e6a6a46af0/src/plugins/covid_phenotypes"
+            },
+            "stats": {
+              "covid_phenotypes": 1
+            },
+            "version": "1.0"
+          },
+          "disease_ontology": {
+            "code": {
+              "folder": "src/plugins/disease_ontology",
+              "repo": "https://github.com/biothings/mydisease.info",
+              "commit": "0b474d2",
+              "branch": "development",
+              "url": "https://github.com/biothings/mydisease.info/tree/0b474d2287cad25eed7cef2faff0f59573233760/src/plugins/disease_ontology"
+            },
+            "stats": {
+              "disease_ontology": 10412
+            },
+            "version": "2020-10-15",
+            "license_url": "https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/master/DO_LICENSE.txt",
+            "url": "https://disease-ontology.org/"
+          },
+          "disgenet": {
+            "licence": "CC BY 4.0",
+            "code": {
+              "folder": "src/plugins/disgenet",
+              "repo": "https://github.com/biothings/mydisease.info",
+              "commit": "f01fc52",
+              "branch": "development",
+              "url": "https://github.com/biothings/mydisease.info/tree/f01fc52451b5c191487323633463df4af25e1d0d/src/plugins/disgenet"
+            },
+            "stats": {
+              "disgenet": 27882
+            },
+            "version": "Thu, 07 May 2020 12:46:56 GMT",
+            "license_url": "https://creativecommons.org/licenses/by/4.0/",
+            "url": "https://www.disgenet.org/static/disgenet_ap1/files/downloads/readme.txt"
+          }
+        },
+        "stats": {
+          "total": 127473
+        },
+        "build_version": "20201026"
+      },
+      "properties": {
+        "all": {
+          "type": "text"
+        },
+        "covid_phenotypes": {
+          "properties": {
+            "hp": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "label": {
+              "type": "text"
+            }
+          }
+        },
+        "ctd": {
+          "properties": {
+            "chemical_related_to_disease": {
+              "properties": {
+                "cas_registry_number": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "chemical_name": {
+                  "type": "text"
+                },
+                "direct_evidence": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "inference_gene_symbol": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "inference_score": {
+                  "type": "float"
+                },
+                "mesh_chemical_id": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "omim_id": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "pubmed": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "source": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "mesh": {
+              "type": "keyword",
+              "copy_to": [
+                "all"
+              ],
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "omim": {
+              "type": "keyword",
+              "copy_to": [
+                "all"
+              ],
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "pathway_related_to_disease": {
+              "properties": {
+                "inference_gene_symbol": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "kegg_pathway_id": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "pathway_name": {
+                  "type": "text"
+                },
+                "react_pathway_id": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "source": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            }
+          }
+        },
+        "disease_ontology": {
+          "properties": {
+            "ancestors": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "children": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "def": {
+              "type": "text"
+            },
+            "descendants": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "doid": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "name": {
+              "type": "text"
+            },
+            "parents": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "synonyms": {
+              "properties": {
+                "exact": {
+                  "type": "text"
+                },
+                "related": {
+                  "type": "text"
+                }
+              }
+            },
+            "xrefs": {
+              "properties": {
+                "dermo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "efo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "gard": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "gardl": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "garfd": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "https": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icd10": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icd9": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icdo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "kegg": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "meddra": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "mesh": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "ncit": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "oerdo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "omim": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "ordo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "snomed_ct_us_2018_03_01": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "snomedct_2020_03_01": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "snomedct_us_2018_03_01": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "snomedct_us_2019_09_01": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "snomedct_us_2020_03_01": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "snomedct_us_2020_09_01": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "stedman": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "umls_cui": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            }
+          }
+        },
+        "disgenet": {
+          "properties": {
+            "genes_related_to_disease": {
+              "properties": {
+                "DPI": {
+                  "type": "float"
+                },
+                "DSI": {
+                  "type": "float"
+                },
+                "EI": {
+                  "type": "float"
+                },
+                "YearFinal": {
+                  "type": "integer"
+                },
+                "YearInitial": {
+                  "type": "integer"
+                },
+                "gene_id": {
+                  "type": "integer"
+                },
+                "gene_name": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "pubmed": {
+                  "type": "integer"
+                },
+                "score": {
+                  "type": "float"
+                },
+                "source": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "variants_related_to_disease": {
+              "properties": {
+                "DPI": {
+                  "type": "float"
+                },
+                "DSI": {
+                  "type": "float"
+                },
+                "EI": {
+                  "type": "float"
+                },
+                "YearFinal": {
+                  "type": "float"
+                },
+                "YearInitial": {
+                  "type": "float"
+                },
+                "chrom": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "diseaseClass": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "diseaseSemanticType": {
+                  "type": "text"
+                },
+                "pos": {
+                  "type": "integer"
+                },
+                "pubmed": {
+                  "type": "integer"
+                },
+                "rsid": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "score": {
+                  "type": "float"
+                },
+                "source": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "xrefs": {
+              "properties": {
+                "disease_name": {
+                  "type": "text"
+                },
+                "doid": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "efo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "hp": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icd10": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icd10cm": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icd9": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "mesh": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "mondo": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "nci": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "omim": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "ordo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "umls": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            }
+          }
+        },
+        "hpo": {
+          "properties": {
+            "course": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "decipher": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "disease_name": {
+              "type": "text"
+            },
+            "modifier": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "omim": {
+              "type": "keyword",
+              "copy_to": [
+                "all"
+              ],
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "orphanet": {
+              "type": "keyword",
+              "copy_to": [
+                "all"
+              ],
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "phenotype_related_to_disease": {
+              "properties": {
+                "aspect": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "biocuration": {
+                  "type": "text"
+                },
+                "evidence": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "frequency": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "hpo_id": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "modifier": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "onset": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "qualifier": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "reference": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "sex": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            }
+          }
+        },
+        "mondo": {
+          "properties": {
+            "alt_id": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "ancestors": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "children": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "comment": {
+              "type": "text"
+            },
+            "definition": {
+              "type": "text"
+            },
+            "descendants": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "disease_arises_from_feature": {
+              "properties": {
+                "mondo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "disease_causes_feature": {
+              "properties": {
+                "mondo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "disease_has_feature": {
+              "properties": {
+                "mondo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "disease_has_major_feature": {
+              "properties": {
+                "mondo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "disease_shares_features_of": {
+              "properties": {
+                "mondo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "disjoint_from": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "excluded_subClassOf": {
+              "properties": {
+                "mondo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "ncbitaxon": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "has_modifier": {
+              "properties": {
+                "mondo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "intersection_of": {
+              "type": "text"
+            },
+            "label": {
+              "type": "text"
+            },
+            "mondo": {
+              "type": "keyword",
+              "copy_to": [
+                "all"
+              ],
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "never_in_taxon": {
+              "properties": {
+                "ncbitaxon": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "parents": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "part_of_progression_of_disease": {
+              "properties": {
+                "mondo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "predisposes_towards": {
+              "properties": {
+                "mondo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "subset": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "synonym": {
+              "properties": {
+                "exact": {
+                  "type": "text"
+                },
+                "related": {
+                  "type": "text"
+                }
+              }
+            },
+            "union_of": {
+              "type": "keyword",
+              "normalizer": "keyword_lowercase_normalizer"
+            },
+            "xrefs": {
+              "properties": {
+                "cohd": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "csp": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "dc": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "dermo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "doid": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "efo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "gard": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "gtr": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "hgnc": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "hp": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icd10": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icd10cm": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icd11": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icd9": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icd9cm": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "icdo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "ido": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "iedb": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "kegg": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "loinc": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "meddra": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "medgen": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "mesh": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "mfomd": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "mondo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "mp": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "mth": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "ncit": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "ndfrt": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "nifstd": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "obi": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "ogms": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "omim": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "omimps": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "omop": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "oncotree": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "ordo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "orphanet": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "pato": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "pmid": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "reactome": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "scdo": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "sctid": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "sctid_2010_1_31": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "umls": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "umls_cui": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "url": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "wikidata": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "wikipedia": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            }
+          }
+        },
+        "umls": {
+          "properties": {
+            "icd10": {
+              "properties": {
+                "non-preferred": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "preferred": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "icd10am": {
+              "properties": {
+                "non-preferred": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "preferred": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "icd10cm": {
+              "properties": {
+                "non-preferred": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "preferred": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "icd9cm": {
+              "properties": {
+                "non-preferred": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "preferred": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "mesh": {
+              "properties": {
+                "non-preferred": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "preferred": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "nci": {
+              "properties": {
+                "non-preferred": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "preferred": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "snomed": {
+              "properties": {
+                "non-preferred": {
+                  "type": "keyword",
+                  "normalizer": "keyword_lowercase_normalizer"
+                },
+                "preferred": {
+                  "type": "keyword",
+                  "copy_to": [
+                    "all"
+                  ],
+                  "normalizer": "keyword_lowercase_normalizer"
+                }
+              }
+            },
+            "umls": {
+              "type": "keyword",
+              "copy_to": [
+                "all"
+              ],
+              "normalizer": "keyword_lowercase_normalizer"
+            }
+          }
+        }
+      }
+    }
+  },
+  "settings": {
+    "index": {
+      "codec": "best_compression",
+      "number_of_shards": "1",
+      "query": {
+        "default_field": "all"
+      },
+      "analysis": {
+        "normalizer": {
+          "keyword_lowercase_normalizer": {
+            "filter": [
+              "lowercase"
+            ],
+            "type": "custom",
+            "char_filter": []
+          }
+        },
+        "analyzer": {
+          "string_lowercase": {
+            "filter": "lowercase",
+            "tokenizer": "keyword"
+          },
+          "whitespace_lowercase": {
+            "filter": "lowercase",
+            "tokenizer": "whitespace"
+          }
+        }
+      }
+    }
+  }
+}
