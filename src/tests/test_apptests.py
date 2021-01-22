@@ -77,3 +77,23 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebAppTest):
         res = res.json()
         assert len(res) == 1
         assert res[0]['_id'].lower() == q
+
+    def test_011_doid(self):
+        q = 'doid:0'
+        res = self.request("disease", method="POST", data={"ids": q})
+        res = res.json()
+        assert len(res) == 1
+        assert res[0]['disease_ontology']['doid'].lower() == q
+
+    def test_012_mesh(self):
+        q = 'd0'
+        res = self.request("disease", method="POST", data={"ids": q})
+        res = res.json()
+        assert len(res) == 1
+        assert res[0]['mondo']['xrefs']['mesh'].lower() == q
+
+    def test_020_does_not_search_all(self):
+        q = 'doid:1'  # mondo.xrefs.doid is copied to all
+        res = self.request("disease", method="POST", data={"ids": q})
+        res = res.json()
+        assert res[0]['notfound']

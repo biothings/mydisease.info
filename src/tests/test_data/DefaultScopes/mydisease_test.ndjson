@@ -1,2 +1,8 @@
 {"index": {"_id": "mock0"}}
 {}
+{"index": {"_id": "mock1"}}
+{"disease_ontology": {"doid": "DOID:0"}}
+{"index": {"_id": "mock2"}}
+{"mondo": {"xrefs": {"mesh": "D0"}}}
+{"index": {"_id": "mock3"}}
+{"mondo": {"xrefs": {"doid": "DOID:1"}}}
