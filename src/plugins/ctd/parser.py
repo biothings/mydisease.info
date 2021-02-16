@@ -5,20 +5,6 @@ import json
 import os
 
 
-def parse_diseaseid(did: str):
-    """
-    The 'DiseaseID' column sometimes starts with the identifier prefix, and sometime doesnt
-    prefixes are {'MESH:','OMIM:'}
-    if an ID starts with 'C' or 'D', its MESH, if its an integer: 'OMIM'
-    """
-    if did.startswith("OMIM:") or did.startswith("MESH:"):
-        return did.split(":", 1)[0] + ":" + did.split(":", 1)[1]
-    if did.startswith('C') or did.startswith('D'):
-        return 'MESH:' + did
-    if did.isdigit():
-        return "OMIM:" + did
-    raise ValueError(did)
-
 # Build a dictionary to map from UMLS identifier to MONDO ID
 def construct_mesh_omim_to_mondo_library(file_path_mondo):
     umls_2_mondo = defaultdict(list)
@@ -37,33 +23,32 @@ def construct_mesh_omim_to_mondo_library(file_path_mondo):
 
 def process_pathway(file_path_pathway):
     # read in the data frame
-    df_disease_pathway = pd.read_csv(file_path_pathway, sep=',', comment='#', compression='gzip', names=['DiseaseName', 'DiseaseID', 'pathway_name', 'pathway_id', 'inference_gene_symbol'])
-    # add new column called source
-    df_disease_pathway['source'] = 'CTD'
-    # rename the disease ID, add prefix to it
-    df_disease_pathway['DiseaseID'] = df_disease_pathway['DiseaseID'].map(parse_diseaseid)
-    field_split = df_disease_pathway['inference_gene_symbol'].dropna().astype(str).str.split("|")
-    # change list of 1 into string
-    for i, _item in enumerate(field_split):
-        if len(_item) == 1:
-            field_split[i] = _item[0]
-    df_disease_pathway['inference_gene_symbol'][field_split.index] = field_split
-    d = []
-    for did, subdf in df_disease_pathway.groupby('DiseaseID'):
-        records = subdf.to_dict(orient='records')
-        pathway_related = []
-        for record in records:
-            record_dict = {}
-            for k, v in record.items():
-                # name the field based on pathway database
-                if k == 'pathway_id':
-                    record_dict[v.split(':')[0].lower() + '_pathway_id'] = v.split(':')[1]
-                elif k not in {'DiseaseName', 'DiseaseID'}:
-                    record_dict[k] = v
-            pathway_related.append(record_dict)
-        drecord = {'_id': did, 'pathway': pathway_related}
-        d.append(drecord)
-    return {x['_id']: x['pathway'] for x in d}
+    df_disease_pathway = pd.read_csv(file_path_pathway, sep=',', comment='#', compression='gzip',
+                                     names=['DiseaseName', 'DiseaseID', 'pathway_name', 'pathway_id', 'inference_gene_symbol'],
+                                     dtype=str)
+    d = {}
+    ## going to merge records with the same disease - pathway (but different inference_gene_symbol values)
+    for grp, subdf in df_disease_pathway.groupby(['DiseaseID', 'pathway_id']):
+        ## make a new record        
+        record_dict = {
+            'source': 'CTD',
+            'pathway_name': subdf['pathway_name'].tolist()[0]}
+        ## name the field based on pathway database
+        tempPathwayID = grp[1].split(':')
+        record_dict[tempPathwayID[0].lower() + '_pathway_id'] = tempPathwayID[1] 
+        ## get the inference gene symbol list
+        tempGeneL = subdf['inference_gene_symbol'].unique().tolist()
+        if len(tempGeneL) == 1:
+            record_dict['inference_gene_symbol'] = tempGeneL[0]
+        else:
+            record_dict['inference_gene_symbol'] = tempGeneL
+        ## if disease key already exists in d
+        if d.get(grp[0]):
+            d[grp[0]].append(record_dict)
+        else:
+            d[grp[0]] = [record_dict]
+        ## note: <20 diseases have >1000 unique pathways linked to them
+    return d
 
 def process_chemical(file_path_chemical):
     chunksize = 100000
