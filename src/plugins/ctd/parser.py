@@ -67,29 +67,40 @@ def process_pathway(file_path_pathway):
 
 def process_chemical(file_path_chemical):
     chunksize = 100000
-    i = 0
-    j = 1
-    # read in the data frame
     d = []
-    for df_disease_chemical in pd.read_csv(file_path_chemical, chunksize=chunksize, iterator=True, sep=',', comment='#', compression='gzip', names=['chemical_name', 'mesh_chemical_id', 'cas_registry_number', 'DiseaseName', 'DiseaseID', 'direct_evidence', 'inference_gene_symbol', 'inference_score', 'omim_id', 'pubmed']):
-        df_disease_chemical.index += j
-        i += 1
-        # add new column called source
-        df_disease_chemical['source'] = 'CTD'
-        # rename the disease ID, add prefix to it
-        df_disease_chemical['DiseaseID'] = df_disease_chemical['DiseaseID'].map(parse_diseaseid)
-        # the record in these fields are separated by '|', need to convert them into list
-        df_disease_chemical = df_disease_chemical.where((pd.notnull(df_disease_chemical)), None)
-        for field_id in ['direct_evidence', 'omim_id', 'pubmed']:
-            df_disease_chemical[field_id] = df_disease_chemical[field_id].apply(lambda x: x.split('|') if x and '|' in x else x)
-            #df_disease_chemical[field_id] = df_disease_chemical[field_id].apply(lambda x: None if type(x) == float else x)
-        for did, subdf in df_disease_chemical.groupby('DiseaseID'):
-            records = subdf.to_dict(orient='records')
-            chemical_related = [{k: v for k, v in record.items() if k not in {'DiseaseName', 'DiseaseID'}} for record in records]
-            drecord = {'_id': did, 'chemical': chemical_related}
-            d.append(drecord)
-        j = df_disease_chemical.index[-1] + 1
-    return {x['_id']: x['chemical'] for x in d}
+    for chunk in pd.read_csv(file_path_chemical, chunksize=chunksize, sep=',', comment='#', compression='gzip', 
+                             names=['chemical_name', 'mesh_chemical_id', 'cas_registry_number', 'DiseaseName', 'DiseaseID', 'direct_evidence', 'inference_gene_symbol', 'inference_score', 'omim_id', 'pubmed'],
+                             dtype=str):
+        temp_chunk = chunk.copy()
+        temp_chunk = temp_chunk.where((pd.notnull(temp_chunk)), None)
+        ## remove all inferred annotations
+        ## there will be <5 disease keys with >1000 chemicals annotated to them
+        temp_chunk = temp_chunk[~ temp_chunk['direct_evidence'].isna()]
+        ## only work with records if the dataframe still has records 
+        if not temp_chunk.empty: 
+            ## make this the correct type
+            temp_chunk['inference_score'] = temp_chunk['inference_score'].astype(float)
+            temp_chunk = temp_chunk.where((pd.notnull(temp_chunk)), None)
+            # add new column called source
+            temp_chunk['source'] = 'CTD'         
+            # the record in these fields are separated by '|', need to convert them into list
+            for field_id in ['omim_id', 'pubmed']:
+                temp_chunk[field_id] = temp_chunk[field_id].apply(lambda x: x.split('|') if x and '|' in x else x)
+            for did, subdf in temp_chunk.groupby('DiseaseID'):
+                records = subdf.to_dict(orient='records')
+                chemical_related = [{k: v for k, v in record.items() if k not in {'DiseaseName', 'DiseaseID'}} for record in records]            
+                drecord = {'_id': did, 'chemical': chemical_related}
+                d.append(drecord)
+    finalDict = {}
+    ## For now, I'm not merging records. Current data situation is separate records when relationship is marker/mechanism AND therapeutic
+    for ele in d:
+        tempID = ele['_id']
+        ## if an entry for this disease already exists in the dictionary
+        if tempID in finalDict.keys():
+            finalDict[tempID] = finalDict[tempID] + ele['chemical']
+        else:
+            finalDict[tempID] = ele['chemical']
+    return finalDict
 
 # def calculate_mondo_mismatch():
 #     d_go_bp = process_go(file_path_disease_go_bp)
