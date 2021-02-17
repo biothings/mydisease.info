@@ -29,7 +29,6 @@ def process_disease2hp(file_path_disease_hpo):
     df_disease_hpo = df_disease_hpo.rename(
         index=str, columns={"DiseaseName": "disease_name", "#DatabaseID": "disease_id"}
     )
-    
     ## removing qualifier = 'NOT' annotations, because it means the disease does not
     ##   have this phenotypic feature. The HPO website doesn't show these 'NOT' annots
     df_disease_hpo = df_disease_hpo[df_disease_hpo['Qualifier'] != "NOT"]
@@ -37,17 +36,14 @@ def process_disease2hp(file_path_disease_hpo):
     df_disease_hpo.drop(columns = 'Qualifier', inplace = True)
     ## make sure all null values are None
     df_disease_hpo = df_disease_hpo.where((pd.notnull(df_disease_hpo)), None)
-    
     d = []
     for did, subdf in df_disease_hpo.groupby("disease_id"):
         did = did.replace("ORPHA", "ORPHANET")
         records = subdf.to_dict(orient="records")
-        
         pathway_related = []
         course = []
         modifiers = []
         inheritance = []
-        
         for record in records:
             record_dict = {}
             if record["Aspect"] == "C":
@@ -58,43 +54,51 @@ def process_disease2hp(file_path_disease_hpo):
                 continue
             elif record["Aspect"] == "I":
                 inheritance.append(record["HPO_ID"])
-                continue      
-                
+                continue       
             for k, v in record.items():
                 # name the field based on pathway database
                 if (k == "Sex") and v:
                     record_dict['sex'] = v.lower()
                 elif (k == 'Reference') and v: 
                 ## only process if Reference has a value
+                ## notes: OMIM:194190, OMIM:180849, OMIM:212050 are disease examples with > 1 type of reference
                     ## this is a string representing a list
                     tempRefs = v.split(";")
                     ## prepare to iterate through the tempRefs and store the processed data
-                    isbnL = []
-                    pmidL = []
-                    websiteL = []
+                    tempProperties = {
+                        'ISBN': [],
+                        'PMID': [],
+                        'http': [],
+                        'DECIPHER': [],
+                        'OMIM': [],
+                        'ORPHA': []
+                    }
+                    ## remove the prefixes or not? currently keeping the prefix
                     for i in tempRefs:
-                        if 'ISBN' in i:
-                            isbnL.append(i.split(":")[1])
-                        elif 'PMID:' in i:
-                            pmidL.append(i[5:])
-                        elif 'http' in i:
-                            websiteL.append(i)
-                        ## generate website URLs
-                        elif 'DECIPHER:' in i:
-                            websiteL.append(\
-                                'https://decipher.sanger.ac.uk/syndrome/{0}/overview'.format(i[9:]))
-                        elif 'OMIM:' in i:
-                            websiteL.append(('https://www.omim.org/entry/' + i[5:]))  
-                        elif 'ORPHA:' in i:
-                            websiteL.append(\
-                                'https://www.orpha.net/consor/cgi-bin/OC_Exp.php?lng=EN&Expert=' + i[6:])
+                        for key in tempProperties.keys():
+                            if key in i:
+                                ## replace curie prefix for isbn and orpha
+                                if key == 'ISBN':
+                                    tempProperties[key].append('ISBN:' + i.split(":")[1])
+                                elif key == 'ORPHA':
+                                    tempProperties[key].append('ORPHANET:' + i.split(":")[1])                                    
+                                else:
+                                    tempProperties[key].append(i)
                     ## ONLY add reference keys/values to the record if there are values
-                    if isbnL:
-                        record_dict['isbn_ref'] = isbnL
-                    if pmidL:
-                        record_dict['pmid_ref'] = pmidL                    
-                    if websiteL:
-                        record_dict['website_ref'] = websiteL
+                    for k,v in tempProperties.items():
+                        if v:
+                            if k == 'ISBN':
+                                record_dict['isbn_refs'] = v
+                            elif k == 'PMID':
+                                record_dict['pmid_refs'] = v                    
+                            elif k == 'http':
+                                record_dict['website_refs'] = v  
+                            elif k == 'DECIPHER':
+                                record_dict['decipher_refs'] = v  
+                            elif k == 'OMIM':
+                                record_dict['omim_refs'] = v  
+                            elif k == 'ORPHA':
+                                record_dict['orphanet_refs'] = v  
                 elif (k == 'Frequency') and v:
                 ## only process if Frequency has a value
                     tempDict = {}
@@ -115,11 +119,9 @@ def process_disease2hp(file_path_disease_hpo):
                             tempDict['freq_numerator'] = tempL[0]
                             tempDict['freq_denominator'] = tempL[1]
                             tempDict['numeric_freq'] = tempL[0] / tempL[1]
-
                     ## ONLY add frequency keys/values to the record if there are values
                     if tempDict:
                         record_dict.update(tempDict)
-                        
                 elif (k == 'Modifier') and v:
                 ## only process if Modifier has a value
                     ## in <20 records, this is a delimited list with repeated values
@@ -146,7 +148,6 @@ def process_disease2hp(file_path_disease_hpo):
             "inheritance": inheritance
         }
         d.append(drecord)
- 
     return {
         x["_id"]: [x["hpo"], x["disease_name"], x["course"], x["modifiers"], x["inheritance"]] for x in d
     }
