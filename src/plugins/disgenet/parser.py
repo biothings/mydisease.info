@@ -6,14 +6,18 @@ import json
 import os
 
 
-##############################################################################################
+####################################################################################################################
 # The source data contains two files:
-# File 1: http://www.disgenet.org/ds/DisGeNET/results/all_gene_disease_associations.tsv.gz
-#         This file contain all gene disease association in DisGeNET
-#         Including data from both curated sources (e.g. UNIPROT, CTD) as well as auto extracted
-#         ones, e.g. BeFree
-# File 2: http://www.disgenet.org/ds/DisGeNET/results/all_variant_disease_pmid_associations.tsv.gz
-#         This file contains all gene variant associations in DisGeNET
+# File 1: https://www.disgenet.org/static/disgenet_ap1/files/downloads/all_gene_disease_pmid_associations.tsv.gz
+#         This file contain all gene-disease associations in DisGeNET, with one row per source and pubmed.
+#         The file includes data from both curated sources (e.g. UNIPROT, CTD) as well as auto extracted
+#         ones (e.g. BeFree). We will change the data structure to merge pubmed values (when all other row
+#         values are the same.
+# File 2: https://www.disgenet.org/static/disgenet_ap1/files/downloads/all_variant_disease_pmid_associations.tsv.gz
+#         This file contain all variant-disease associations in DisGeNET, with one row per source and pubmed.
+#         The file includes data from both curated sources (e.g. UNIPROT, GWASCAT) as well as auto extracted
+#         ones (e.g. BeFree). We will change the data structure to merge pubmed values (when all other row
+#         values are the same.
 # Two files will be merged based on the disease ID
 # The primary disease ID used in DisGeNet is UMLS concept unique identifier
 # The structure of the output JSON doc will be as followed:
@@ -26,25 +30,33 @@ import os
 #             "disease_type": "###"
 #        },
 #        "genes_related_to_disease": {
-#             "gene_id": "###",
+#             "DPI": ####,
+#             "DSI": ####,
+#             "EI": ####,
+#             "YearFinal": ####,
+#             "YearInitial": ####,
+#             "gene_id": ####,
 #             "gene_name": "####",
-#             "n_pmids": ###,
-#             "n_snps": ###,
-#             "source": ["###"],
-#             "score": ####
+#             "pubmed": [####],
+#             "score": ####,
+#             "source": "####"
 #        },
 #        "variants_related_to_disease": {
-#             "rsid": "###",
-#             "chromosome": "####",
-#             "position": "####",
-#             "pmid": "###",
-#             "score": "###",
+#             "DPI": ####,
+#             "DSI": ####,
+#             "EI": ####,
+#             "YearFinal": ####,
+#             "YearInitial": ####,
+#             "chrom": "####",
+#             "pos": ####,
+#             "pubmed": [####],
+#             "rsid": "####",
+#             "score": ####,
 #             "source": "###"
 #        }
 #    }
 # }
 ##############################################################################################
-
 
 def to_list(col):
     new_col = []
@@ -72,9 +84,9 @@ def process_gene(file_path_gene_disease):
         "diseaseName": "disease_name",
         "pmid": "pubmed",
     }
-    # source field could be multiple data sources concatenated by ";", break them into a list
     df_gene_disease = df_gene_disease.where((pd.notnull(df_gene_disease)), None)
-    df_gene_disease.source = to_list(df_gene_disease.source)
+    # source field could be multiple data sources concatenated by ";", break them into a list
+    # df_gene_disease.source = to_list(df_gene_disease.source)
     # df_gene_disease.diseaseType = to_list(df_gene_disease.diseaseType)
     # df_gene_disease.diseaseSemanticType = to_list(df_gene_disease.diseaseSemanticType)
     d = defaultdict(list)
@@ -106,56 +118,48 @@ def process_snp(file_path_snp_disease):
     rename_variant = {
         "diseaseId": "umls",
         "diseaseName": "disease_name",
-        "originalSource": "source",
+#         "originalSource": "source",
         "pmid": "pubmed",
         "snpId": "rsid",
         "chromosome": "chrom",
         "position": "pos",
         "diseaseType": "disease_type",
-        "originalSource": "source",
-        "sentence": "description",
+#         "originalSource": "source",
+#         "sentence": "description",
     }
     # rename columns
     df_snp = df_snp.rename(columns=rename_variant)
     # change nan values to none
     df_snp = df_snp.where((pd.notnull(df_snp)), None)
     # source field could be multiple data sources concatenated by ";", break them into a list
-    source_col = df_snp.source
-    new_source_col = []
-    for _row in source_col:
-        _row = _row.split(";")
-        if _row and len(_row) == 1:
-            new_source_col.append(_row[0])
-        else:
-            new_source_col.append(_row)
-    df_snp.source = new_source_col
-    d = []
-    for did, subdf in df_snp.groupby("umls"):
+#     source_col = df_snp.source
+#     new_source_col = []
+#     for _row in source_col:
+#         _row = _row.split(";")
+#         if _row and len(_row) == 1:
+#             new_source_col.append(_row[0])
+#         else:
+#             new_source_col.append(_row)
+#     df_snp.source = new_source_col
+    d = defaultdict(list)
+    # rename pandas columns
+    # for each gene, group the results based on source, and merge all pubmed IDs together
+    for grp, subdf in df_snp.groupby(["umls", "source", "rsid"]):
         records = subdf.to_dict(orient="records")
-        # change string value to integers
+        doc = {"source": grp[1], "rsid": grp[2], "pubmed": set()}
         for record in records:
             for k, v in record.items():
                 if isinstance(v, np.int64):
                     record[k] = int(v)
-            if "pubmed" in record and record["pubmed"]:
-                record["pubmed"] = int(record["pubmed"])
-            if "pos" in record and record["pos"]:
-                record["pos"] = int(record["pos"])
-        variant_related = [
-            {
-                k: v
-                for k, v in record.items()
-                if k not in {"umls", "disease_name", "disease_type"}
-            }
-            for record in records
-        ]
-        # records = [{k: v for k, v in record.items() if k not in {'_id', 'label'}} for record in records]
-        drecord = {
-            "_id": did.replace("umls", "umls_cui"),
-            "variants_related_to_disease": variant_related,
-        }
-        d.append(drecord)
-    return {x["_id"]: x["variants_related_to_disease"] for x in d}
+                if k in ["chrom", "DSI", "DPI", "score", "EI"]:
+                    doc[k] = v
+                elif k in ["YearInitial", "YearFinal", "pos"]:
+                    doc[k] = int(v) if v else v
+                elif k == "pubmed" and v:
+                    doc[k].add(int(v))
+        doc["pubmed"] = list(doc["pubmed"])
+        d[grp[0].replace("umls", "umls_cui")].append(doc)
+    return d
 
 
 def process_xrefs(file_path_disease_mapping):
