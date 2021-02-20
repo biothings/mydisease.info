@@ -3,7 +3,7 @@
     "dumper": {
         "data_url": [
             "http://purl.obolibrary.org/obo/mondo.json",
-            "http://compbio.charite.de/jenkins/job/hpo.annotations.current/lastSuccessfulBuild/artifact/current/phenotype.hpoa"
+            "http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa"
         ],
         "uncompress": false,
         "release": "version:get_release",
