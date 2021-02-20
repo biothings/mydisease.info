@@ -4,4 +4,4 @@ def get_release(self):
     doc = requests.get(
         "http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa"
     )
-    return doc.get("headers", {}).get("last-modified");
+    return doc.headers.get("last-modified")
