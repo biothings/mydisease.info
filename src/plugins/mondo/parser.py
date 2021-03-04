@@ -49,6 +49,8 @@ def load_data(data_folder):
                         prefix, id = val.split(":", 1)
                         if prefix in ["DOID", "HP", "MP", "OBI", "EFO"]:
                             xrefs[prefix.lower()].add(val)
+                        elif prefix == "GARD":
+                            xrefs["gard"].add(str(int(id)))
                         elif prefix in ["https", "http"]:
                             continue
                         else:
