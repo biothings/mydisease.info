@@ -1,0 +1,36 @@
+[queries]
+
+[queries.doid]
+query = '{"query": {"exists": {"field": "disease_ontology.doid"}}}'
+doc_id = ["MONDO:0010936"]
+
+# MONDO:0010936 added on 2021-04-30T13:45:36-07:00
+[queries.mesh]
+query = '{"query": {"exists": {"field": "mondo.xrefs.mesh"}}}'
+doc_id = ["MONDO:0010936"]
+
+# MONDO:0010936 added on 2021-04-30T13:45:36-07:00
+[queries.doid_different]
+query = '''
+{
+  "query": {
+    "bool": {
+      "must": {
+        "exists": {
+          "field": "mondo.xrefs.doid"
+        }
+      },
+      "filter": {
+        "script": {
+          "script": {
+            "source": "doc['mondo.xrefs.doid'].value != doc['disease_ontology.doid'].value",
+            "lang": "painless"
+          }
+        }
+      }
+    }
+  }
+}
+'''
+doc_id = ["MONDO:0010936"]
+# MONDO:0010936 added on 2021-04-30T13:45:36-07:00
