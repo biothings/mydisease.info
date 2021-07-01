@@ -2,12 +2,9 @@
 # *****************************************************************************
 # Elasticsearch variables
 # *****************************************************************************
-# elasticsearch server transport url
-ES_HOST = 'es6.biothings.io'
-# elasticsearch index name
-ES_INDEX = 'mydisease_current'
-# elasticsearch document type
-ES_DOC_TYPE = 'disease'
+ES_HOST = 'es7.biothings.io:443'
+ES_ARGS = dict(aws=True)
+ES_INDICES = dict(disease='mydisease_current')
 
 # *****************************************************************************
 # Web Application
@@ -26,9 +23,9 @@ GA_TRACKER_URL = 'MyDisease.info'
 
 STATUS_CHECK = {
     'id': 'MONDO:0021004',
-    'index': 'mydisease_current',
-    'doc_type': 'disease'
+    'index': 'mydisease_current'
 }
 
 ANNOTATION_DEFAULT_SCOPES = [
-    '_id', 'disease_ontology.doid', 'mondo.xrefs.mesh']
+    '_id', 'disease_ontology.doid', 'mondo.xrefs.mesh'
+]
