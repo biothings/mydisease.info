@@ -2,8 +2,8 @@
 # *****************************************************************************
 # Elasticsearch variables
 # *****************************************************************************
-ES_HOST = 'es7.biothings.io:443'
-ES_ARGS = dict(aws=True, timeout=60)
+ES_HOST = 'localhost:9200'
+ES_ARGS = dict(timeout=60)
 ES_INDICES = dict(disease='mydisease_current')
 
 # *****************************************************************************
