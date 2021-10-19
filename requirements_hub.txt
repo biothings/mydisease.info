@@ -1,2 +1,2 @@
 # MyDisease requirements
--e git+https://github.com/biothings/biothings.api@0.10.x#egg=biothings[hub]
+-e git+https://github.com/biothings/biothings.api@master#egg=biothings[hub]
