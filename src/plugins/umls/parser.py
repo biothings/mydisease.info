@@ -1,4 +1,5 @@
 import glob
+import logging
 import os
 import zipfile
 from typing import Union
@@ -80,8 +81,7 @@ def get_primary_ids(cuis: list):
     primary_id_mapping = {}
     s = requests.Session()
     for cui_page in paginate(list(cuis), 1000):
-        # FIXME: using only MONDO xrefs here, until disgenet issue is fixed
-        data = {'q': ', '.join(cui_page), 'scopes': 'mondo.xrefs.umls'}
+        data = {'q': ', '.join(cui_page), 'scopes': 'mondo.xrefs.umls,disgenet.xrefs.umls'}
         response = s.post(API_ENDPOINT, data=data)
         for result in response.json():
             cui = result['query']
@@ -117,10 +117,19 @@ def load_data(data_folder):
     # obtain primary id for CUIs that actually has data
     # TODO: I don't like how every time it has to call the APIs to get the primary IDs
     primary_id_map = get_primary_ids(list(umls_xrefs.keys()))
-    # TODO: Check output uniqueness per _id
-    #  CUI/UMLS - primary_id is at least one-to-many, but could be many-to-many
-    #  I still set on_duplicates in the manifest.json to be "ignore" so it will run
-    #  as we may need a slightly different document schema for many-to-many scenarios
+
+    # Reverse the mapping to get the primary_id to CUI mapping and check for duplicates
+    # CUI/UMLS to _id relationship is many-to-many, and we use Merger storage to combine fields.
+    # We can use this list to check that the merge happens correctly.
+    primary_id_to_cui = {}
+    for cui in umls_xrefs:
+        for primary_id in primary_id_map[cui]:
+            primary_id_to_cui.setdefault(primary_id, []).append(cui)
+    for primary_id in primary_id_to_cui:
+        if len(primary_id_to_cui[primary_id]) > 1:
+            logging.info(f"Primary ID {primary_id} is mapped to multiple CUIs: {primary_id_to_cui[primary_id]}")
+
+    # Set primary id for documents. Create duplicate documents for the one-to-many case.
     for cui in umls_xrefs:
         for primary_id in primary_id_map[cui]:
             umls_xref = umls_xrefs[cui]
