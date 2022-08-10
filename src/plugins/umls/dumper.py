@@ -36,7 +36,6 @@ class UMLSDumper(HTTPDumper):
     def create_todump_list(self, force=True):
         self.release = self.get_latest_release()
         if force or not self.src_doc or (self.src_doc and self.src_doc.get("download", {}).get("release") < self.release):
-            self.logger.info("Manually download from: https://www.nlm.nih.gov/research/umls/licensedcontent/umlsknowledgesources.html")
             # Create data folder
             local = os.path.join(self.SRC_ROOT_FOLDER, self.release)
             if not os.path.exists(local):
