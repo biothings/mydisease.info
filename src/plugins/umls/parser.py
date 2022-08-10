@@ -1,12 +1,10 @@
-
-from curses import meta
+import glob
 import os
-from tkinter import W
+import zipfile
 from typing import Union
 
-from biothings.utils.common import open_anyfile
 import requests
-
+from biothings.utils.common import open_anyfile
 
 SAB_MAPPING = {
     'NCI': 'nci',
@@ -45,7 +43,7 @@ def paginate(input_list: list, p: int):
 
 def parse_mrsty(archive_path, data_path: Union[str, bytes]) -> set:
     cuis = set()  # make sure they are unique
-    with open_anyfile((archive_path, data_path), 'rt') as f:
+    with open_anyfile((archive_path, data_path), 'r') as f:
         for line in f:
             cui, tui, stn, sty = line.rstrip('\n').split('|')[:4]
             # extract whatever we are interested in
@@ -56,7 +54,7 @@ def parse_mrsty(archive_path, data_path: Union[str, bytes]) -> set:
 
 def parse_mrconso(archive_path, data_path: Union[str, bytes], wanted: set) -> dict:
     umls_xrefs = {}
-    with open_anyfile((archive_path, data_path), 'rt') as f:
+    with open_anyfile((archive_path, data_path), 'r') as f:
         for line in f:
             line = line.rstrip('\n').split('|')
             cui, lat, ts = line[:3]
@@ -96,17 +94,24 @@ def get_primary_ids(cuis: list):
 
 
 def load_data(data_folder):
-    metathesaurus_file = os.path.join(data_folder, glob.glob('*metathesaurus.zip')[0])
-    if not metathesaurus_file():
+    try:
+        metathesaurus_file = glob.glob(os.path.join(data_folder, '*metathesaurus.zip'))[0]
+    except IndexError:
         raise FileNotFoundError(
             """Could not find metathesaurus archive in {}.
-            Please download UMLS Metathesaurus file manually and extract to folder.
+            Please download UMLS Metathesaurus file manually from:
+            https://www.nlm.nih.gov/research/umls/licensedcontent/umlsknowledgesources.html
             """.format(data_folder))
-    file_list = ZipFile(metathesaurus_file).namelist()
-    mrsty_path = [f for f in file_list if f.endswith('MRSTY.RRF')][0]
-    assert len(mrsat_path) == 1, "Could not find MRSAT.RRF in archive."
-    mrconso_path = [f for f in file_list if f.endswith('MRCONSO.RRF')][0]
-    assert len(mrconso_path) == 1, "Could not find MRCONSO.RRF in archive."
+    file_list = zipfile.ZipFile(metathesaurus_file, mode='r').namelist()
+    try:
+        mrsty_path = [f for f in file_list if f.endswith('MRSTY.RRF')][0]
+    except IndexError:
+        raise FileNotFoundError("Could not find MRSTY.RRF in archive.")
+    try:
+        mrconso_path = [f for f in file_list if f.endswith('MRCONSO.RRF')][0]
+    except IndexError:
+        raise FileNotFoundError("Could not find MRCONSO.RRF in archive.")
+    # Parse files
     cui_wanted = parse_mrsty(metathesaurus_file, mrsty_path)
     umls_xrefs = parse_mrconso(metathesaurus_file, mrconso_path, wanted=cui_wanted)
     # obtain primary id for CUIs that actually has data
@@ -121,4 +126,3 @@ def load_data(data_folder):
             umls_xref = umls_xrefs[cui]
             umls_xref['_id'] = primary_id
             yield umls_xref
-#/
