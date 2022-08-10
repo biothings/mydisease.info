@@ -31,7 +31,7 @@ class UMLSDumper(HTTPDumper):
             latest = datetime.date.strftime(dtparser.parse(version), "%Y-%m-%d")
             return latest
         except Exception as e:
-            raise DumperException("Can't find or parse date from table field {}: {}" % (version, e))
+            raise DumperException(f"Can't find or parse date from table field {version}: {e}")
 
     def create_todump_list(self, force=True):
         self.release = self.get_latest_release()
@@ -43,7 +43,8 @@ class UMLSDumper(HTTPDumper):
                 os.makedirs(local)
             # Dump a dummy file, to mark dump as successful and trigger uploader
             release_notes = "https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/release/notes.html"
-            self.to_dump.append({"remote":release_notes, "local":os.path.join(local, "release_notes.html")})
+            self.to_dump.append({"remote": release_notes,
+                                 "local": os.path.join(local, "release_notes.html")})
 
     def post_dump(self, *args, **kwargs):
         self.logger.info("Unzipping files in '%s'" % self.new_data_folder)
