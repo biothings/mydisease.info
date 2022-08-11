@@ -1,8 +1,11 @@
+import glob
+import logging
 import os
+import zipfile
 from typing import Union
 
 import requests
-
+from biothings.utils.common import open_anyfile
 
 SAB_MAPPING = {
     'NCI': 'nci',
@@ -39,9 +42,9 @@ def paginate(input_list: list, p: int):
         yield input_list[idx:idx + p]
 
 
-def parse_mrsty(data_path: Union[str, bytes]) -> set:
+def parse_mrsty(archive_path, data_path: Union[str, bytes]) -> set:
     cuis = set()  # make sure they are unique
-    with open(data_path, 'rt') as f:
+    with open_anyfile((archive_path, data_path), 'r') as f:
         for line in f:
             cui, tui, stn, sty = line.rstrip('\n').split('|')[:4]
             # extract whatever we are interested in
@@ -50,9 +53,9 @@ def parse_mrsty(data_path: Union[str, bytes]) -> set:
     return cuis
 
 
-def parse_mrconso(data_path: Union[str, bytes], wanted: set) -> dict:
+def parse_mrconso(archive_path, data_path: Union[str, bytes], wanted: set) -> dict:
     umls_xrefs = {}
-    with open(data_path, 'rt') as f:
+    with open_anyfile((archive_path, data_path), 'r') as f:
         for line in f:
             line = line.rstrip('\n').split('|')
             cui, lat, ts = line[:3]
@@ -78,8 +81,7 @@ def get_primary_ids(cuis: list):
     primary_id_mapping = {}
     s = requests.Session()
     for cui_page in paginate(list(cuis), 1000):
-        # FIXME: using only MONDO xrefs here, until disgenet issue is fixed
-        data = {'q': ', '.join(cui_page), 'scopes': 'mondo.xrefs.umls'}
+        data = {'q': ', '.join(cui_page), 'scopes': 'mondo.xrefs.umls,disgenet.xrefs.umls'}
         response = s.post(API_ENDPOINT, data=data)
         for result in response.json():
             cui = result['query']
@@ -92,17 +94,42 @@ def get_primary_ids(cuis: list):
 
 
 def load_data(data_folder):
-    mrsty_path = os.path.join(data_folder, 'MRSTY.RRF')
-    mrconso_path = os.path.join(data_folder, 'MRCONSO.RRF')
-    cui_wanted = parse_mrsty(mrsty_path)
-    umls_xrefs = parse_mrconso(mrconso_path, wanted=cui_wanted)
+    try:
+        metathesaurus_file = glob.glob(os.path.join(data_folder, '*metathesaurus.zip'))[0]
+    except IndexError:
+        raise FileNotFoundError(
+            """Could not find metathesaurus archive in {}.
+            Please download UMLS Metathesaurus file manually from:
+            https://www.nlm.nih.gov/research/umls/licensedcontent/umlsknowledgesources.html
+            """.format(data_folder))
+    file_list = zipfile.ZipFile(metathesaurus_file, mode='r').namelist()
+    try:
+        mrsty_path = [f for f in file_list if f.endswith('MRSTY.RRF')][0]
+    except IndexError:
+        raise FileNotFoundError("Could not find MRSTY.RRF in archive.")
+    try:
+        mrconso_path = [f for f in file_list if f.endswith('MRCONSO.RRF')][0]
+    except IndexError:
+        raise FileNotFoundError("Could not find MRCONSO.RRF in archive.")
+    # Parse files
+    cui_wanted = parse_mrsty(metathesaurus_file, mrsty_path)
+    umls_xrefs = parse_mrconso(metathesaurus_file, mrconso_path, wanted=cui_wanted)
     # obtain primary id for CUIs that actually has data
     # TODO: I don't like how every time it has to call the APIs to get the primary IDs
     primary_id_map = get_primary_ids(list(umls_xrefs.keys()))
-    # TODO: Check output uniqueness per _id
-    #  CUI/UMLS - primary_id is at least one-to-many, but could be many-to-many
-    #  I still set on_duplicates in the manifest.json to be "ignore" so it will run
-    #  as we may need a slightly different document schema for many-to-many scenarios
+
+    # Reverse the mapping to get the primary_id to CUI mapping and check for duplicates
+    # CUI/UMLS to _id relationship is many-to-many, and we use Merger storage to combine fields.
+    # We can use this list to check that the merge happens correctly.
+    primary_id_to_cui = {}
+    for cui in umls_xrefs:
+        for primary_id in primary_id_map[cui]:
+            primary_id_to_cui.setdefault(primary_id, []).append(cui)
+    for primary_id in primary_id_to_cui:
+        if len(primary_id_to_cui[primary_id]) > 1:
+            logging.info(f"Primary ID {primary_id} is mapped to multiple CUIs: {primary_id_to_cui[primary_id]}")
+
+    # Set primary id for documents. Create duplicate documents for the one-to-many case.
     for cui in umls_xrefs:
         for primary_id in primary_id_map[cui]:
             umls_xref = umls_xrefs[cui]
