@@ -1,4 +1,3 @@
-import os.path
 from .parser import load_data
 import biothings.hub.dataload.storage as storage
 import biothings.hub.dataload.uploader as uploader
