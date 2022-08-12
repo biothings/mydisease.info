@@ -1,10 +1,10 @@
-from collections import defaultdict
-from biothings.utils.dataload import dict_sweep, unlist
-import pandas as pd
-import numpy as np
 import json
 import os
+from collections import defaultdict
 
+import numpy as np
+import pandas as pd
+from biothings.utils.dataload import dict_sweep, unlist
 
 ####################################################################################################################
 # The source data contains two files:
@@ -98,6 +98,8 @@ def process_gene(file_path_gene_disease):
         doc = {"source": grp[1], "gene_id": int(grp[2]), "pubmed": set()}
         for record in records:
             for k, v in record.items():
+                if pd.isna(v):
+                    v = None
                 if isinstance(v, np.int64):
                     record[k] = int(v)
                 if k in ["gene_name", "DSI", "DPI", "score", "EI"]:
@@ -149,6 +151,8 @@ def process_snp(file_path_snp_disease):
         doc = {"source": grp[1], "rsid": grp[2], "pubmed": set()}
         for record in records:
             for k, v in record.items():
+                if pd.isna(v):
+                    v = None
                 if isinstance(v, np.int64):
                     record[k] = int(v)
                 if k in ["chrom", "DSI", "DPI", "score", "EI"]:
