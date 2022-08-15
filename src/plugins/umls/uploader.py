@@ -29,7 +29,8 @@ class UMLSUploader(uploader.BaseSourceUploader):
                         "properties": {
                             "preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
-                                "type": "keyword"
+                                "type": "keyword",
+                                "copy_to": ["all"]
                             },
                             "non-preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
@@ -41,7 +42,8 @@ class UMLSUploader(uploader.BaseSourceUploader):
                         "properties": {
                             "preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
-                                "type": "keyword"
+                                "type": "keyword",
+                                "copy_to": ["all"]
                             },
                             "non-preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
@@ -58,11 +60,13 @@ class UMLSUploader(uploader.BaseSourceUploader):
                         "properties": {
                             "non-preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
-                                "type": "keyword"
+                                "type": "keyword",
+                                "copy_to": ["all"]
                             },
                             "preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
-                                "type": "keyword"
+                                "type": "keyword",
+                                "copy_to": ["all"]
                             }
                         }
                     },
@@ -70,11 +74,13 @@ class UMLSUploader(uploader.BaseSourceUploader):
                         "properties": {
                             "non-preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
-                                "type": "keyword"
+                                "type": "keyword",
+                                "copy_to": ["all"]
                             },
                             "preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
-                                "type": "keyword"
+                                "type": "keyword",
+                                "copy_to": ["all"]
                             }
                         }
                     },
@@ -82,7 +88,8 @@ class UMLSUploader(uploader.BaseSourceUploader):
                         "properties": {
                             "preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
-                                "type": "keyword"
+                                "type": "keyword",
+                                "copy_to": ["all"]
                             },
                             "non-preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
@@ -94,7 +101,8 @@ class UMLSUploader(uploader.BaseSourceUploader):
                         "properties": {
                             "preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
-                                "type": "keyword"
+                                "type": "keyword",
+                                "copy_to": ["all"]
                             },
                             "non-preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
@@ -106,11 +114,13 @@ class UMLSUploader(uploader.BaseSourceUploader):
                         "properties": {
                             "preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
-                                "type": "keyword"
+                                "type": "keyword",
+                                "copy_to": ["all"]
                             },
                             "non-preferred": {
                                 "normalizer": "keyword_lowercase_normalizer",
-                                "type": "keyword"
+                                "type": "keyword",
+                                "copy_to": ["all"]
                             }
                         }
                     }
