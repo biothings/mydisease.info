@@ -29,13 +29,13 @@ def process_pathway(file_path_pathway):
     d = {}
     ## going to merge records with the same disease - pathway (but different inference_gene_symbol values)
     for grp, subdf in df_disease_pathway.groupby(['DiseaseID', 'pathway_id']):
-        ## make a new record        
+        ## make a new record
         record_dict = {
             'source': 'CTD',
             'pathway_name': subdf['pathway_name'].tolist()[0]}
         ## name the field based on pathway database
         tempPathwayID = grp[1].split(':')
-        record_dict[tempPathwayID[0].lower() + '_pathway_id'] = tempPathwayID[1] 
+        record_dict[tempPathwayID[0].lower() + '_pathway_id'] = tempPathwayID[1]
         ## get the inference gene symbol list
         tempGeneL = subdf['inference_gene_symbol'].unique().tolist()
         if len(tempGeneL) == 1:
@@ -53,27 +53,34 @@ def process_pathway(file_path_pathway):
 def process_chemical(file_path_chemical):
     chunksize = 100000
     d = []
-    for chunk in pd.read_csv(file_path_chemical, chunksize=chunksize, sep=',', comment='#', compression='gzip', 
-                             names=['chemical_name', 'mesh_chemical_id', 'cas_registry_number', 'DiseaseName', 'DiseaseID', 'direct_evidence', 'inference_gene_symbol', 'inference_score', 'omim_id', 'pubmed'],
-                             dtype=str):
+    for chunk in pd.read_csv(
+            file_path_chemical,
+            chunksize=chunksize,
+            sep=',',
+            comment='#',
+            compression='gzip',
+            names=['chemical_name', 'mesh_chemical_id', 'cas_registry_number',
+                   'DiseaseName', 'DiseaseID', 'direct_evidence',
+                   'inference_gene_symbol', 'inference_score', 'omim_id',
+                   'pubmed'],
+            dtype=str):
         temp_chunk = chunk.copy()
+        # Replace empty values with None
         temp_chunk = temp_chunk.where((pd.notnull(temp_chunk)), None)
         ## remove all inferred annotations
         ## there will be <5 disease keys with >1000 chemicals annotated to them
         temp_chunk = temp_chunk[~ temp_chunk['direct_evidence'].isna()]
-        ## only work with records if the dataframe still has records 
-        if not temp_chunk.empty: 
-            ## make this the correct type
-            temp_chunk['inference_score'] = temp_chunk['inference_score'].astype(float)
+        ## only work with records if the dataframe still has records
+        if not temp_chunk.empty:
             temp_chunk = temp_chunk.where((pd.notnull(temp_chunk)), None)
             # add new column called source
-            temp_chunk['source'] = 'CTD'         
+            temp_chunk['source'] = 'CTD'
             # the record in these fields are separated by '|', need to convert them into list
             for field_id in ['omim_id', 'pubmed']:
                 temp_chunk[field_id] = temp_chunk[field_id].apply(lambda x: x.split('|') if x and '|' in x else x)
             for did, subdf in temp_chunk.groupby('DiseaseID'):
                 records = subdf.to_dict(orient='records')
-                chemical_related = [{k: v for k, v in record.items() if k not in {'DiseaseName', 'DiseaseID'}} for record in records]            
+                chemical_related = [{k: v for k, v in record.items() if k not in {'DiseaseName', 'DiseaseID'}} for record in records]
                 drecord = {'_id': did, 'chemical': chemical_related}
                 d.append(drecord)
     finalDict = {}
@@ -112,7 +119,6 @@ def load_data(data_folder):
     print('loaded chemical data')
     mesh_omim_2_mondo = construct_mesh_omim_to_mondo_library(file_path_mondo)
     for disease_id in set(list(d_pathway.keys()) + list(d_chemical.keys())):
-    #for disease_id in set(list(d_go_bp.keys()) + list(d_go_mf.keys()) + list(d_go_cc.keys()) + list(d_pathway.keys())):
         if disease_id in mesh_omim_2_mondo:
             mondo_id = mesh_omim_2_mondo[disease_id]
             for _mondo in mondo_id:
