@@ -32,7 +32,7 @@ RELEASE_CONFIG = {}
 
 # Hub name/icon url/version, for display purpose
 HUB_NAME = "MyDisease.info API (backend)"
-HUB_ICON = "https://biothings.io/static/img/sdk-icon.svg"
+HUB_ICON = "https://biothings.io/static/img/mydisease-logo-shiny.svg"
 HUB_VERSION = "master"
 
 TORNADO_SETTINGS = {
