@@ -6,28 +6,30 @@ import re
 
 
 def get_synonyms(data):
-    """Format synonyms as dicionary
-    exact and related synonyms are the keys, and their values are in lists
     """
-    if "synonym" in data:
-        syn_dict = {}
-        exact = []
-        related = []
-        for syn in data["synonym"]:
-            if "EXACT" in syn:
-                match = re.findall(r"\"(.+?)\"", syn)
-                exact = exact + match
-            elif "RELATED" in syn:
-                match = re.findall(r"\"(.+?)\"", syn)
-                related = related + match
-        synonyms = {}
-        if len(exact) > 0:
-            synonyms["exact"] = exact
-        if len(related) > 0:
-            synonyms["related"] = related
-        return synonyms
-    else:
+    Format synonyms as dictionary.
+    "exact" and "related" synonyms are the keys, and their values are in lists
+    """
+    if "synonym" not in data:
         return {}
+
+    exact = []
+    related = []
+    for syn in data["synonym"]:
+        if "EXACT" in syn:
+            match = re.findall(r"\"(.+?)\"", syn)
+            exact = exact + match
+        elif "RELATED" in syn:
+            match = re.findall(r"\"(.+?)\"", syn)
+            related = related + match
+
+    synonyms = {}
+    if len(exact) > 0:
+        synonyms["exact"] = exact
+    if len(related) > 0:
+        synonyms["related"] = related
+
+    return synonyms
 
 
 def load_data(data_folder):
@@ -38,10 +40,10 @@ def load_data(data_folder):
             rec = graph.nodes[item]
             rec["_id"] = item
             rec["mondo"] = item
+
             if rec.get("is_a"):
-                rec["parents"] = [
-                    parent for parent in rec.pop("is_a") if parent.startswith("MONDO:")
-                ]
+                rec["parents"] = [parent for parent in rec.pop("is_a") if parent.startswith("MONDO:")]
+
             if rec.get("xref"):
                 xrefs = defaultdict(set)
                 for val in rec.get("xref"):
@@ -57,22 +59,27 @@ def load_data(data_folder):
                     xrefs[k] = list(v)
                 rec.pop("xref")
                 rec["xrefs"] = dict(xrefs)
+
             rec["children"] = [
                 child
                 for child in graph.predecessors(item)
                 if child.startswith("MONDO:")
             ]
+
             rec["ancestors"] = [
                 ancestor
                 for ancestor in nx.descendants(graph, item)
                 if ancestor.startswith("MONDO:")
             ]
+
             rec["descendants"] = [
                 descendant
                 for descendant in nx.ancestors(graph, item)
                 if descendant.startswith("MONDO:")
             ]
+
             rec["synonym"] = get_synonyms(rec)
+
             if rec.get("def"):
                 rec["definition"] = rec.pop("def")
             if rec.get("name"):
@@ -83,6 +90,7 @@ def load_data(data_folder):
                 rec.pop("creation_date")
             if rec.get("property_value"):
                 rec.pop("property_value")
+
             if rec.get("relationship"):
                 rels = {}
                 for rel in rec.get("relationship"):
@@ -98,4 +106,5 @@ def load_data(data_folder):
                     rels[m] = dict(n)
                 rec.update(rels)
                 rec.pop("relationship")
+
             yield {"_id": rec.pop("_id"), "mondo": rec}
