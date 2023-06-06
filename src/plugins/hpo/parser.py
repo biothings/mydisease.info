@@ -31,9 +31,9 @@ def process_disease2hp(file_path_disease_hpo):
     )
     ## removing qualifier = 'NOT' annotations, because it means the disease does not
     ##   have this phenotypic feature. The HPO website doesn't show these 'NOT' annots
-    df_disease_hpo = df_disease_hpo[df_disease_hpo['Qualifier'] != "NOT"]
+    df_disease_hpo = df_disease_hpo[df_disease_hpo['qualifier'] != "NOT"]
     ## then remove the qualifier
-    df_disease_hpo.drop(columns = 'Qualifier', inplace = True)
+    df_disease_hpo.drop(columns = 'qualifier', inplace = True)
     ## make sure all null values are None
     df_disease_hpo = df_disease_hpo.where((pd.notnull(df_disease_hpo)), None)
     d = []
