@@ -46,20 +46,20 @@ def process_disease2hp(file_path_disease_hpo):
         inheritance = []
         for record in records:
             record_dict = {}
-            if record["Aspect"] == "C":
-                course.append(record["HPO_ID"])
+            if record["aspect"] == "C":
+                course.append(record["hpo_id"])
                 continue
-            elif record["Aspect"] == "M":
-                modifiers.append(record["HPO_ID"])
+            elif record["aspect"] == "M":
+                modifiers.append(record["hpo_id"])
                 continue
-            elif record["Aspect"] == "I":
-                inheritance.append(record["HPO_ID"])
+            elif record["aspect"] == "I":
+                inheritance.append(record["hpo_id"])
                 continue       
             for k, v in record.items():
                 # name the field based on pathway database
-                if (k == "Sex") and v:
+                if (k == "sex") and v:
                     record_dict['sex'] = v.lower()
-                elif (k == 'Reference') and v: 
+                elif (k == 'reference') and v: 
                 ## only process if Reference has a value
                 ## notes: OMIM:194190, OMIM:180849, OMIM:212050 are disease examples with > 1 type of reference
                     ## this is a string representing a list
@@ -99,8 +99,8 @@ def process_disease2hp(file_path_disease_hpo):
                                 record_dict['omim_refs'] = v  
                             elif k == 'ORPHA':
                                 record_dict['orphanet_refs'] = v  
-                elif (k == 'Frequency') and v:
-                ## only process if Frequency has a value
+                elif (k == 'frequency') and v:
+                ## only process if frequency has a value
                     tempDict = {}
                     if 'http' in v:  ## catching an error in the data
                         continue
@@ -122,8 +122,8 @@ def process_disease2hp(file_path_disease_hpo):
                     ## ONLY add frequency keys/values to the record if there are values
                     if tempDict:
                         record_dict.update(tempDict)
-                elif (k == 'Modifier') and v:
-                ## only process if Modifier has a value
+                elif (k == 'modifier') and v:
+                ## only process if modifier has a value
                     ## in <20 records, this is a delimited list with repeated values
                     ## this behavior matches the unlist behavior used with biothings APIs
                     ## https://github.com/kevinxin90/biothings.api/blob/master/biothings/utils/dataload.py
@@ -134,9 +134,9 @@ def process_disease2hp(file_path_disease_hpo):
                     else:
                         record_dict['modifier'] = v
                 elif k not in {"disease_id", "disease_name", 
-                               "Aspect", "Sex", 
-                               "Reference", "Frequency", 
-                               "Modifier"}:
+                               "aspect", "sex", 
+                               "reference", "frequency", 
+                               "modifier"}:
                     record_dict[k.lower()] = v
             pathway_related.append(record_dict)
         drecord = {
