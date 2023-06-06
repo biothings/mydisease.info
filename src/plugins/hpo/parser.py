@@ -27,7 +27,7 @@ def construct_orphanet_omim_to_mondo_library(file_path_mondo):
 def process_disease2hp(file_path_disease_hpo):
     df_disease_hpo = pd.read_csv(file_path_disease_hpo, sep="\t", skiprows=4, dtype=str)
     df_disease_hpo = df_disease_hpo.rename(
-        index=str, columns={"DiseaseName": "disease_name", "#DatabaseID": "disease_id"}
+        index=str, columns={"database_id": "disease_id"}
     )
     ## removing qualifier = 'NOT' annotations, because it means the disease does not
     ##   have this phenotypic feature. The HPO website doesn't show these 'NOT' annots
