@@ -1,5 +1,4 @@
 import bs4
-import datetime
 import glob
 import os
 import re
