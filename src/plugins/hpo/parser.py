@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from collections import defaultdict
 
@@ -189,6 +190,7 @@ def load_data(data_folder):
 
             annotations_with_source = annotations.copy()
             # Include source ID in annotations
+            logging.info(f"annotations_with_source: {annotations_with_source}")
             annotations_with_source["source_id"] = disease_id
             aggregated_data[mondo_id].append(annotations_with_source)
 
