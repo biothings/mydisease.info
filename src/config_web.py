@@ -3,7 +3,7 @@ import re
 # *****************************************************************************
 # Elasticsearch variables
 # *****************************************************************************
-ES_HOST = "es8.biothings.io:9200"
+ES_HOST = "localhost:9200"
 ES_ARGS = {"timeout": 60}
 ES_INDICES = {"disease": "mydisease_current"}
 
