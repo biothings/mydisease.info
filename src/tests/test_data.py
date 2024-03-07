@@ -19,7 +19,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class TestMyDiseaseCurieIdParsing(BiothingsDataTest):
-    host = "localhost:8000"
+    host = "mydisease.info"
     prefix = "v1"
 
     @pytest.mark.xfail(
