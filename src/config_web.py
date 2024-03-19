@@ -2,7 +2,7 @@
 # *****************************************************************************
 # Elasticsearch variables
 # *****************************************************************************
-ES_HOST = 'localhost:9200'
+ES_HOST = 'http://localhost:9200'
 ES_ARGS = dict(timeout=60)
 ES_INDICES = dict(disease='mydisease_current')
 
