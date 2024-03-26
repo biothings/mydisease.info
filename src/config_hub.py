@@ -60,8 +60,3 @@ RELEASE_KEEP_N_RECENT_INDICES = 1
 # any other variables in this file as required. Variables defined as ValueError() exceptions
 # *must* be defined
 #
-
-# for running tests locally in our biothings hub with testing api
-APITEST_PATH = "/opt/home/mydisease/mydisease.info/src/tests"
-
-APITEST_CONFIG = "config_web"
