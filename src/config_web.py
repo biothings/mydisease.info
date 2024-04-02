@@ -23,3 +23,4 @@ STATUS_CHECK = {
 ANNOTATION_DEFAULT_SCOPES = [
     '_id', 'disease_ontology.doid', 'mondo.xrefs.mesh'
 ]
+ANNOTATION_DEFAULT_REGEX_PATTERN = None
