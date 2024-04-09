@@ -13,7 +13,7 @@ INDEX_CONFIG = {
     },
     "env": {
         "test": {
-            "host": "localhost:9200",
+            "host": "http://localhost:9200",
             "indexer": {
                 "args": {
                     "timeout": 300,
