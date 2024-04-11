@@ -4,7 +4,7 @@ import re
 # Elasticsearch variables
 # *****************************************************************************
 ES_HOST = "http://localhost:9200"
-ES_ARGS = {"timeout": 60}
+ES_ARGS = {"request_timeout": 60}
 ES_INDICES = {"disease": "mydisease_current"}
 
 # *****************************************************************************
