@@ -114,10 +114,10 @@ def get_download_url():
     res.raise_for_status()
     html = bs4.BeautifulSoup(res.text, 'lxml')
     # Get the table of metathesaurus release files
-    table = html.find("table", attrs={"class": "mb-4"})
+    table = html.find("table", attrs={"class": "usa-table border-base-lighter margin-bottom-4"})
     rows = table.find_all('tr')
     # The header of the first column should be 'Release'
-    assert rows[0].find_all('th')[0].text == 'Release', "Could not parse url from html table."
+    assert rows[0].find_all('th')[0].text.strip() == 'Release', "Could not parse url from html table."
     try:
         # Get the url from the link
         url = rows[1].find_all('td')[0].a["href"]
