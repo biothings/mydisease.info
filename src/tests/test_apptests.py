@@ -2,8 +2,8 @@ import glob
 import json
 import os
 
-import pytest
 import elasticsearch
+import pytest
 from biothings.tests.web import BiothingsWebAppTest
 
 
@@ -31,8 +31,9 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebAppTest):
         assert len(res) == 1
         assert self.value_in_result(q, res, 'mondo.xrefs.mesh', True)
 
-    def test_020_does_not_search_all(self):
-        q = 'DOID:0060208'  # mondo.xrefs.doid is copied to all
-        res = self.request("disease", method="POST", data={"ids": q})
-        res = res.json()
-        assert res[0]['notfound']
+    # ANNOTATION_ID_REGEX_LIST now captures DOID:0060208 in mondo.xrefs.doid. This test is no longer needed.
+    # def test_020_does_not_search_all(self):
+    #     q = 'DOID:0060208'  # mondo.xrefs.doid is copied to all
+    #     res = self.request("disease", method="POST", data={"ids": q})
+    #     res = res.json()
+    #     assert res[0]['notfound']
