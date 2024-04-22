@@ -3,7 +3,8 @@
     "dumper": {
         "data_url": [
             "http://purl.obolibrary.org/obo/mondo.json",
-            "http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa"
+            "http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa",
+            "http://purl.obolibrary.org/obo/hp/hp.json"
         ],
         "uncompress": false,
         "release": "version:get_release",
