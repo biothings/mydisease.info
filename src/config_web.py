@@ -51,76 +51,116 @@ disease_prefix_handling = [
     (
         re.compile(r"MONDO\:[0-9]+", re.I),
         (
-            "mondo.mondo",
-            "_id",
-            "disgenet.xrefs.mondo",
-            "disease_ontology.xrefs.mondo",
-            "mondo.xrefs.mondo",
+            "mondo.mondo",  # Has prefix
+            "mondo.xrefs.mondo",  # Has prefix
+            "disgenet.xrefs.mondo",  # Has prefix
+            "disease_ontology.xrefs.mondo",  # Has prefix
         ),
     ),
-    # Matches MESH IDs (e.g., "MESH:XXXX") or no-prefix IDs starting with "D" or "C" followed by digits (e.g., "D000086382", "C5203670").
+    # Matches MESH IDs (e.g., "MESH:XXXX") regardless of case
     (
-        re.compile(r"([DC][0-9]+|MESH\:[A-Z0-9]+)", re.I),
+        re.compile(r"MESH:(?P<term>[A-Z0-9]+)", re.I),
         (
-            "mondo.xrefs.mesh",
-            "_id",
-            "disease_ontology.xrefs.mesh",
-            "ctd.mesh",
-            "disgenet.xrefs.mesh",
-            "umls.mesh",
-            "disease_ontology.xrefs.mesh",
-            "disease_ontology.xrefs.ncit",
-            "mondo.xrefs.ncit",
+            "ctd.mesh",  # No prefix
+            "umls.mesh",  # No prefix
+            "mondo.xrefs.mesh",  # No prefix
+            "disease_ontology.xrefs.mesh",  # No prefix
+            "disgenet.xrefs.mesh",  # No prefix
+        ),
+    ),
+    # Matches NCIT IDs (NCIT:xxxx) regardless of case
+    (
+        re.compile(r"NCIT:(?P<term>[A-Z0-9]+)", re.I),
+        (
+            "mondo.xrefs.ncit",  # No prefix
+            "disease_ontology.xrefs.ncit",  # No prefix
         ),
     ),
     # Matches Disease Ontology IDs (DOID:xxxx) regardless of case
     (
         re.compile(r"DOID\:[0-9]+", re.I),
-        ("disease_ontology.doid", "disgenet.xrefs.doid", "mondo.xrefs.doid", "_id"),
-    ),
-    # Matches OMIM IDs (OMIM:xxxx) regardless of case or no prefix IDs with only digits
-    (
-        re.compile(r"(OMIM\:)?[0-9]+", re.I),
         (
-            "_id",
-            "ctd.omim",
-            "disease_ontology.xrefs.omim",
-            "disgenet.xrefs.omim",
-            "hpo.omim",
-            "mondo.xrefs.omim",
+            "disease_ontology.doid",  # Has prefix
+            "disgenet.xrefs.doid",  # Has prefix
+            "mondo.xrefs.doid"  # Has prefix
+        ),
+    ),
+    # Matches OMIM IDs (OMIM:xxxx) regardless of case
+    (
+        re.compile(r"OMIM:(?P<term>[0-9]+)", re.I),
+        (
+            "ctd.omim",  # No prefix
+            "disease_ontology.xrefs.omim",  # No prefix
+            "disgenet.xrefs.omim",  # No prefix
+            "hpo.omim",  # No prefix
+            "mondo.xrefs.omim",  # No prefix
         ),
     ),
     # Matches HP IDs (HP:xxxx) regardless of case
-    (re.compile(r"HP\:[0-9]+", re.I), ("disgenet.xrefs.hp", "mondo.xrefs.hp")),
-    # Matches ORPHANET IDs (ORPHANET:xxxx) regardless of case
-    (
-        re.compile(r"ORPHANET\:[0-9]+", re.I),
-        ("_id", "mondo.xrefs.orphanet", "hpo.orphanet"),
+    (re.compile(r"HP\:[0-9]+", re.I),
+     (
+        "disgenet.xrefs.hp",  # Has prefix
+        "mondo.xrefs.hp"  # Has prefix
+    )
     ),
-    # Matches UMLS IDs (UMLS:xxxx) regardless of case
+    # Matches ORPHANET IDs (ORPHANET:464724)
     (
-        re.compile(r"UMLS\:[A-Z0-9]+", re.I),
-        ("_id", "mondo.xrefs.umls", "umls.umls", "disgenet.xrefs.umls"),
+        re.compile(r"ORPHANET:(?P<term>[0-9]+)", re.I),
+        (
+            "mondo.xrefs.orphanet",  # No prefix
+            "hpo.orphanet",  # No prefix
+        ),
+    ),
+    # Matches UMLS IDs (C0012634) regardless of case
+    (
+        re.compile(r"UMLS:(?P<term>[A-Z0-9]+)", re.I),
+        (
+            "mondo.xrefs.umls",  # No prefix
+            "umls.umls",  # No prefix
+            "disgenet.xrefs.umls"  # No prefix
+        ),
     ),
     # Matches DECIPHER IDs (DECIPHER:xxxx) regardless of case
-    (re.compile(r"DECIPHER\:[0-9]+", re.I), ("_id", "hpo.decipher")),
-    # Matches KEGG.DISEASE IDs (H00031) regardless of case NOTE KEGG.DISEASE IDs are not in the data
     (
-        re.compile(r"^H\d+$", re.I),  # double check parser
-        ("disease_ontology.xrefs.kegg", "mondo.xrefs.kegg"),
+        re.compile(r"DECIPHER:(?P<term>[0-9]+)", re.I),
+        (
+            "hpo.decipher"  # No prefix
+        ),
+    ),
+    # Matches KEGG.DISEASE IDs (H00031) regardless of case
+    (
+        re.compile(r"KEGG:(?P<term>(H)?\d+)", re.I),
+        (
+            "disease_ontology.xrefs.kegg",  # No prefix, possible to have HXXXX
+            # "mondo.xrefs.kegg"  # Not in the data
+        ),
     ),
     # Matches ICD9 IDs (255.4) regardless of case
     (
-        re.compile(r"^\d{3}(\.\d{1,2})?$", re.I),
-        ("disease_ontology.xrefs.icd9", "disgenet.xrefs.icd9", "mondo.xrefs.icd9"),
+        re.compile(r"ICD9:(?P<term>\d{3}(?:\.\d{1,2})?)", re.I),
+        (
+            "disease_ontology.xrefs.icd9",  # No prefix
+            "disgenet.xrefs.icd9",  # No prefix
+            "mondo.xrefs.icd9"  # No prefix
+        ),
     ),
     # Matches ICD10 IDs (U07.1) regardless of case
     (
-        re.compile(r"^[A-Z][0-9][0-9A-Z]?(?:\.[0-9A-Z]{1,5})?$", re.I),
-        ("disease_ontology.xrefs.icd10", "disgenet.xrefs.icd10", "mondo.xrefs.icd10"),
+        re.compile(
+            r"ICD10:(?P<term>[A-Z][0-9][0-9A-Z]?(?:\.[0-9A-Z]{1,5})?)", re.I),
+        (
+            "disease_ontology.xrefs.icd10",  # No prefix
+            "disgenet.xrefs.icd10",  # No prefix
+            "mondo.xrefs.icd10"  # Not in the data
+        ),
     ),
     # Matches ICD11 IDs (CA01.001) regardless of case NOTE ICD11 IDs are not in the data
-    (re.compile(r"^[A-NP-Z][0-9]([0-9A-Z]{0,5})?$", re.I), "mondo.xrefs.icd11"),
+    (
+        re.compile(r"ICD11:(?P<term>[A-NP-Z][0-9]([0-9A-Z]{0,5})?)", re.I),
+        (
+            "mondo.xrefs.icd11"  # Not in the data
+        ),
+    )
 ]
 
 # id regex pattern
@@ -142,6 +182,7 @@ ANNOTATION_ID_REGEX_LIST = [
     default_disease_regex_pattern,
 ]
 
-ANNOTATION_DEFAULT_SCOPES = ["_id", "disease_ontology.doid", "mondo.xrefs.mesh"]
+ANNOTATION_DEFAULT_SCOPES = [
+    "_id", "disease_ontology.doid", "mondo.xrefs.mesh"]
 
 STATUS_CHECK = {"id": "MONDO:0021004", "index": "mydisease_current"}
