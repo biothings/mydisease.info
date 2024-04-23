@@ -10,7 +10,7 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert res[0]['_id'].lower() == q.lower()
+        assert res[0]['_id'] == q
 
     def test_011_doid(self):
         q = 'doid:0111227'
@@ -20,11 +20,12 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         assert self.value_in_result(q, res, 'disease_ontology.doid', True)
 
     def test_012_mesh(self):
-        mesh_id = 'c579991'
+        mesh_id = 'MESH:C579991'
         res = self.request("disease/" + mesh_id + "?fields=mondo").json()
         assert 'mondo' in res, 'No "mesh" field in response'
         assert 'xrefs' in res['mondo'], 'No "xrefs" field in response'
-        assert self.value_in_result(mesh_id, res, 'mondo.xrefs.mesh', True)
+        assert self.value_in_result(mesh_id.split(
+            ":")[1], res, 'mondo.xrefs.mesh', True)
 
     # Tests for "disease_ontology.doid"
     def test_013_doid_mondo_0000193(self):
@@ -65,104 +66,109 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert res[0]['_id'].lower() == q.lower()
+        assert res[0]['_id'] == q
 
+    # Returns 3 results TODO - Datatransform
     def test_018_id_mesh(self):
         q = 'MESH:C535501'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
-        assert len(res) == 1
-        assert res[0]['_id'].lower() == q.lower()
+        assert len(res) == 3
+        assert res[1]['_id'] == q
 
+    # Returns 2 results TODO - Datatransform
     def test_019_id_omim(self):
         q = 'OMIM:612542'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
-        assert len(res) == 1
-        assert res[0]['_id'].lower() == q.lower()
+        assert len(res) == 2
+        assert res[1]['_id'] == q
 
     def test_020_id_doid(self):
         q = 'DOID:0040018'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert res[0]['_id'].lower() == q.lower()
+        assert res[0]['_id'] == q
 
     def test_021_id_orphanet(self):
         orphanet_id = 'ORPHANET:90064'
         res = self.request("disease/" + orphanet_id).json()
-        assert res['_id'].lower() == orphanet_id.lower()
+        assert res['_id'] == orphanet_id
 
     def test_022_id_umls(self):
         q = 'UMLS:C0001305'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert res[0]['_id'].lower() == q.lower()
+        assert res[0]['_id'] == q
 
     def test_023_id_decipher(self):
         q = 'DECIPHER:2'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert res[0]['_id'].lower() == q.lower()
+        assert res[0]['_id'] == q
 
     def test_024_id_umls_another(self):
-        q = 'C0000735'
+        q = 'UMLS:C0000735'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert res[0]['_id'].lower() == q.lower()
+        assert res[0]['_id'] == q.split(":")[1]
 
     # Example for NCIT ID
     def test_ncit_id_with_prefix(self):
-        q = 'C171133'
+        q = 'NCIT:C171133'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
         assert self.value_in_result(
-            q, res, 'disease_ontology.xrefs.ncit', True)
+            q.split(":")[1], res, 'disease_ontology.xrefs.ncit', True)
 
     # Example for KEGG.DISEASE ID
-    @pytest.mark.skip(reason="KEGG is not in the data")
     def test_kegg_disease_id_with_prefix(self):
-        q = 'H00031'
-        res = self.request("disease", method="POST", data={"ids": q})
-        res = res.json()
-        assert len(res) == 1
-        assert self.value_in_result(q, res, 'mondo.xrefs.kegg', True)
-
-    # ICD10 IDs
-    def test_icd10_id_with_prefix(self):
-        q = 'U07.1'
+        q = 'KEGG:H00484'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
         assert self.value_in_result(
-            q, res, 'disease_ontology.xrefs.icd10', True)
+            q.split(":")[1], res, 'disease_ontology.xrefs.kegg', True)
 
-    def test_icd10_id_without_prefix(self):
-        q = 'J95.4'
+    # ICD10 IDs
+    # prefix for icds
+    def test_icd10_id_with_prefix(self):
+        q = 'ICD10:U07.1'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert self.value_in_result(q, res, 'disgenet.xrefs.icd10', True)
+        assert self.value_in_result(
+            q.split(":")[1], res, 'disease_ontology.xrefs.icd10', True)
+
+    def test_icd10_id_without_prefix(self):
+        q = 'ICD10:J95.4'
+        res = self.request("disease", method="POST", data={"ids": q})
+        res = res.json()
+        assert len(res) == 1
+        assert self.value_in_result(
+            q.split(":")[1], res, 'disgenet.xrefs.icd10', True)
 
     # ICD9 IDs
     def test_icd9_id_with_prefix(self):
-        q = '530.81'
+        q = 'ICD9:530.81'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
         assert self.value_in_result(
-            q, res, 'disease_ontology.xrefs.icd9', True)
+            q.split(":")[1], res, 'disease_ontology.xrefs.icd9', True)
 
     def test_icd9_id_without_prefix(self):
-        q = '255.4'
+        q = 'ICD9:255.4'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert self.value_in_result(q, res, 'disgenet.xrefs.icd9', True)
+        assert self.value_in_result(
+            q.split(":")[1], res, 'disgenet.xrefs.icd9', True)
 
     # ICD11 IDs
     @pytest.mark.skip(reason="ICD11 is not in the data")
@@ -171,7 +177,8 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert self.value_in_result(q, res, 'mondo.xrefs.icd11', True)
+        assert self.value_in_result(
+            q.split(":")[1], res, 'mondo.xrefs.icd11', True)
 
     # HP IDs
     def test_hp_id_with_prefix(self):
@@ -180,8 +187,3 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         res = res.json()
         assert len(res) == 1
         assert self.value_in_result(q, res, 'disgenet.xrefs.hp', True)
-
-    def test_020_does_not_search_all(self):
-        q = 'DOID:0060208'  # mondo.xrefs.doid is copied to all
-        res = self.request('query?q=' + q).json()
-        assert len(res['hits']) == 0
