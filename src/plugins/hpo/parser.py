@@ -95,6 +95,10 @@ def create_aspect_dict(record, hpo_lookup, biocuration_parser, did):
     aspect_dict['omim_refs'] = [ref for ref in references if "OMIM" in ref]
     aspect_dict['orphanet_refs'] = [
         ref for ref in references if "ORPHA" in ref]
+    aspect_dict['isbn_refs'] = [ref for ref in references if "ISBN" in ref]
+    aspect_dict['website_refs'] = [ref for ref in references if "http" in ref]
+    aspect_dict['decipher_refs'] = [
+        ref for ref in references if "DECIPHER" in ref]
 
     frequency = process_frequency(record.get('frequency', ''))
     if frequency:
