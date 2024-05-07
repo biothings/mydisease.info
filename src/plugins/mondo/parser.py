@@ -223,10 +223,10 @@ def load_data(data_folder):
         # Handling deprecated terms
         if node_obj.get("is_obsolete", "false") == "true":
             node_doc["is_obsolete"] = True
-            node_doc["replaced_by"] = node_obj.get("replaced_by", None)
+            replaced_by = node_obj.get("replaced_by", None)
+            if replaced_by:
+                node_doc["replaced_by"] = replaced_by[0]
             node_doc["consider"] = node_obj.get("consider", None)
-        else:
-            node_doc["is_obsolete"] = False
 
         node_doc["synonym"] = MondoOntologyHelper.parse_synonyms(node_obj)
         node_doc["xrefs"] = MondoOntologyHelper.parse_xref(node_obj)
