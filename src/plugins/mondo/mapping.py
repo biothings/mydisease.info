@@ -17,6 +17,10 @@ def get_customized_mapping(cls):
                 "comment": {
                     "type": "text"
                 },
+                "consider": {
+                    "type": "keyword",
+                    "normalizer": "keyword_lowercase_normalizer"
+                },
                 "definition": {
                     "type": "text"
                 },
@@ -91,6 +95,9 @@ def get_customized_mapping(cls):
                 "intersection_of": {
                     "type": "text"
                 },
+                'is_obsolete': {
+                    'type': 'boolean'
+                },
                 "label": {
                     "type": "text",
                     "copy_to": [
@@ -131,6 +138,10 @@ def get_customized_mapping(cls):
                             "normalizer": "keyword_lowercase_normalizer"
                         }
                     }
+                },
+                'replaced_by': {
+                    'type': 'keyword',
+                    'normalizer': 'keyword_lowercase_normalizer'
                 },
                 "subset": {
                     "type": "keyword",

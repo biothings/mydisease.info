@@ -1,9 +1,9 @@
-from collections import defaultdict
-import networkx as nx
-import obonet
 import os
 import re
+from collections import defaultdict
 
+import networkx as nx
+import obonet
 from biothings.utils.dataload import dict_sweep
 
 
@@ -31,20 +31,22 @@ class MondoOntologyHelper:
         2. for any term `w` in the "relationship" section, set a `(u, w)` edge with the specific relationship as key (E.g. "has_characteristic")
         See https://github.com/dhimmel/obonet/blob/main/obonet/read.py#L48
         """
-        graph = obonet.read_obo(filepath)
+        graph = obonet.read_obo(filepath, ignore_obsolete=False)
 
         """
-        We have decided that the "parents", "children", "ancestors", and "descendants" fields should rely on the topological structure solely with the "is_a" 
+        We have decided that the "parents", "children", "ancestors", and "descendants" fields should rely on the topological structure solely with the "is_a"
         edges. See https://github.com/biothings/mydisease.info/issues/44.
 
-        An edge's key is NOT part of its "data" dictionary. To list all edges in `(start, end, key)` triple format, `MultiDiGraph.edges(keys=True)` should be 
+        An edge's key is NOT part of its "data" dictionary. To list all edges in `(start, end, key)` triple format, `MultiDiGraph.edges(keys=True)` should be
         used, instead of `MultiDiGraph.edges(data=True)`.
 
-        Also note that the edge keys are necessary here for precise removal of edges. 
+        Also note that the edge keys are necessary here for precise removal of edges.
         See https://networkx.org/documentation/stable/reference/classes/generated/networkx.MultiDiGraph.remove_edge.html
         """
-        edges_to_remove = [(u, v, key) for (u, v, key) in graph.edges(keys=True, data=False) if key != cls.IS_A_EDGE_TYPE]
-        graph.remove_edges_from(edges_to_remove)  # In-place operation; no return value
+        edges_to_remove = [(u, v, key) for (u, v, key) in graph.edges(
+            keys=True, data=False) if key != cls.IS_A_EDGE_TYPE]
+        # In-place operation; no return value
+        graph.remove_edges_from(edges_to_remove)
 
         return graph
 
@@ -60,11 +62,15 @@ class MondoOntologyHelper:
         exact_synonyms = []
         related_synonyms = []
         for synonym_description in node_obj["synonym"]:
-            if "EXACT" in synonym_description:  # an example of EXACT synonym_description is '"microphthalmia, isolated" EXACT [OMIMPS:251600]'
-                synonyms = cls.SYNONYM_PATTERN.findall(synonym_description)  # e.g. ['microphthalmia, isolated']
+            # an example of EXACT synonym_description is '"microphthalmia, isolated" EXACT [OMIMPS:251600]'
+            if "EXACT" in synonym_description:
+                synonyms = cls.SYNONYM_PATTERN.findall(
+                    synonym_description)  # e.g. ['microphthalmia, isolated']
                 exact_synonyms = exact_synonyms + synonyms
-            elif "RELATED" in synonym_description:  # an example of RELATED synonym_description is '"eye and adnexa disease" RELATED [DOID:1492]'
-                synonyms = cls.SYNONYM_PATTERN.findall(synonym_description)  # e.g. ['eye and adnexa disease']
+            # an example of RELATED synonym_description is '"eye and adnexa disease" RELATED [DOID:1492]'
+            elif "RELATED" in synonym_description:
+                synonyms = cls.SYNONYM_PATTERN.findall(
+                    synonym_description)  # e.g. ['eye and adnexa disease']
                 related_synonyms = related_synonyms + synonyms
 
         synonyms = dict()
@@ -137,7 +143,8 @@ class MondoOntologyHelper:
 
         Note that the topological edge directions in the obo network are reverse to the ontological relationships.
         """
-        topological_successors = filter(cls.is_mondo, graph.successors(node_id))
+        topological_successors = filter(
+            cls.is_mondo, graph.successors(node_id))
         ontological_predecessors = list(topological_successors)
         return ontological_predecessors
 
@@ -152,7 +159,8 @@ class MondoOntologyHelper:
 
         Note that the topological edge directions in the obo network are reverse to the ontological relationships.
         """
-        topological_predecessors = filter(cls.is_mondo, graph.predecessors(node_id))
+        topological_predecessors = filter(
+            cls.is_mondo, graph.predecessors(node_id))
         ontological_successors = list(topological_predecessors)
         return ontological_successors
 
@@ -167,7 +175,8 @@ class MondoOntologyHelper:
 
         Note that the topological edge directions in the obo network are reverse to the ontological relationships.
         """
-        topological_descendants = filter(cls.is_mondo, nx.descendants(graph, node_id))
+        topological_descendants = filter(
+            cls.is_mondo, nx.descendants(graph, node_id))
         ontological_ancestors = list(topological_descendants)
         return ontological_ancestors
 
@@ -182,7 +191,8 @@ class MondoOntologyHelper:
 
         Note that the topological edge directions in the obo network are reverse to the ontological relationships.
         """
-        topological_ancestors = filter(cls.is_mondo, nx.ancestors(graph, node_id))
+        topological_ancestors = filter(
+            cls.is_mondo, nx.ancestors(graph, node_id))
         ontological_descendants = list(topological_ancestors)
         return ontological_descendants
 
@@ -199,21 +209,36 @@ def load_data(data_folder):
 
         node_doc["mondo"] = node_id
 
-        node_doc["parents"] = MondoOntologyHelper.get_ontological_predecessors(graph, node_id)
-        node_doc["children"] = MondoOntologyHelper.get_ontological_successors(graph, node_id)
-        node_doc["ancestors"] = MondoOntologyHelper.get_ontological_ancestors(graph, node_id)
-        node_doc["descendants"] = MondoOntologyHelper.get_ontological_descendants(graph, node_id)
+        node_doc["parents"] = MondoOntologyHelper.get_ontological_predecessors(
+            graph, node_id)
+        node_doc["children"] = MondoOntologyHelper.get_ontological_successors(
+            graph, node_id)
+        node_doc["ancestors"] = MondoOntologyHelper.get_ontological_ancestors(
+            graph, node_id)
+        node_doc["descendants"] = MondoOntologyHelper.get_ontological_descendants(
+            graph, node_id)
 
         node_obj = graph.nodes[node_id]
+
+        # Handling deprecated terms
+        if node_obj.get("is_obsolete", "false") == "true":
+            node_doc["is_obsolete"] = True
+            node_doc["replaced_by"] = node_obj.get("replaced_by", None)
+            node_doc["consider"] = node_obj.get("consider", None)
+        else:
+            node_doc["is_obsolete"] = False
+
         node_doc["synonym"] = MondoOntologyHelper.parse_synonyms(node_obj)
         node_doc["xrefs"] = MondoOntologyHelper.parse_xref(node_obj)
-        node_doc.update(MondoOntologyHelper.parse_relationship(node_obj))  # note that we don't assign the relationship dict to `node_doc["relationship"]`
+        # note that we don't assign the relationship dict to `node_doc["relationship"]`
+        node_doc.update(MondoOntologyHelper.parse_relationship(node_obj))
 
         # The `def` sections in the obo file may contain double quotes, e.g. `"A disease that occurs in animals." [EFO:0005932]`
         node_doc["definition"] = node_obj.get("def", "").replace('"', '')
         node_doc["label"] = node_obj.get("name")
 
-        node_doc = dict_sweep(node_doc, vals=[None, [], ""], remove_invalid_list=True)
+        node_doc = dict_sweep(
+            node_doc, vals=[None, [], ""], remove_invalid_list=True)
 
         doc = {
             "_id": node_id,
