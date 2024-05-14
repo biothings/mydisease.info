@@ -187,3 +187,20 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         res = res.json()
         assert len(res) == 1
         assert self.value_in_result(q, res, 'disgenet.xrefs.hp', True)
+
+    # ignore_obsolete parameter
+    def test_ignore_obsolete_true(self):
+        q = 'MONDO:0000006'
+        res = self.request("query", method="POST",
+                           data={"q": q, "ignore_obsolete": True})
+        res = res.json()
+        assert len(res) == 1
+        assert res[0]['notfound'] is True
+
+    def test_ignore_obsolete_false(self):
+        q = 'MONDO:0000006'
+        res = self.request("query", method="POST",
+                           data={"q": q, "ignore_obsolete": False})
+        res = res.json()
+        assert len(res) == 1
+        assert res[0]['_id'] == q
