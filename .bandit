@@ -1,0 +1,13 @@
+# .bandit
+skips:
+  - B101
+
+profiles:
+  skips:
+    description: "Skipping assert usage check in test files"
+    include:
+      - "*.py"
+    exclude:
+      - "test_*.py"
+      - "*_test.py"
+      - "**/tests/*.py"
