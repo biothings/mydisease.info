@@ -3,7 +3,7 @@ from biothings.tests.web import BiothingsWebTest
 
 
 class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
-    host = 'localhost:8000'
+    host = 'mydisease.info'
 
     def test_010_id(self):
         q = 'MONDO:0010936'
@@ -68,15 +68,13 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         assert len(res) == 1
         assert res[0]['_id'] == q
 
-    # Returns 3 results TODO - Datatransform
     def test_018_id_mesh(self):
         q = 'MESH:C535501'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
-        assert len(res) == 3
-        assert res[1]['_id'] == q
+        assert len(res) == 2
+        assert res[0]['_id'] == q
 
-    # Returns 2 results TODO - Datatransform
     def test_019_id_omim(self):
         q = 'OMIM:612542'
         res = self.request("disease", method="POST", data={"ids": q})
@@ -163,7 +161,7 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
             q.split(":")[1], res, 'disease_ontology.xrefs.icd9', True)
 
     def test_icd9_id_without_prefix(self):
-        q = 'ICD9:255.4'
+        q = 'ICD9:427.41'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
