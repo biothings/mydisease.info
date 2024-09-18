@@ -6,6 +6,11 @@ import numpy as np
 import pandas as pd
 from biothings.utils.dataload import dict_sweep, unlist
 
+# LEGACY CODE
+# Due to disgenet becoming a paid service, the following code is no longer functional. See the blog post for more information.
+# The last release for this plugin was May 2024. The following code is kept for reference purposes only.
+
+
 ####################################################################################################################
 # The source data contains two files:
 # File 1: https://www.disgenet.org/static/disgenet_ap1/files/downloads/all_gene_disease_pmid_associations.tsv.gz
@@ -84,7 +89,8 @@ def process_gene(file_path_gene_disease):
         "diseaseName": "disease_name",
         "pmid": "pubmed",
     }
-    df_gene_disease = df_gene_disease.where((pd.notnull(df_gene_disease)), None)
+    df_gene_disease = df_gene_disease.where(
+        (pd.notnull(df_gene_disease)), None)
     # source field could be multiple data sources concatenated by ";", break them into a list
     # df_gene_disease.source = to_list(df_gene_disease.source)
     # df_gene_disease.diseaseType = to_list(df_gene_disease.diseaseType)
@@ -120,14 +126,14 @@ def process_snp(file_path_snp_disease):
     rename_variant = {
         "diseaseId": "umls",
         "diseaseName": "disease_name",
-#         "originalSource": "source",
+        #         "originalSource": "source",
         "pmid": "pubmed",
         "snpId": "rsid",
         "chromosome": "chrom",
         "position": "pos",
         "diseaseType": "disease_type",
-#         "originalSource": "source",
-#         "sentence": "description",
+        #         "originalSource": "source",
+        #         "sentence": "description",
     }
     # rename columns
     df_snp = df_snp.rename(columns=rename_variant)
@@ -219,7 +225,7 @@ def construct_umls_to_mondo_library(file_path_mondo):
                         prefix = _xref["val"].split(":")[0]
                         if prefix.lower() == "umls":
                             mondo_id = "MONDO:" + record["id"].split("_")[-1]
-                            umls_2_mondo[_xref["val"][len(prefix) + 1 :]].append(
+                            umls_2_mondo[_xref["val"][len(prefix) + 1:]].append(
                                 mondo_id
                             )
     return umls_2_mondo
@@ -233,7 +239,8 @@ def load_data(data_folder):
     file_path_snp_disease = os.path.join(
         data_folder, "all_variant_disease_pmid_associations.tsv.gz"
     )
-    file_path_disease_mapping = os.path.join(data_folder, "disease_mappings.tsv.gz")
+    file_path_disease_mapping = os.path.join(
+        data_folder, "disease_mappings.tsv.gz")
     d_gene = process_gene(file_path_gene_disease)
     d_snp = process_snp(file_path_snp_disease)
     d_xrefs = process_xrefs(file_path_disease_mapping)

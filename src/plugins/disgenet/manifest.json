@@ -16,8 +16,7 @@
             "https://www.disgenet.org/static/disgenet_ap1/files/downloads/disease_mappings.tsv.gz"
         ],
         "uncompress": false,
-        "release": "version:get_release",
-        "schedule": "0 0 * * 1"
+        "release": "version:get_release"
     },
     "uploader": {
         "parser": "parser:load_data",
