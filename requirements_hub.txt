@@ -1,5 +1,5 @@
 # MyDisease requirements
--e git+https://github.com/biothings/biothings.api@0.12.x#egg=biothings[hub]
+biothings[hub] @ git+https://github.com/biothings/biothings.api.git@1.0.x
 pandas >= 1.4.3   # required by ctd
 lxml              # bs4 parsing
 
