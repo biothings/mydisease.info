@@ -1,7 +1,6 @@
 from biothings.hub.databuild.builder import DataBuilder
 from biothings.hub.dataload.storage import UpsertStorage
 from biothings.utils.mongo import doc_feeder, get_target_db
-from pymongo import ReplaceOne
 
 from .mapper import CanonicalIDMapper
 
@@ -55,7 +54,9 @@ class CanonicalDataBuilder(DataBuilder):
         db = get_target_db()
         orig_col = self.target_backend.target_collection
         temp_col_name = orig_col.name + "_temp"
-        temp_col = db[temp_col_name]
+
+        # Create an instance of UpsertStorage for the temporary collection.
+        storage = UpsertStorage(db, temp_col_name, self.logger)
 
         # Process documents in batches from the original merged collection.
         for docs in doc_feeder(orig_col, step=batch_size, inbatch=True):
@@ -70,18 +71,14 @@ class CanonicalDataBuilder(DataBuilder):
                         merged_docs[new_id], doc)
                 else:
                     merged_docs[new_id] = doc
-            # Insert the merged documents from this batch into the temporary collection.
+
+            # Use UpsertStorage to process this batch of merged documents.
             if merged_docs:
-                ops = []
-                for doc in merged_docs.values():
-                    ops.append(ReplaceOne(
-                        {"_id": doc["_id"]}, doc, upsert=True))
-                if ops:
-                    temp_col.bulk_write(ops)
+                storage.process(merged_docs.values(), batch_size=batch_size)
 
         # After processing all batches, drop the original collection and rename the temporary one.
         orig_col.drop()
-        temp_col.rename(orig_col.name)
+        db[temp_col_name].rename(orig_col.name)
         self.logger.info(
             "Canonical ID mapping completed; new collection is '%s'", orig_col.name)
 
