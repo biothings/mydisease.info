@@ -27,8 +27,7 @@ canonical_mapper = CanonicalIDMapper(name="canonical_id")
 CustomDataBuilder = partial(DataBuilder, mappers=[canonical_mapper])
 
 # Pass the custom builder class into HubServer
-server = HubServer(hub.dataload.sources, name=config.HUB_NAME,
-                   builder_class=CustomDataBuilder)
+server = HubServer(hub.dataload.sources, name=config.HUB_NAME)
 
 if __name__ == "__main__":
     logging = config.logger
