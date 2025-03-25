@@ -1,8 +1,9 @@
 from biothings.hub.databuild.builder import DataBuilder
 from biothings.hub.dataload.storage import UpsertStorage
 from biothings.utils.mongo import doc_feeder, get_target_db
-from mapper import CanonicalIDMapper
 from pymongo import ReplaceOne
+
+from .mapper import CanonicalIDMapper
 
 
 def merge_docs_array(doc1, doc2):
