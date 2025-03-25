@@ -1,30 +1,24 @@
 import biothings.utils.mongo as mongo
-from biothings.hub.databuild.mapper import BaseMapper
+from biothings.hub.databuild.mapper import IDBaseMapper
 
 
-class CanonicalIDMapper(BaseMapper):
-    def __init__(self, *args, **kwargs):
-        super(CanonicalIDMapper, self).__init__(*args, **kwargs)
-        self.alias_to_canonical = None  # cache dict
+class CanonicalIDMapper(IDBaseMapper):
+    """
+    A mapper to convert any disease document _id into the canonical ID
+    using the compendia_disease reference collection.
+    """
 
     def load(self):
-        """Load the mapping from compendia_disease once into memory."""
-        if self.alias_to_canonical is None:
+        if self.map is None:
+            self.map = {}
+            # Use the source database where compendia_disease is stored.
             col = mongo.get_src_db()["compendia_disease"]
-            # Build a mapping from each alternate identifier to the canonical _id
-            self.alias_to_canonical = {}
-            for ref_doc in col.find({}, {"identifiers.i": 1}):
-                canon_id = ref_doc["_id"]
-                for ident in ref_doc.get("identifiers", []):
+            # For each record, use its _id as the canonical ID.
+            # Then map all alternate identifiers (from the 'identifiers' list)
+            # to this canonical value.
+            for doc in col.find({}, {"_id": 1, "identifiers.i": 1}):
+                canonical = doc["_id"]
+                for ident in doc.get("identifiers", []):
                     alias = ident.get("i")
                     if alias:
-                        self.alias_to_canonical[alias] = canon_id
-
-    def process(self, docs):
-        """Replace _id with canonical ID if a mapping exists."""
-        for doc in docs:
-            orig_id = doc["_id"]
-            new_id = self.alias_to_canonical.get(orig_id)
-            if new_id:
-                doc["_id"] = new_id  # update to canonical
-            yield doc
+                        self.map[alias] = canonical
