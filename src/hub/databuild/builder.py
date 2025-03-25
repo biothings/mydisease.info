@@ -6,7 +6,7 @@ from .mapper import CanonicalIDMapper
 
 
 class CanonicalDataBuilder(DataBuilder):
-    def merge_docs_array(doc1, doc2):
+    def merge_docs_array(self, doc1, doc2):
         """
         Merge two documents by combining fields as arrays.
         For any key (other than '_id') that exists in both documents, if the field is not
