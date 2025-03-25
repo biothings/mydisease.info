@@ -5,47 +5,46 @@ from biothings.utils.mongo import doc_feeder, get_target_db
 from .mapper import CanonicalIDMapper
 
 
-def merge_docs_array(doc1, doc2):
-    """
-    Merge two documents by combining fields as arrays.
-    For any key (other than '_id') that exists in both documents, if the field is not
-    already a list, convert it to a list and append the new value.
-    """
-    merged = {}
-    # We assume both docs share the same _id
-    merged["_id"] = doc1["_id"]
-
-    # Get all keys from both documents except '_id'
-    all_keys = set(doc1.keys()) | set(doc2.keys())
-    all_keys.discard("_id")
-
-    for key in all_keys:
-        v1 = doc1.get(key)
-        v2 = doc2.get(key)
-
-        if v1 is None:
-            merged[key] = v2
-        elif v2 is None:
-            merged[key] = v1
-        else:
-            # If both have a value for this key:
-            if isinstance(v1, list):
-                # v1 is already a list; append v2 (or extend if it's also a list)
-                if isinstance(v2, list):
-                    merged[key] = v1 + v2
-                else:
-                    merged[key] = v1 + [v2]
-            else:
-                # v1 is not a list
-                if isinstance(v2, list):
-                    merged[key] = [v1] + v2
-                else:
-                    # Neither is a list, so wrap both in a list
-                    merged[key] = [v1, v2]
-    return merged
-
-
 class CanonicalDataBuilder(DataBuilder):
+    def merge_docs_array(doc1, doc2):
+        """
+        Merge two documents by combining fields as arrays.
+        For any key (other than '_id') that exists in both documents, if the field is not
+        already a list, convert it to a list and append the new value.
+        """
+        merged = {}
+        # We assume both docs share the same _id
+        merged["_id"] = doc1["_id"]
+
+        # Get all keys from both documents except '_id'
+        all_keys = set(doc1.keys()) | set(doc2.keys())
+        all_keys.discard("_id")
+
+        for key in all_keys:
+            v1 = doc1.get(key)
+            v2 = doc2.get(key)
+
+            if v1 is None:
+                merged[key] = v2
+            elif v2 is None:
+                merged[key] = v1
+            else:
+                # If both have a value for this key:
+                if isinstance(v1, list):
+                    # v1 is already a list; append v2 (or extend if it's also a list)
+                    if isinstance(v2, list):
+                        merged[key] = v1 + v2
+                    else:
+                        merged[key] = v1 + [v2]
+                else:
+                    # v1 is not a list
+                    if isinstance(v2, list):
+                        merged[key] = [v1] + v2
+                    else:
+                        # Neither is a list, so wrap both in a list
+                        merged[key] = [v1, v2]
+        return merged
+
     def post_merge(self, source_names, batch_size, job_manager):
         # Instantiate and load your canonical mapper.
         mapper = CanonicalIDMapper(name="canonical")
@@ -67,7 +66,7 @@ class CanonicalDataBuilder(DataBuilder):
                 doc["_id"] = new_id  # update _id in the document
                 if new_id in merged_docs:
                     # Merge the current document with the one already present using our array-based merge.
-                    merged_docs[new_id] = merge_docs_array(
+                    merged_docs[new_id] = self.merge_docs_array(
                         merged_docs[new_id], doc)
                 else:
                     merged_docs[new_id] = doc
