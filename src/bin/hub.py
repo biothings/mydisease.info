@@ -24,15 +24,12 @@ del _src
 set_versions(config, app_folder)
 
 
-# Import your custom mapper and builder
-
-
 class MyCanonicalHubServer(HubServer):
 
     def configure_build_manager(self):
         # Instantiate the canonical mapper
         canonical_mapper = CanonicalIDMapper(name="canonical")
-        # Create a custom builder that includes our canonical mapper
+        # Create a custom builder that includes the canonical mapper
         pbuilder = partial(CanonicalDataBuilder, mappers=[canonical_mapper])
         build_manager = builder.BuilderManager(
             job_manager=self.managers["job_manager"],

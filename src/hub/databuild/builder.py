@@ -46,7 +46,7 @@ class CanonicalDataBuilder(DataBuilder):
         return merged
 
     def post_merge(self, source_names, batch_size, job_manager):
-        # Instantiate and load your canonical mapper.
+        # Instantiate and load the canonical mapper.
         mapper = CanonicalIDMapper(name="canonical")
         mapper.load()
 
