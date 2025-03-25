@@ -71,10 +71,11 @@ class CanonicalDataBuilder(DataBuilder):
                         merged_docs[new_id], doc)
                 else:
                     merged_docs[new_id] = doc
-
             # Use UpsertStorage to process this batch of merged documents.
             if merged_docs:
-                storage.process(merged_docs.values(), batch_size=batch_size)
+                # Convert dict_values to list to avoid the "no attribute 'items'" error.
+                storage.process(list(merged_docs.values()),
+                                batch_size=batch_size)
 
         # After processing all batches, drop the original collection and rename the temporary one.
         orig_col.drop()
