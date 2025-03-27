@@ -54,6 +54,9 @@ class CanonicalDataBuilder(DataBuilder):
                 if original_id.startswith("C"):
                     # Add UMLS prefix to canonical IDs from compendia_disease.
                     original_id = "UMLS:" + original_id
+                elif original_id.startswith("ORPHANET"):
+                    # Make lowercase for canonical IDs from compendia_phenotypic_feature.
+                    original_id = original_id.lower()
                 new_id = mapper.map.get(original_id, original_id)
                 # If a mapping was applied, count it by source.
                 if new_id != original_id:
