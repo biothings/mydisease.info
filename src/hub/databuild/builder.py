@@ -13,42 +13,33 @@ class CanonicalDataBuilder(DataBuilder):
         already a list, convert it to a list and append the new value.
         """
         merged = {}
-        # We assume both docs share the same _id
         merged["_id"] = doc1["_id"]
-
-        # Get all keys from both documents except '_id'
         all_keys = set(doc1.keys()) | set(doc2.keys())
         all_keys.discard("_id")
-
         for key in all_keys:
             v1 = doc1.get(key)
             v2 = doc2.get(key)
-
             if v1 is None:
                 merged[key] = v2
             elif v2 is None:
                 merged[key] = v1
             else:
-                # If both have a value for this key:
                 if isinstance(v1, list):
-                    # v1 is already a list; append v2 (or extend if it's also a list)
-                    if isinstance(v2, list):
-                        merged[key] = v1 + v2
-                    else:
-                        merged[key] = v1 + [v2]
+                    merged[key] = v1 + \
+                        v2 if isinstance(v2, list) else v1 + [v2]
                 else:
-                    # v1 is not a list
-                    if isinstance(v2, list):
-                        merged[key] = [v1] + v2
-                    else:
-                        # Neither is a list, so wrap both in a list
-                        merged[key] = [v1, v2]
+                    merged[key] = [v1] + \
+                        v2 if isinstance(v2, list) else [v1, v2]
         return merged
 
     def post_merge(self, source_names, batch_size, job_manager):
         # Instantiate and load the canonical mapper.
         mapper = CanonicalIDMapper(name="canonical")
         mapper.load()
+
+        # Initialize counters for mapping sources.
+        disease_count = 0
+        phenotypic_count = 0
 
         db = get_target_db()
         orig_col = self.target_backend.target_collection
@@ -59,21 +50,27 @@ class CanonicalDataBuilder(DataBuilder):
         for docs in doc_feeder(orig_col, step=batch_size, inbatch=True):
             merged_docs = {}
             for doc in docs:
-                # Look up the canonical id. If no mapping is found, keep the original.
-                new_id = mapper.map.get(doc["_id"], doc["_id"])
+                original_id = doc["_id"]
+                new_id = mapper.map.get(original_id, original_id)
+                # If a mapping was applied, count it by source.
+                if new_id != original_id:
+                    source = mapper.mapping_source.get(original_id)
+                    if source == "disease":
+                        disease_count += 1
+                    elif source == "phenotypic":
+                        phenotypic_count += 1
+
                 doc["_id"] = new_id  # update _id in the document
+
                 if new_id in merged_docs:
-                    # Merge the current document with the one already present using our array-based merge.
                     merged_docs[new_id] = self.merge_docs_array(
                         merged_docs[new_id], doc)
                 else:
                     merged_docs[new_id] = doc
-            # Insert the merged documents from this batch into the temporary collection.
+
             if merged_docs:
-                ops = []
-                for doc in merged_docs.values():
-                    ops.append(ReplaceOne(
-                        {"_id": doc["_id"]}, doc, upsert=True))
+                ops = [ReplaceOne({"_id": doc["_id"]}, doc, upsert=True)
+                       for doc in merged_docs.values()]
                 if ops:
                     temp_col.bulk_write(ops)
 
@@ -82,6 +79,10 @@ class CanonicalDataBuilder(DataBuilder):
         temp_col.rename(orig_col.name)
         self.logger.info(
             "Canonical ID mapping completed; new collection is '%s'", orig_col.name)
+        self.logger.info(
+            "Total canonical mappings applied: %d from compendia_disease and %d from compendia_phenotypic_feature",
+            disease_count, phenotypic_count
+        )
 
     def get_stats(self, sources, job_manager):
         self.logger.info("Computing canonical mapping statistics...")
