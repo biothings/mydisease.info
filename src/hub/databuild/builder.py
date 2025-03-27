@@ -60,6 +60,7 @@ class CanonicalDataBuilder(DataBuilder):
                 new_id = mapper.map.get(original_id, original_id)
                 # If a mapping was applied, count it by source.
                 if new_id != original_id:
+                    doc["original_id"] = original_id
                     source = mapper.mapping_source.get(original_id)
                     if source == "disease":
                         disease_count += 1
