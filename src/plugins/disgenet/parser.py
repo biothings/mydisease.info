@@ -80,7 +80,8 @@ def process_gene(file_path_gene_disease):
         encoding="ISO-8859-1",
         sep="\t",
         comment="#",
-        compression="gzip",
+        # compression="gzip",
+        compression="infer",
     )
     rename_gene = {
         "diseaseId": "umls",
