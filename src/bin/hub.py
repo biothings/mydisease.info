@@ -61,7 +61,6 @@ class MyCanonicalHubServer(HubServer):
                          sync_manager_prod, sync_manager_test)
 
 
-# Pass explicit list of datasources
 server = MyCanonicalHubServer(name=config.HUB_NAME)
 
 if __name__ == "__main__":
