@@ -13,7 +13,7 @@ from biothings.hub.databuild.syncer import (
 from biothings.utils.version import set_versions
 
 import config
-import plugins
+import hub.dataload.sources
 from hub.databuild.builder import CanonicalDataBuilder
 from hub.databuild.mapper import CanonicalIDMapper
 
@@ -61,7 +61,8 @@ class MyCanonicalHubServer(HubServer):
                          sync_manager_prod, sync_manager_test)
 
 
-server = MyCanonicalHubServer(name=config.HUB_NAME)
+# Pass explicit list of datasources
+server = MyCanonicalHubServer(hub.dataload.sources, name=config.HUB_NAME)
 
 if __name__ == "__main__":
     server.start()
