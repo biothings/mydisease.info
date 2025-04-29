@@ -62,7 +62,7 @@ class MyCanonicalHubServer(HubServer):
 
 
 # Pass explicit list of datasources
-server = MyCanonicalHubServer(plugins.__sources__, name=config.HUB_NAME)
+server = MyCanonicalHubServer(name=config.HUB_NAME)
 
 if __name__ == "__main__":
     server.start()
