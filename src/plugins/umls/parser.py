@@ -1,4 +1,3 @@
-import bs4
 import glob
 import os
 import re
@@ -6,8 +5,10 @@ import urllib
 import zipfile
 from typing import Union
 
+import bs4
 import requests
 from biothings.utils.common import open_anyfile
+
 from .umls_secret import UMLS_API_KEY
 
 try:
@@ -27,17 +28,30 @@ SAB_MAPPING = {
     'ICD10AM': 'icd10am',
     'ICD9CM': 'icd9cm'
 }
-WANTED_SEMANTIC_TYPES = [
-    'Disease or Syndrome',
-    'Mental or Behavioral Dysfunction',
-    'Neoplastic Process'
-]
+DISEASE_SEMANTIC_TYPES = {
+    "Disease or Syndrome",
+    "Congenital Abnormality",
+    "Acquired Abnormality",
+    "Injury or Poisoning",
+    "Pathologic Function",
+    "Mental or Behavioral Dysfunction",
+    "Cell or Molecular Dysfunction",
+    "Anatomical Abnormality",
+    "Neoplastic Process",
+}
+PHENOTYPE_SEMANTIC_TYPES = {
+    "Finding",
+    "Laboratory or Test Result",
+    "Sign or Symptom",
+    "Organism Attribute",
+}
 WANTED_LAT = 'ENG'
 TS_MAPPING = {
     'P': 'preferred',
     'S': 'non-preferred'
 }
 API_ENDPOINT = 'http://mydisease.info/v1/query'
+WANTED_SEMANTIC_TYPES = DISEASE_SEMANTIC_TYPES | PHENOTYPE_SEMANTIC_TYPES
 
 
 class ParserException(Exception):
@@ -96,7 +110,8 @@ def get_primary_ids(cuis: list):
     primary_id_mapping = {}
     s = requests.Session()
     for cui_page in paginate(list(cuis), 1000):
-        data = {'q': ', '.join(cui_page), 'scopes': 'mondo.xrefs.umls,disgenet.xrefs.umls'}
+        data = {'q': ', '.join(
+            cui_page), 'scopes': 'mondo.xrefs.umls,disgenet.xrefs.umls'}
         response = s.post(API_ENDPOINT, data=data)
         for result in response.json():
             cui = result['query']
@@ -109,15 +124,18 @@ def get_primary_ids(cuis: list):
 
 
 def get_download_url():
-    res = requests.get("https://www.nlm.nih.gov/research/umls/licensedcontent/umlsknowledgesources.html")
+    res = requests.get(
+        "https://www.nlm.nih.gov/research/umls/licensedcontent/umlsknowledgesources.html")
     # Raise error if status is not 200
     res.raise_for_status()
     html = bs4.BeautifulSoup(res.text, 'lxml')
     # Get the table of metathesaurus release files
-    table = html.find("table", attrs={"class": "usa-table border-base-lighter margin-bottom-4"})
+    table = html.find(
+        "table", attrs={"class": "usa-table border-base-lighter margin-bottom-4"})
     rows = table.find_all('tr')
     # The header of the first column should be 'Release'
-    assert rows[0].find_all('th')[0].text.strip() == 'Release', "Could not parse url from html table."
+    assert rows[0].find_all('th')[0].text.strip(
+    ) == 'Release', "Could not parse url from html table."
     try:
         # Get the url from the link
         url = rows[1].find_all('td')[0].a["href"]
@@ -125,24 +143,29 @@ def get_download_url():
         url = f'https://uts-ws.nlm.nih.gov/download?url={url}&apiKey={UMLS_API_KEY}'
         return url
     except Exception as e:
-        raise ParserException(f"Can't find or parse url from table field {url}: {e}")
+        raise ParserException(
+            f"Can't find or parse url from table field {url}: {e}")
 
 
 def load_data(data_folder):
     try:
-        metathesaurus_file = glob.glob(os.path.join(data_folder, '*metathesaurus-release.zip'))[0]
+        metathesaurus_file = glob.glob(os.path.join(
+            data_folder, '*metathesaurus-release.zip'))[0]
     except IndexError:
         url = get_download_url()
         # Use re.sub to replace all characters after "apiKey=" with asterisks
-        pii_url = re.sub(r"(apiKey=).*", r"\1" + "*" * len(re.search(r"(apiKey=)(.*)", url).group(2)), url)
+        pii_url = re.sub(r"(apiKey=).*", r"\1" + "*" *
+                         len(re.search(r"(apiKey=)(.*)", url).group(2)), url)
         logger.info("""Could not find metathesaurus archive in {}.
                      Downloading UMLS Metathesaurus file automatically:
                      {}
                      """.format(data_folder, pii_url))
         # Download UMLS file to data folder
-        urllib.request.urlretrieve(url, os.path.join(data_folder, 'metathesaurus-release.zip'))
+        urllib.request.urlretrieve(url, os.path.join(
+            data_folder, 'metathesaurus-release.zip'))
         # Get the downloaded file path
-        metathesaurus_file = glob.glob(os.path.join(data_folder, '*metathesaurus-release.zip'))[0]
+        metathesaurus_file = glob.glob(os.path.join(
+            data_folder, '*metathesaurus-release.zip'))[0]
     file_list = zipfile.ZipFile(metathesaurus_file, mode='r').namelist()
     try:
         mrsty_path = [f for f in file_list if f.endswith('MRSTY.RRF')][0]
@@ -154,7 +177,8 @@ def load_data(data_folder):
         raise FileNotFoundError("Could not find MRCONSO.RRF in archive.")
     # Parse files
     cui_wanted = parse_mrsty(metathesaurus_file, mrsty_path)
-    umls_xrefs = parse_mrconso(metathesaurus_file, mrconso_path, wanted=cui_wanted)
+    umls_xrefs = parse_mrconso(
+        metathesaurus_file, mrconso_path, wanted=cui_wanted)
     # obtain primary id for CUIs that actually has data
     # TODO: I don't like how every time it has to call the APIs to get the primary IDs
     primary_id_map = get_primary_ids(list(umls_xrefs.keys()))
@@ -168,7 +192,8 @@ def load_data(data_folder):
             primary_id_to_cui.setdefault(primary_id, []).append(cui)
     for primary_id in primary_id_to_cui:
         if len(primary_id_to_cui[primary_id]) > 1:
-            logger.info(f"Primary ID {primary_id} is mapped to multiple CUIs: {primary_id_to_cui[primary_id]}")
+            logger.info(
+                f"Primary ID {primary_id} is mapped to multiple CUIs: {primary_id_to_cui[primary_id]}")
 
     # Set primary id for documents. Create duplicate documents for the one-to-many case.
     for cui in umls_xrefs:
