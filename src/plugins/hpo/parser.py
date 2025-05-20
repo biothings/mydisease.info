@@ -3,7 +3,10 @@ import os
 from collections import defaultdict
 
 import pandas as pd
+from biothings import config
 from biothings.utils.dataload import dict_sweep, unlist
+
+logging = config.logger
 
 
 # Build a dictionary to map from UMLS identifier to MONDO ID
@@ -16,12 +19,26 @@ def construct_orphanet_omim_to_mondo_library(file_path_mondo):
             if "id" in record and record["id"].startswith(
                 "http://purl.obolibrary.org/obo/MONDO_"
             ):
+                mondo_id = "MONDO:" + record["id"].split("_")[-1]
+
+                # Add mapping for DECIPHER IDs in the meta.xrefs section
                 if "meta" in record and "xrefs" in record["meta"]:
                     for _xref in record["meta"]["xrefs"]:
-                        prefix = _xref["val"].split(":")[0]
-                        if prefix.lower() == "orphanet" or prefix.lower() == "omim":
-                            mondo_id = "MONDO:" + record["id"].split("_")[-1]
-                            umls_2_mondo[_xref["val"].upper()].append(mondo_id)
+                        xref_val = _xref["val"].upper()
+                        # Add explicit support for DECIPHER IDs
+                        if xref_val.startswith("DECIPHER:"):
+                            umls_2_mondo[xref_val].append(mondo_id)
+                        elif ":" in xref_val:
+                            prefix = xref_val.split(":")[0]
+                            if prefix.lower() in ["orphanet", "omim"]:
+                                umls_2_mondo[xref_val].append(mondo_id)
+
+                # Also check for DECIPHER IDs in other metadata fields like dbxrefs
+                if "meta" in record and "dbxrefs" in record["meta"]:
+                    for dbxref in record["meta"]["dbxrefs"]:
+                        if dbxref.upper().startswith("DECIPHER:"):
+                            umls_2_mondo[dbxref.upper()].append(mondo_id)
+
     return umls_2_mondo
 
 
@@ -272,10 +289,15 @@ def load_data(data_folder):
     orphanet_omim_2_mondo = construct_orphanet_omim_to_mondo_library(
         file_path_mondo)
 
+    # Count total mappings for logging
+    total_records = len(d_hpo)
+    mapped_records = 0
+
     documents = {}  # Dictionary to track documents by MONDO ID
 
     for disease_id, hpo_info in d_hpo.items():
         if disease_id in orphanet_omim_2_mondo:
+            mapped_records += 1
             mondo_ids = orphanet_omim_2_mondo[disease_id]
             for _mondo in mondo_ids:
                 if _mondo not in documents:
@@ -289,6 +311,7 @@ def load_data(data_folder):
                             "inheritance": [],
                             "omim": [],
                             "orphanet": [],
+                            "decipher": [],
                         },
                     }
 
@@ -304,6 +327,10 @@ def load_data(data_folder):
                     orphanet_id = disease_id.split(":")[1]
                     if orphanet_id not in _doc_hpo["orphanet"]:
                         _doc_hpo["orphanet"].append(orphanet_id)
+                elif disease_id.startswith("DECIPHER"):
+                    decipher_id = disease_id.split(":")[1]
+                    if decipher_id not in _doc_hpo["decipher"]:
+                        _doc_hpo["decipher"].append(decipher_id)
 
                 # Merge the phenotype_related_to_disease lists
                 existing_phenotypes = _doc_hpo["phenotype_related_to_disease"]
@@ -373,6 +400,14 @@ def load_data(data_folder):
                 }
             _doc = dict_sweep(unlist(_doc), [None])
             yield _doc
+
+    # logging.info mapping statistics
+    mapping_rate = (mapped_records / total_records) * \
+        100 if total_records > 0 else 0
+    logging.info(f"Total disease records: {total_records}")
+    logging.info(
+        f"Successfully mapped to MONDO: {mapped_records} ({mapping_rate:.2f}%)")
+    logging.info(f"Unmapped records: {total_records - mapped_records}")
 
     for _doc in documents.values():
         _doc = dict_sweep(unlist(_doc), [None])
