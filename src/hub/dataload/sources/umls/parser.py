@@ -199,5 +199,8 @@ def load_data(data_folder):
     for cui in umls_xrefs:
         for primary_id in primary_id_map[cui]:
             umls_xref = umls_xrefs[cui]
+            # Ensure all UMLS identifiers are properly prefixed when they're CUI-based
+            if primary_id == cui or (primary_id.startswith('C') and not primary_id.startswith('UMLS:')):
+                primary_id = f'UMLS:{primary_id}'
             umls_xref['_id'] = primary_id
             yield umls_xref

@@ -51,10 +51,7 @@ class CanonicalDataBuilder(DataBuilder):
             merged_docs = {}
             for doc in docs:
                 original_id = doc["_id"]
-                if original_id.startswith("C"):
-                    # Add UMLS prefix to canonical IDs from compendia_disease.
-                    original_id = "UMLS:" + original_id
-                elif original_id.startswith("ORPHANET"):
+                if original_id.startswith("ORPHANET"):
                     # Make lowercase for canonical IDs from compendia_phenotypic_feature.
                     original_id = original_id.lower()
                 new_id = mapper.map.get(original_id, original_id)
