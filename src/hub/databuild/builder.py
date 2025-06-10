@@ -51,9 +51,6 @@ class CanonicalDataBuilder(DataBuilder):
             merged_docs = {}
             for doc in docs:
                 original_id = doc["_id"]
-                if original_id.startswith("ORPHANET"):
-                    # Make lowercase for canonical IDs from compendia_phenotypic_feature.
-                    original_id = original_id.lower()
                 new_id = mapper.map.get(original_id, original_id)
                 # If a mapping was applied, count it by source.
                 if new_id != original_id:

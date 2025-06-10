@@ -159,8 +159,8 @@ def process_disease2hp(file_path_disease_hpo, hpo_lookup):
     df_disease_hpo = df_disease_hpo.where((pd.notnull(df_disease_hpo)), None)
     d = []
     for did, subdf in df_disease_hpo.groupby("disease_id"):
-        # Replace ORPHA:79414 with ORPHANET:79414 to match the mondo mapping
-        did = did.replace("ORPHA", "ORPHANET")
+        # Replace ORPHA:79414 with orphanet:79414 to match the mondo mapping
+        did = did.replace("ORPHA", "orphanet")
         records = subdf.to_dict(orient="records")
         pathway_related = []
         # Changed course to clinical_course, modifier to clinical_modifier to match the source
@@ -213,7 +213,7 @@ def process_disease2hp(file_path_disease_hpo, hpo_lookup):
                                         'ISBN:' + i.split(":")[1])
                                 elif key == 'ORPHA':
                                     tempProperties[key].append(
-                                        'ORPHANET:' + i.split(":")[1])
+                                        'orphanet:' + i.split(":")[1])
                                 else:
                                     tempProperties[key].append(i)
                     # ONLY add reference keys/values to the record if there are values
@@ -323,7 +323,7 @@ def load_data(data_folder):
                     omim_id = disease_id.split(":")[1]
                     if omim_id not in _doc_hpo["omim"]:
                         _doc_hpo["omim"].append(omim_id)
-                elif disease_id.startswith("ORPHANET"):
+                elif disease_id.startswith("orphanet"):
                     orphanet_id = disease_id.split(":")[1]
                     if orphanet_id not in _doc_hpo["orphanet"]:
                         _doc_hpo["orphanet"].append(orphanet_id)
@@ -343,7 +343,7 @@ def load_data(data_folder):
                     source_prefix, source_id = disease_id.split(":")
 
                     if source_prefix.upper() == "ORPHA":
-                        source_prefix = "ORPHANET"
+                        source_prefix = "orphanet"
 
                     full_source_id = f"{source_prefix}:{source_id}"
 
@@ -374,7 +374,7 @@ def load_data(data_folder):
 
                     },
                 }
-            elif disease_id.startswith("ORPHANET"):
+            elif disease_id.startswith("orphanet"):
                 _doc = {
                     "_id": disease_id,
                     "hpo": {
