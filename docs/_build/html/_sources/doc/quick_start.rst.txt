@@ -18,7 +18,7 @@ Examples
 
     http://mydisease.info/v1/query?q=GIST
     http://mydisease.info/v1/query?q=_exists_:ctd
-    http://mydisease.info/v1/query?q=q=disgenet.genes_related_to_disease.gene_name:OFD1&fields=disgenet
+    http://mydisease.info/v1/query?q=disease_ontology.doid:DOID\:0110340&fields=disease_ontology
 
 
 .. Hint:: View nicely formatted JSON result in your browser with this handy add-on: `JSON formatter <https://chrome.google.com/webstore/detail/bcjindcccaagfpapjjmafapmmgkkhgoa>`_ for Chrome or `JSONView <https://addons.mozilla.org/en-US/firefox/addon/jsonview/>`_ for Firefox.

@@ -1,63 +1,122 @@
 
-<!DOCTYPE html>
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Disease annotation service &#8212; mydisease.info v1 documentation</title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mydisease_doc.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/jquery.dataTables.min.css" />
-    
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
-    <script src="../_static/mydisease_doc.js"></script>
-    <script src="../_static/jquery.dataTables.min.js"></script>
-    
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Disease annotation service &mdash; mydisease.info v1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mydisease_doc.css?v=3c8cd98f" />
+      <link rel="stylesheet" type="text/css" href="../_static/jquery.dataTables.min.css?v=6b00101a" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5cb08e4e"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/mydisease_doc.js?v=5acf5273"></script>
+      <script src="../_static/jquery.dataTables.min.js?v=bebb13d9"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Server response" href="response_status_codes.html" />
     <link rel="prev" title="Disease query service" href="disease_query_service.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="response_status_codes.html" title="Server response"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="disease_query_service.html" title="Disease query service"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">mydisease.info v1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Disease annotation service</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="disease-annotation-service">
-<h1>Disease annotation service<a class="headerlink" href="#disease-annotation-service" title="Permalink to this headline">¶</a></h1>
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            mydisease.info
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="http://mydisease.info/">Try it live on interactive API page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Disease annotation data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_changes.html">Data release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disease_query_service.html">Disease query service</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Disease annotation service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#service-endpoint">Service endpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-request">GET request</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#query-parameters">Query parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fields">fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#callback">callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filter">filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#email">email</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#returned-object">Returned object</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#batch-queries-via-post">Batch queries via POST</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Query parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ids">ids</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">email</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example-code">Example code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Returned object</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="response_status_codes.html">Server response</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packages.html">Biothings_client python module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mydisease.info</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Disease annotation service</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/doc/disease_annotation_service.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="disease-annotation-service">
+<h1>Disease annotation service<a class="headerlink" href="#disease-annotation-service" title="Link to this heading"></a></h1>
 <p>This page describes the reference for the MyDisease.info disease annotation web
 service.  It’s also recommended to try it live on our <a class="reference external" href="http://mydisease.info/v1/api">interactive API page</a>.</p>
-<div class="section" id="service-endpoint">
-<h2>Service endpoint<a class="headerlink" href="#service-endpoint" title="Permalink to this headline">¶</a></h2>
+<section id="service-endpoint">
+<h2>Service endpoint<a class="headerlink" href="#service-endpoint" title="Link to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mydisease</span><span class="o">.</span><span class="n">info</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">disease</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="get-request">
-<h2>GET request<a class="headerlink" href="#get-request" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="get-request">
+<h2>GET request<a class="headerlink" href="#get-request" title="Link to this heading"></a></h2>
 <p>Obtaining the disease annotation via our web service is as simple as calling this URL:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mydisease</span><span class="o">.</span><span class="n">info</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">disease</span><span class="o">/&lt;</span><span class="n">diseaseid</span><span class="o">&gt;</span>
 </pre></div>
@@ -70,36 +129,36 @@ service.  It’s also recommended to try it live on our <a class="reference exte
 </div>
 <p>“<strong>fields</strong>” accepts any attributes (a.k.a fields) available from the disease object. Multiple attributes should be separated by commas. If an attribute is not available for a specific disease object, it will be ignored. Note that the attribute names are case-sensitive.</p>
 <p>Just like the <a class="reference external" href="disease_query_service.html">disease query service</a>, you can also pass a “<strong>callback</strong>” parameter to make a <a class="reference external" href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> call.</p>
-<div class="section" id="query-parameters">
-<h3>Query parameters<a class="headerlink" href="#query-parameters" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="fields">
-<h4>fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h4>
+<section id="query-parameters">
+<h3>Query parameters<a class="headerlink" href="#query-parameters" title="Link to this heading"></a></h3>
+<section id="fields">
+<h4>fields<a class="headerlink" href="#fields" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, can be a comma-separated fields to limit the fields returned from the disease object. If “fields=all”, all available fields will be returned. Note that it supports dot notation as well, e.g., you can pass “mondo.label”. Default: “fields=all”.</p>
 </div></blockquote>
-</div>
-<div class="section" id="callback">
-<h4>callback<a class="headerlink" href="#callback" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="callback">
+<h4>callback<a class="headerlink" href="#callback" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, you can pass a “<strong>callback</strong>” parameter to make a <a class="reference external" href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> call.</p>
 </div></blockquote>
-</div>
-<div class="section" id="filter">
-<h4>filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="filter">
+<h4>filter<a class="headerlink" href="#filter" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Alias for “fields” parameter.</p>
 </div></blockquote>
-</div>
-<div class="section" id="email">
-<h4>email<a class="headerlink" href="#email" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="email">
+<h4>email<a class="headerlink" href="#email" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, if you are regular users of our services, we encourage you to provide us an email, so that we can better track the usage or follow up with you.</p>
 </div></blockquote>
-</div>
-</div>
+</section>
+</section>
 <hr class="docutils" />
-<div class="section" id="returned-object">
-<h3>Returned object<a class="headerlink" href="#returned-object" title="Permalink to this headline">¶</a></h3>
+<section id="returned-object">
+<h3>Returned object<a class="headerlink" href="#returned-object" title="Link to this heading"></a></h3>
 <p>A GET request like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://mydisease.info/v1/disease/MONDO:0016575?fields=mondo
 </pre></div>
@@ -107,10 +166,10 @@ service.  It’s also recommended to try it live on our <a class="reference exte
 <p>should return a disease object below:</p>
 <div class="disease-object-container docutils container">
 </div>
-</div>
-</div>
-<div class="section" id="batch-queries-via-post">
-<h2>Batch queries via POST<a class="headerlink" href="#batch-queries-via-post" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="batch-queries-via-post">
+<h2>Batch queries via POST<a class="headerlink" href="#batch-queries-via-post" title="Link to this heading"></a></h2>
 <p>Although making simple GET requests above to our disease query service is sufficient in most use cases,
 there are some times you might find it’s easier to batch query (e.g., retrieving disease
 annotations for multiple diseases). Fortunately, you can also make batch queries via POST requests when you
@@ -119,30 +178,30 @@ need:</p>
 <span class="n">HTTP</span> <span class="n">method</span><span class="p">:</span>  <span class="n">POST</span>
 </pre></div>
 </div>
-<div class="section" id="id2">
-<h3>Query parameters<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="ids">
-<h4>ids<a class="headerlink" href="#ids" title="Permalink to this headline">¶</a></h4>
+<section id="id2">
+<h3>Query parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<section id="ids">
+<h4>ids<a class="headerlink" href="#ids" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Required. Accept multiple disease ids separated by comma, e.g., “ids=SDUQYLNIPVEERB-QPPQHZFASA-N,SESFRYSPDFLNCH-UHFFFAOYSA-N,SHGAZHPCJJPHSC-ZVCIMWCZSA-N”. Note that currently we only take the input ids up to <strong>1000</strong> maximum, the rest will be omitted.</p>
 </div></blockquote>
-</div>
-<div class="section" id="id3">
-<h4>fields<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="id3">
+<h4>fields<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, can be a comma-separated fields to limit the fields returned from the matching hits.
 If “fields=all”, all available fields will be returned. Note that it supports dot notation as well, e.g., you can pass “ctd” or “mondo.label”. Default: “all”.</p>
 </div></blockquote>
-</div>
-<div class="section" id="id4">
-<h4>email<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="id4">
+<h4>email<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, if you are regular users of our services, we encourage you to provide us an email, so that we can better track the usage or follow up with you.</p>
 </div></blockquote>
-</div>
-</div>
-<div class="section" id="example-code">
-<h3>Example code<a class="headerlink" href="#example-code" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="example-code">
+<h3>Example code<a class="headerlink" href="#example-code" title="Link to this heading"></a></h3>
 <p>Unlike GET requests, you can easily test them from browser, make a POST request is often done via a
 piece of code, still trivial of course. Here is a sample python snippe using <a class="reference external" href="https://pypi.org/project/httplib2/">httplib2</a> modulet:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">httplib2</span>
@@ -159,131 +218,77 @@ piece of code, still trivial of course. Here is a sample python snippe using <a 
 <span class="n">con</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id5">
-<h3>Returned object<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id5">
+<h3>Returned object<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
 <p>Returned result (the value of “con” variable above) from above example code should look like this:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[
-    {
-        &#39;query&#39;: &#39;MONDO:0016575&#39;,
-        &#39;_id&#39;: &#39;MONDO:0016575&#39;,
-        &#39;_version&#39;: 1,
-        &#39;mondo&#39;: {
-            &#39;xrefs&#39;: {
-                &#39;doid&#39;: &#39;DOID:0050144&#39;
-            }
-        }
-    },
-    {
-        &#39;query&#39;: &#39;MONDO:0020753&#39;,
-        &#39;_id&#39;: &#39;MONDO:0020753&#39;,
-        &#39;_version&#39;: 1,
-        &#39;mondo&#39;: {
-            &#39;xrefs&#39;: {
-                &#39;doid&#39;: &#39;DOID:0080599&#39;
-            }
-        }
-    },
-    {
-        &#39;query&#39;: &#39;MONDO:0011996&#39;,
-        &#39;_id&#39;: &#39;MONDO:0011996&#39;,
-        &#39;_version&#39;: 1,
-        &#39;mondo&#39;: {
-            &#39;xrefs&#39;: {
-                &#39;doid&#39;: &#39;DOID:8552&#39;
-            }
-        }
-    }
-]
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="err">&#39;query&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0016575</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0016575</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;_versio</span><span class="kc">n</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;xre</span><span class="kc">fs</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;doid&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;DOID</span><span class="p">:</span><span class="mi">0050144</span><span class="err">&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="err">&#39;query&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0020753</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0020753</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;_versio</span><span class="kc">n</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;xre</span><span class="kc">fs</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;doid&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;DOID</span><span class="p">:</span><span class="mi">0080599</span><span class="err">&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="err">&#39;query&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0011996</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0011996</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;_versio</span><span class="kc">n</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;xre</span><span class="kc">fs</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;doid&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;DOID</span><span class="p">:</span><span class="mi">8552</span><span class="err">&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
 </pre></div>
 </div>
-<div id="spacer" style="height:300px"></div></div>
-</div>
-</div>
+<div id="spacer" style="height:300px"></div></section>
+</section>
+</section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Disease annotation service</a><ul>
-<li><a class="reference internal" href="#service-endpoint">Service endpoint</a></li>
-<li><a class="reference internal" href="#get-request">GET request</a><ul>
-<li><a class="reference internal" href="#query-parameters">Query parameters</a><ul>
-<li><a class="reference internal" href="#fields">fields</a></li>
-<li><a class="reference internal" href="#callback">callback</a></li>
-<li><a class="reference internal" href="#filter">filter</a></li>
-<li><a class="reference internal" href="#email">email</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#returned-object">Returned object</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#batch-queries-via-post">Batch queries via POST</a><ul>
-<li><a class="reference internal" href="#id2">Query parameters</a><ul>
-<li><a class="reference internal" href="#ids">ids</a></li>
-<li><a class="reference internal" href="#id3">fields</a></li>
-<li><a class="reference internal" href="#id4">email</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#example-code">Example code</a></li>
-<li><a class="reference internal" href="#id5">Returned object</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="disease_query_service.html" class="btn btn-neutral float-left" title="Disease query service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="response_status_codes.html" class="btn btn-neutral float-right" title="Server response" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="disease_query_service.html"
-                        title="previous chapter">Disease query service</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="response_status_codes.html"
-                        title="next chapter">Server response</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/doc/disease_annotation_service.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, The Su and Wu Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="response_status_codes.html" title="Server response"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="disease_query_service.html" title="Disease query service"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">mydisease.info v1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Disease annotation service</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, The Su and Wu Labs.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

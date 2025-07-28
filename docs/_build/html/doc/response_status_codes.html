@@ -1,60 +1,100 @@
 
-<!DOCTYPE html>
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Server response &#8212; mydisease.info v1 documentation</title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mydisease_doc.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/jquery.dataTables.min.css" />
-    
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
-    <script src="../_static/mydisease_doc.js"></script>
-    <script src="../_static/jquery.dataTables.min.js"></script>
-    
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Server response &mdash; mydisease.info v1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mydisease_doc.css?v=3c8cd98f" />
+      <link rel="stylesheet" type="text/css" href="../_static/jquery.dataTables.min.css?v=6b00101a" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5cb08e4e"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/mydisease_doc.js?v=5acf5273"></script>
+      <script src="../_static/jquery.dataTables.min.js?v=bebb13d9"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Biothings_client python module" href="packages.html" />
     <link rel="prev" title="Disease annotation service" href="disease_annotation_service.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="packages.html" title="Biothings_client python module"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="disease_annotation_service.html" title="Disease annotation service"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">mydisease.info v1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Server response</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="server-response">
-<h1>Server response<a class="headerlink" href="#server-response" title="Permalink to this headline">¶</a></h1>
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            mydisease.info
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="http://mydisease.info/">Try it live on interactive API page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Disease annotation data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_changes.html">Data release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disease_query_service.html">Disease query service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disease_annotation_service.html">Disease annotation service</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Server response</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#status-code-200">Status code <em>200</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#status-code-400">Status code <em>400</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#status-code-404">Status code <em>404</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#status-code-5xx">Status code <em>5xx</em></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="packages.html">Biothings_client python module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mydisease.info</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Server response</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/doc/response_status_codes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="server-response">
+<h1>Server response<a class="headerlink" href="#server-response" title="Link to this heading"></a></h1>
 <p>The MyDisease.info server returns a variety of query responses, and response status codes.  They are listed here.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>These examples show query responses using the python <a class="reference external" href="http://docs.python-requests.org/en/master/">requests</a> package.</p>
 </div>
-<div class="section" id="status-code-200">
-<h2>Status code <em>200</em><a class="headerlink" href="#status-code-200" title="Permalink to this headline">¶</a></h2>
+<section id="status-code-200">
+<h2>Status code <em>200</em><a class="headerlink" href="#status-code-200" title="Link to this heading"></a></h2>
 <p>A <strong>200</strong> status code indicates a successful query, and is accompanied by the query response payload.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">requests</span>
 
@@ -69,9 +109,9 @@
 <span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">dict_keys</span><span class="p">([</span><span class="s1">&#39;total&#39;</span><span class="p">,</span> <span class="s1">&#39;max_score&#39;</span><span class="p">,</span> <span class="s1">&#39;took&#39;</span><span class="p">,</span> <span class="s1">&#39;hits&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="status-code-400">
-<h2>Status code <em>400</em><a class="headerlink" href="#status-code-400" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="status-code-400">
+<h2>Status code <em>400</em><a class="headerlink" href="#status-code-400" title="Link to this heading"></a></h2>
 <p>A <strong>400</strong> status code indicates an improperly formed query, and is accompanied by a response payload describing the source of the error.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://mydisease.info/v1/query?q=_exists_:ctd&amp;size=u&#39;</span><span class="p">)</span>
 
@@ -86,9 +126,9 @@
  <span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="status-code-404">
-<h2>Status code <em>404</em><a class="headerlink" href="#status-code-404" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="status-code-404">
+<h2>Status code <em>404</em><a class="headerlink" href="#status-code-404" title="Link to this heading"></a></h2>
 <p>A <strong>404</strong> status code indicates either an unrecognized URL, as in (<em>/query</em> is misspelled <em>/quer</em> resulting in an unrecognized URL):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://mydisease.info/v1/quer?q=_exists_:ctd&#39;</span><span class="p">)</span>
 
@@ -110,77 +150,42 @@
  <span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="status-code-5xx">
-<h2>Status code <em>5xx</em><a class="headerlink" href="#status-code-5xx" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="status-code-5xx">
+<h2>Status code <em>5xx</em><a class="headerlink" href="#status-code-5xx" title="Link to this heading"></a></h2>
 <p>Any <strong>5xx</strong> status codes are the result of uncaught query errors.  Ideally, these should never occur.  We routinely check our logs for these types of errors and add code to catch them, but if you see any status <strong>5xx</strong> responses, please submit a bug report to <a class="reference external" href="mailto:biothings&#37;&#52;&#48;googlegroups&#46;com">biothings<span>&#64;</span>googlegroups<span>&#46;</span>com</a>.</p>
-</div>
-</div>
+</section>
+</section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Server response</a><ul>
-<li><a class="reference internal" href="#status-code-200">Status code <em>200</em></a></li>
-<li><a class="reference internal" href="#status-code-400">Status code <em>400</em></a></li>
-<li><a class="reference internal" href="#status-code-404">Status code <em>404</em></a></li>
-<li><a class="reference internal" href="#status-code-5xx">Status code <em>5xx</em></a></li>
-</ul>
-</li>
-</ul>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="disease_annotation_service.html" class="btn btn-neutral float-left" title="Disease annotation service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="packages.html" class="btn btn-neutral float-right" title="Biothings_client python module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="disease_annotation_service.html"
-                        title="previous chapter">Disease annotation service</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="packages.html"
-                        title="next chapter">Biothings_client python module</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/doc/response_status_codes.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, The Su and Wu Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="packages.html" title="Biothings_client python module"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="disease_annotation_service.html" title="Disease annotation service"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">mydisease.info v1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Server response</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, The Su and Wu Labs.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

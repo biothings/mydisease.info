@@ -60,7 +60,7 @@ sort
 
 facets
 """"""
-    Optional, a single field or comma-separated fields to return facets, can only be used on non-free text fields.  E.g. "facets=disgenet.genes_related_to_disease.YearFinal".  See `examples of faceted queries here <#faceted-queries>`_.
+    Optional, a single field or comma-separated fields to return facets, can only be used on non-free text fields.  E.g. "facets=mondo.parents".  See `examples of faceted queries here <#faceted-queries>`_.
 
 facet_size
 """"""""""
@@ -112,10 +112,7 @@ Range queries
 """""""""""""
 ::
 
-    q=disgenet.genes_related_to_disease.DSI:<0.5
-    q=disgenet.genes_related_to_disease.DSI:>0.5
-
-    q=disgenet.genes_related_to_disease.YearFinal:[1998 TO 2008]         # bounded (including 200 and 500)
+    q=mondo.parents:[MONDO:0000001 TO MONDO:0000100]         # bounded range query
 
 
 Wildcard queries
@@ -133,7 +130,7 @@ If you want to return ALL results of a very large query, sometimes the paging me
 This is a two-step process that turns off database sorting to allow very fast retrieval of all query results.  To begin a scrolling query, you first call the query
 endpoint as you normally would, but with an extra parameter **fetch_all** = TRUE.  For example, a GET request to::
 
-    http://mydisease.info/v1/query?q=_exists_:disgenet&fields=disgenet.genes_related_to_disease.gene_name&fetch_all=TRUE
+    http://mydisease.info/v1/query?q=_exists_:ctd&fields=ctd.mesh&fetch_all=TRUE
 
 Returns the following object:
 
@@ -141,28 +138,24 @@ Returns the following object:
 
 
     {
-      "_scroll_id": "cXVlcnlUaGVuRmV0Y2g7MTA7Njg4ODAwOTI6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDA5MTpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDkzOkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTQ6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDEwMDpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDk2OkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTg6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDA5NzpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDk5OkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTU6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzswOw==",
-      "max_score": 1.0,
-      "took": 2042,
-      "total": 10869,
-      "hits": [
+    "_scroll_id": "FGluY2x1ZGVfY29udGV4dF91dWlkDXF1ZXJ5QW5kRmV0Y2gBFklwVTV4UlU1U0YtcDhiQUhJdlNZSlEAAAAAS_3keRZuWFQtN1VRRlFQT2F5U2c0cjVrYmln",
+    "took": 519,
+    "total": 4876,
+    "max_score": 1,
+    "hits": [
         {
-            '_id': 'C4017543',
-            '_score': 1.0,
-            'disgenet': {
-                'genes_related_to_disease': {
-                    'gene_name': 'BCHE'
-                }
-            }
+        "_id": "MONDO:0001913",
+        "_score": 1,
+        "ctd": {
+            "mesh": "D009845"
+        }
         },
         {
-            '_id': 'C4017544',
-            '_score': 1.0,
-            'disgenet': {
-                'genes_related_to_disease': {
-                    'gene_name': 'BCHE'
-                }
-            }
+        "_id": "MONDO:0001926",
+        "_score": 1,
+        "ctd": {
+            "mesh": "D014515"
+        }
         },
         .
         .
@@ -183,9 +176,9 @@ Boolean operators and grouping
 
 You can use **AND**/**OR**/**NOT** boolean operators and grouping to form complicated queries::
 
-    q=_exists_:ctd AND _exists_:disgenet                              AND operator
-    q=_exists_:ctd AND NOT _exists_:disgenet                         NOT operator
-    q=_exists_:ctd OR (_exists_:disgenet AND _exists_:hpo)           grouping with ()
+    q=_exists_:ctd AND _exists_:mondo                                AND operator
+    q=_exists_:ctd AND NOT _exists_:mondo                           NOT operator
+    q=_exists_:ctd OR (_exists_:mondo AND _exists_:hpo)             grouping with ()
 
 
 Escaping reserved characters
@@ -201,7 +194,7 @@ Returned object
 
 A GET request like this::
 
-    http://mydisease.info/v1/query?q=disgenet.genes_related_to_disease.gene_name:OFD1&fields=mondo.label
+    http://mydisease.info/v1/query?q=mondo.label:cardiomyopathy&fields=mondo.label
 
 should return hits as:
 
@@ -290,67 +283,66 @@ If you need to perform a faceted query, you can pass an optional "`facets <#face
 
 A GET request like this::
 
-    http://mydisease.info/v1/query?q=disgenet.genes_related_to_disease.gene_name:OFD1&facets=disgenet.genes_related_to_disease.YearFinal&size=0
+    http://mydisease.info/v1/query?q=mondo.label:cardiomyopathy&facets=mondo.parents&size=0
 
 should return hits as:
 
 .. code-block:: json
 
     {
-        'took': 130,
-        'total': 14,
-        'max_score': 0.0,
-        'facets': {
-            'disgenet.genes_related_to_disease.YearFinal': {
-                '_type': 'terms',
-                'terms': [
-                    {
-                        'count': 9,
-                        'term': 2013.0
-                    },
-                    {
-                        'count': 9,
-                        'term': 2017.0
-                    },
-                    {
-                        'count': 7,
-                        'term': 2007.0
-                    },
-                    {
-                        'count': 7,
-                        'term': 2015.0
-                    },
-                    {
-                        'count': 7,
-                        'term': 2016.0
-                    },
-                    {
-                        'count': 7,
-                        'term': 2018.0
-                    },
-                    {
-                        'count': 6,
-                        'term': 2010.0
-                    },
-                    {
-                        'count': 6,
-                        'term': 2012.0
-                    },
-                    {
-                        'count': 6,
-                        'term': 2014.0
-                    },
-                    {
-                        'count': 5,
-                        'term': 2011.0
-                    }
-                ],
-                'other': 38,
-                'missing': 0,
-                'total': 69
+        "took": 531,
+        "total": 189,
+        "max_score": null,
+        "facets": {
+            "mondo.parents": {
+            "_type": "terms",
+            "terms": [
+                {
+                "count": 42,
+                "term": "mondo:0700335"
+                },
+                {
+                "count": 30,
+                "term": "mondo:0024573"
+                },
+                {
+                "count": 11,
+                "term": "mondo:0016333"
+                },
+                {
+                "count": 11,
+                "term": "mondo:1010010"
+                },
+                {
+                "count": 10,
+                "term": "mondo:0004994"
+                },
+                {
+                "count": 9,
+                "term": "mondo:1010015"
+                },
+                {
+                "count": 9,
+                "term": "mondo:1011321"
+                },
+                {
+                "count": 8,
+                "term": "mondo:0002254"
+                },
+                {
+                "count": 8,
+                "term": "mondo:1010011"
+                },
+                {
+                "count": 5,
+                "term": "mondo:0003847"
+                }
+            ],
+            "other": 107,
+            "missing": 0,
+            "total": 143
             }
-        },
-        'hits': []
+        }
     }
 
 

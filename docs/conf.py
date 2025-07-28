@@ -126,17 +126,16 @@ texinfo_documents = [
 try:
     import sphinx_rtd_theme
     html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
     html_theme_options = {}
 except ImportError:
-    print 'Warning: "sphinx_rtd_theme" is not installed, fall back to default theme.'
+    print('Warning: "sphinx_rtd_theme" is not installed, fall back to default theme.')
     pass
 
 
 def setup(app):
-    print 'Entered Setup'
-    app.add_javascript('mydisease_doc.js')
-    app.add_javascript('jquery.dataTables.min.js')
-    app.add_stylesheet('mydisease_doc.css')
-    app.add_stylesheet('jquery.dataTables.min.css')
-    print 'Exited Setup'
+    print('Entered Setup')
+    app.add_js_file('mydisease_doc.js')
+    app.add_js_file('jquery.dataTables.min.js')
+    app.add_css_file('mydisease_doc.css')
+    app.add_css_file('jquery.dataTables.min.css')
+    print('Exited Setup')

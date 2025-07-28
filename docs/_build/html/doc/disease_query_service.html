@@ -1,84 +1,163 @@
 
-<!DOCTYPE html>
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Disease query service &#8212; mydisease.info v1 documentation</title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mydisease_doc.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/jquery.dataTables.min.css" />
-    
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
-    <script src="../_static/mydisease_doc.js"></script>
-    <script src="../_static/jquery.dataTables.min.js"></script>
-    
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Disease query service &mdash; mydisease.info v1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mydisease_doc.css?v=3c8cd98f" />
+      <link rel="stylesheet" type="text/css" href="../_static/jquery.dataTables.min.css?v=6b00101a" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5cb08e4e"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/mydisease_doc.js?v=5acf5273"></script>
+      <script src="../_static/jquery.dataTables.min.js?v=bebb13d9"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Disease annotation service" href="disease_annotation_service.html" />
     <link rel="prev" title="Data release notes" href="release_changes.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="disease_annotation_service.html" title="Disease annotation service"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="release_changes.html" title="Data release notes"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">mydisease.info v1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Disease query service</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="disease-query-service">
-<h1>Disease query service<a class="headerlink" href="#disease-query-service" title="Permalink to this headline">¶</a></h1>
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            mydisease.info
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference external" href="http://mydisease.info/">Try it live on interactive API page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Disease annotation data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_changes.html">Data release notes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Disease query service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#service-endpoint">Service endpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-request">GET request</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#query-parameters">Query parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q">q</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fields">fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#size">size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#from">from</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fetch-all">fetch_all</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scroll-id">scroll_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sort">sort</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#facets">facets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#facet-size">facet_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#callback">callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dotfield">dotfield</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#email">email</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#query-syntax">Query syntax</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#simple-queries">Simple queries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fielded-queries">Fielded queries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#range-queries">Range queries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wildcard-queries">Wildcard queries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scrolling-queries">Scrolling queries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#boolean-operators-and-grouping">Boolean operators and grouping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#escaping-reserved-characters">Escaping reserved characters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#returned-object">Returned object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#faceted-queries">Faceted queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#batch-queries-via-post">Batch queries via POST</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Query parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">q</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scopes">scopes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">email</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example-code">Example code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Returned object</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="disease_annotation_service.html">Disease annotation service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="response_status_codes.html">Server response</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packages.html">Biothings_client python module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">mydisease.info</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Disease query service</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/doc/disease_query_service.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="disease-query-service">
+<h1>Disease query service<a class="headerlink" href="#disease-query-service" title="Link to this heading"></a></h1>
 <p>This page describes the reference for MyDisease.info disease query web service. It’s also recommended to try it live on our <a class="reference external" href="http://mydisease.info/v1/api">interactive API page</a>.</p>
-<div class="section" id="service-endpoint">
-<h2>Service endpoint<a class="headerlink" href="#service-endpoint" title="Permalink to this headline">¶</a></h2>
+<section id="service-endpoint">
+<h2>Service endpoint<a class="headerlink" href="#service-endpoint" title="Link to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mydisease</span><span class="o">.</span><span class="n">info</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">query</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="get-request">
-<h2>GET request<a class="headerlink" href="#get-request" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="query-parameters">
-<h3>Query parameters<a class="headerlink" href="#query-parameters" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="q">
-<h4>q<a class="headerlink" href="#q" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="get-request">
+<h2>GET request<a class="headerlink" href="#get-request" title="Link to this heading"></a></h2>
+<section id="query-parameters">
+<h3>Query parameters<a class="headerlink" href="#query-parameters" title="Link to this heading"></a></h3>
+<section id="q">
+<h4>q<a class="headerlink" href="#q" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Required, passing user query. The detailed query syntax for parameter “<strong>q</strong>” we explained <a class="reference external" href="#query-syntax">below</a>.</p>
 </div></blockquote>
-</div>
-<div class="section" id="fields">
-<h4>fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="fields">
+<h4>fields<a class="headerlink" href="#fields" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, a comma-separated string to limit the fields returned from the matching disease hits. The supported field names can be found from any disease object (e.g. <a class="reference external" href="http://mydisease.info/v1/disease/MONDO:0016575">here</a>). Note that it supports dot notation, and wildcards as well, e.g., you can pass “mondo”, “mondo.xrefs”, or “ctd.chemical_related_to_disease.*”. If “fields=all”, all available fields will be returned. Default: “all”.</p>
 </div></blockquote>
-</div>
-<div class="section" id="size">
-<h4>size<a class="headerlink" href="#size" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="size">
+<h4>size<a class="headerlink" href="#size" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, the maximum number of matching disease hits to return (with a cap of 1000 at the moment). Default: 10.</p>
 </div></blockquote>
-</div>
-<div class="section" id="from">
-<h4>from<a class="headerlink" href="#from" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="from">
+<h4>from<a class="headerlink" href="#from" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, the number of matching disease hits to skip, starting from 0. Default: 0</p>
 </div></blockquote>
@@ -90,68 +169,68 @@
 <span class="n">q</span><span class="o">=</span><span class="n">ctd</span><span class="o">.</span><span class="n">chemical_related_to_disease</span><span class="o">.</span><span class="n">chemical_name</span><span class="p">:</span><span class="n">zidovudine</span><span class="o">*&amp;</span><span class="n">size</span><span class="o">=</span><span class="mi">50</span><span class="o">&amp;</span><span class="n">from</span><span class="o">=</span><span class="mi">50</span>             <span class="n">the</span> <span class="nb">next</span> <span class="mi">50</span> <span class="n">hits</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="fetch-all">
-<h4>fetch_all<a class="headerlink" href="#fetch-all" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="fetch-all">
+<h4>fetch_all<a class="headerlink" href="#fetch-all" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, a boolean, which when TRUE, allows fast retrieval of all unsorted query hits.  The return object contains a <strong>_scroll_id</strong> field, which when passed as a parameter to the query endpoint, returns the next 1000 query results.  Setting <strong>fetch_all</strong> = TRUE causes the results to be inherently unsorted, therefore the <strong>sort</strong> parameter is ignored.  For more information see <a class="reference external" href="#scrolling-queries">examples using fetch_all here</a>.  Default: FALSE.</p>
 </div></blockquote>
-</div>
-<div class="section" id="scroll-id">
-<h4>scroll_id<a class="headerlink" href="#scroll-id" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="scroll-id">
+<h4>scroll_id<a class="headerlink" href="#scroll-id" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, a string containing the <strong>_scroll_id</strong> returned from a query request with <strong>fetch_all</strong> = TRUE.  Supplying a valid <strong>scroll_id</strong> will return the next 1000 unordered results.  If the next results are not obtained within 1 minute of the previous set of results, the <strong>scroll_id</strong> becomes stale, and a new one must be obtained with another query request with <strong>fetch_all</strong> = TRUE.  All other parameters are ignored when the <strong>scroll_id</strong> parameter is supplied.  For more information see <a class="reference external" href="#scrolling-queries">examples using scroll_id here</a>.</p>
 </div></blockquote>
-</div>
-<div class="section" id="sort">
-<h4>sort<a class="headerlink" href="#sort" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="sort">
+<h4>sort<a class="headerlink" href="#sort" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, the comma-separated fields to sort on. Prefix with “-” for descending order, otherwise in ascending order. Default: sort by matching scores in descending order.</p>
 </div></blockquote>
-</div>
-<div class="section" id="facets">
-<h4>facets<a class="headerlink" href="#facets" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="facets">
+<h4>facets<a class="headerlink" href="#facets" title="Link to this heading"></a></h4>
 <blockquote>
-<div><p>Optional, a single field or comma-separated fields to return facets, can only be used on non-free text fields.  E.g. “facets=disgenet.genes_related_to_disease.YearFinal”.  See <a class="reference external" href="#faceted-queries">examples of faceted queries here</a>.</p>
+<div><p>Optional, a single field or comma-separated fields to return facets, can only be used on non-free text fields.  E.g. “facets=mondo.parents”.  See <a class="reference external" href="#faceted-queries">examples of faceted queries here</a>.</p>
 </div></blockquote>
-</div>
-<div class="section" id="facet-size">
-<h4>facet_size<a class="headerlink" href="#facet-size" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="facet-size">
+<h4>facet_size<a class="headerlink" href="#facet-size" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, an integer (1 &lt;= <strong>facet_size</strong> &lt;= 1000) that specifies how many buckets to return in a faceted query.</p>
 </div></blockquote>
-</div>
-<div class="section" id="callback">
-<h4>callback<a class="headerlink" href="#callback" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="callback">
+<h4>callback<a class="headerlink" href="#callback" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, you can pass a “<strong>callback</strong>” parameter to make a <a class="reference external" href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> call.</p>
 </div></blockquote>
-</div>
-<div class="section" id="dotfield">
-<h4>dotfield<a class="headerlink" href="#dotfield" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="dotfield">
+<h4>dotfield<a class="headerlink" href="#dotfield" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, can be used to control the format of the returned disease object.  If “dotfield” is true, the returned data object is returned flattened (no nested objects) using dotfield notation for key names.  Default: false.</p>
 </div></blockquote>
-</div>
-<div class="section" id="email">
-<h4>email<a class="headerlink" href="#email" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="email">
+<h4>email<a class="headerlink" href="#email" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, if you are regular users of our services, we encourage you to provide us an email, so that we can better track the usage or follow up with you.</p>
 </div></blockquote>
-</div>
-</div>
-<div class="section" id="query-syntax">
-<h3>Query syntax<a class="headerlink" href="#query-syntax" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="query-syntax">
+<h3>Query syntax<a class="headerlink" href="#query-syntax" title="Link to this heading"></a></h3>
 <p>Examples of query parameter “<strong>q</strong>”:</p>
-<div class="section" id="simple-queries">
-<h4>Simple queries<a class="headerlink" href="#simple-queries" title="Permalink to this headline">¶</a></h4>
+<section id="simple-queries">
+<h4>Simple queries<a class="headerlink" href="#simple-queries" title="Link to this heading"></a></h4>
 <p>search for everything:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">=</span><span class="n">coronavirus</span>                        <span class="c1"># search all default fields for term</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="fielded-queries">
-<h4>Fielded queries<a class="headerlink" href="#fielded-queries" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="fielded-queries">
+<h4>Fielded queries<a class="headerlink" href="#fielded-queries" title="Link to this heading"></a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">=</span><span class="n">mondo</span><span class="o">.</span><span class="n">synonyms</span><span class="p">:</span><span class="n">PCD</span>               <span class="c1"># for matching value on a specific field</span>
 
 <span class="n">q</span><span class="o">=</span><span class="n">mondo</span><span class="o">.</span><span class="n">synonyms</span><span class="p">:(</span><span class="n">PCD</span><span class="p">)</span>            <span class="c1"># multiple values for a field</span>
@@ -165,18 +244,15 @@
 <p class="admonition-title">Hint</p>
 <p>For a list of available fields, see <a class="reference internal" href="data.html#available-fields"><span class="std std-ref">here</span></a>.</p>
 </div>
-</div>
-<div class="section" id="range-queries">
-<h4>Range queries<a class="headerlink" href="#range-queries" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">=</span><span class="n">disgenet</span><span class="o">.</span><span class="n">genes_related_to_disease</span><span class="o">.</span><span class="n">DSI</span><span class="p">:</span><span class="o">&lt;</span><span class="mf">0.5</span>
-<span class="n">q</span><span class="o">=</span><span class="n">disgenet</span><span class="o">.</span><span class="n">genes_related_to_disease</span><span class="o">.</span><span class="n">DSI</span><span class="p">:</span><span class="o">&gt;</span><span class="mf">0.5</span>
-
-<span class="n">q</span><span class="o">=</span><span class="n">disgenet</span><span class="o">.</span><span class="n">genes_related_to_disease</span><span class="o">.</span><span class="n">YearFinal</span><span class="p">:[</span><span class="mi">1998</span> <span class="n">TO</span> <span class="mi">2008</span><span class="p">]</span>         <span class="c1"># bounded (including 200 and 500)</span>
+</section>
+<section id="range-queries">
+<h4>Range queries<a class="headerlink" href="#range-queries" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">=</span><span class="n">mondo</span><span class="o">.</span><span class="n">parents</span><span class="p">:[</span><span class="n">MONDO</span><span class="p">:</span><span class="mi">0000001</span> <span class="n">TO</span> <span class="n">MONDO</span><span class="p">:</span><span class="mi">0000100</span><span class="p">]</span>         <span class="c1"># bounded range query</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="wildcard-queries">
-<h4>Wildcard queries<a class="headerlink" href="#wildcard-queries" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="wildcard-queries">
+<h4>Wildcard queries<a class="headerlink" href="#wildcard-queries" title="Link to this heading"></a></h4>
 <p>Wildcard character “*” or “?” is supported in either simple queries or fielded queries:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">=</span><span class="n">mondo</span><span class="o">.</span><span class="n">label</span><span class="p">:</span><span class="n">primary</span><span class="o">*</span>
 </pre></div>
@@ -185,45 +261,41 @@
 <p class="admonition-title">Note</p>
 <p>Wildcard character can not be the first character. It will be ignored.</p>
 </div>
-</div>
-<div class="section" id="scrolling-queries">
-<h4>Scrolling queries<a class="headerlink" href="#scrolling-queries" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="scrolling-queries">
+<h4>Scrolling queries<a class="headerlink" href="#scrolling-queries" title="Link to this heading"></a></h4>
 <p>If you want to return ALL results of a very large query, sometimes the paging method described <a class="reference external" href="#from">above</a> can take too long.  In these cases, you can use a scrolling query.
 This is a two-step process that turns off database sorting to allow very fast retrieval of all query results.  To begin a scrolling query, you first call the query
 endpoint as you normally would, but with an extra parameter <strong>fetch_all</strong> = TRUE.  For example, a GET request to:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://mydisease.info/v1/query?q=_exists_:disgenet&amp;fields=disgenet.genes_related_to_disease.gene_name&amp;fetch_all=TRUE
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://mydisease.info/v1/query?q=_exists_:ctd&amp;fields=ctd.mesh&amp;fetch_all=TRUE
 </pre></div>
 </div>
 <p>Returns the following object:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-  &quot;_scroll_id&quot;: &quot;cXVlcnlUaGVuRmV0Y2g7MTA7Njg4ODAwOTI6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDA5MTpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDkzOkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTQ6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDEwMDpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDk2OkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTg6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzs2ODg4MDA5NzpKZTRyT2gxNlRQcXJFeVhJM09LakxnOzY4ODgwMDk5OkplNHJPaDE2VFBxckV5WEkzT0tqTGc7Njg4ODAwOTU6SmU0ck9oMTZUUHFyRXlYSTNPS2pMZzswOw==&quot;,
-  &quot;max_score&quot;: 1.0,
-  &quot;took&quot;: 2042,
-  &quot;total&quot;: 10869,
-  &quot;hits&quot;: [
-    {
-        &#39;_id&#39;: &#39;C4017543&#39;,
-        &#39;_score&#39;: 1.0,
-        &#39;disgenet&#39;: {
-            &#39;genes_related_to_disease&#39;: {
-                &#39;gene_name&#39;: &#39;BCHE&#39;
-            }
-        }
-    },
-    {
-        &#39;_id&#39;: &#39;C4017544&#39;,
-        &#39;_score&#39;: 1.0,
-        &#39;disgenet&#39;: {
-            &#39;genes_related_to_disease&#39;: {
-                &#39;gene_name&#39;: &#39;BCHE&#39;
-            }
-        }
-    },
-    .
-    .
-    .
-  ],
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;_scroll_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FGluY2x1ZGVfY29udGV4dF91dWlkDXF1ZXJ5QW5kRmV0Y2gBFklwVTV4UlU1U0YtcDhiQUhJdlNZSlEAAAAAS_3keRZuWFQtN1VRRlFQT2F5U2c0cjVrYmln&quot;</span><span class="p">,</span>
+<span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">519</span><span class="p">,</span>
+<span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4876</span><span class="p">,</span>
+<span class="nt">&quot;max_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="nt">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MONDO:0001913&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;ctd&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;mesh&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;D009845&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MONDO:0001926&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;ctd&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;mesh&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;D014515&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="err">.</span>
+<span class="w">    </span><span class="err">.</span>
+<span class="w">    </span><span class="err">.</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>At this point, the first 1000 hits have been returned (of ~11,000 total), and a scroll has been set up for your query.  To get the next batch of 1000 unordered results, simply execute a GET request to the following address, supplying the _scroll_id from the first step into the <strong>scroll_id</strong> parameter in the second step:</p>
@@ -238,179 +310,178 @@ endpoint as you normally would, but with an extra parameter <strong>fetch_all</s
 <p class="admonition-title">Hint</p>
 <p>When you need to use this “scrolling query” feature via “fetch_all” parameter, we recommend you to use our Python client “<a class="reference external" href="packages.html">biothings_client</a>”.</p>
 </div>
-</div>
-<div class="section" id="boolean-operators-and-grouping">
-<h4>Boolean operators and grouping<a class="headerlink" href="#boolean-operators-and-grouping" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="boolean-operators-and-grouping">
+<h4>Boolean operators and grouping<a class="headerlink" href="#boolean-operators-and-grouping" title="Link to this heading"></a></h4>
 <p>You can use <strong>AND</strong>/<strong>OR</strong>/<strong>NOT</strong> boolean operators and grouping to form complicated queries:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">=</span><span class="n">_exists_</span><span class="p">:</span><span class="n">ctd</span> <span class="n">AND</span> <span class="n">_exists_</span><span class="p">:</span><span class="n">disgenet</span>                              <span class="n">AND</span> <span class="n">operator</span>
-<span class="n">q</span><span class="o">=</span><span class="n">_exists_</span><span class="p">:</span><span class="n">ctd</span> <span class="n">AND</span> <span class="n">NOT</span> <span class="n">_exists_</span><span class="p">:</span><span class="n">disgenet</span>                         <span class="n">NOT</span> <span class="n">operator</span>
-<span class="n">q</span><span class="o">=</span><span class="n">_exists_</span><span class="p">:</span><span class="n">ctd</span> <span class="n">OR</span> <span class="p">(</span><span class="n">_exists_</span><span class="p">:</span><span class="n">disgenet</span> <span class="n">AND</span> <span class="n">_exists_</span><span class="p">:</span><span class="n">hpo</span><span class="p">)</span>           <span class="n">grouping</span> <span class="k">with</span> <span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">=</span><span class="n">_exists_</span><span class="p">:</span><span class="n">ctd</span> <span class="n">AND</span> <span class="n">_exists_</span><span class="p">:</span><span class="n">mondo</span>                                <span class="n">AND</span> <span class="n">operator</span>
+<span class="n">q</span><span class="o">=</span><span class="n">_exists_</span><span class="p">:</span><span class="n">ctd</span> <span class="n">AND</span> <span class="n">NOT</span> <span class="n">_exists_</span><span class="p">:</span><span class="n">mondo</span>                           <span class="n">NOT</span> <span class="n">operator</span>
+<span class="n">q</span><span class="o">=</span><span class="n">_exists_</span><span class="p">:</span><span class="n">ctd</span> <span class="n">OR</span> <span class="p">(</span><span class="n">_exists_</span><span class="p">:</span><span class="n">mondo</span> <span class="n">AND</span> <span class="n">_exists_</span><span class="p">:</span><span class="n">hpo</span><span class="p">)</span>             <span class="n">grouping</span> <span class="k">with</span> <span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="escaping-reserved-characters">
-<h4>Escaping reserved characters<a class="headerlink" href="#escaping-reserved-characters" title="Permalink to this headline">¶</a></h4>
-<p>If you need to use these reserved characters in your query, make sure to escape them using a back slash (“\”):</p>
+</section>
+<section id="escaping-reserved-characters">
+<h4>Escaping reserved characters<a class="headerlink" href="#escaping-reserved-characters" title="Link to this heading"></a></h4>
+<p>If you need to use these reserved characters in your query, make sure to escape them using a back slash (”\”):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>+ - = &amp;&amp; || &gt; &lt; ! ( ) { } [ ] ^ &quot; ~ * ? : \ /
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="returned-object">
-<h3>Returned object<a class="headerlink" href="#returned-object" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="returned-object">
+<h3>Returned object<a class="headerlink" href="#returned-object" title="Link to this heading"></a></h3>
 <p>A GET request like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://mydisease.info/v1/query?q=disgenet.genes_related_to_disease.gene_name:OFD1&amp;fields=mondo.label
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://mydisease.info/v1/query?q=mondo.label:cardiomyopathy&amp;fields=mondo.label
 </pre></div>
 </div>
 <p>should return hits as:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-    &#39;took&#39;: 4,
-    &#39;total&#39;: 14,
-    &#39;max_score&#39;: 6.271054,
-    &#39;hits&#39;: [
-        {
-            &#39;_id&#39;: &#39;C4277690&#39;,
-            &#39;_score&#39;: 6.271054
-        },
-        {
-            &#39;_id&#39;: &#39;MONDO:0017892&#39;,
-            &#39;_score&#39;: 6.271054,
-            &#39;mondo&#39;: {
-                &#39;label&#39;: &#39;autosomal recessive myogenic arthrogryposis multiplex congenita&#39;
-            }
-        },
-        {
-            &#39;_id&#39;: &#39;MONDO:0009360&#39;,
-            &#39;_score&#39;: 6.271054,
-            &#39;mondo&#39;: {
-                &#39;label&#39;: &#39;hydrocephalus, nonsyndromic, autosomal recessive 1&#39;
-            }
-        },
-        {
-            &#39;_id&#39;: &#39;MONDO:0010702&#39;,
-            &#39;_score&#39;: 6.271054,
-            &#39;mondo&#39;: {
-                &#39;label&#39;: &#39;orofaciodigital syndrome I&#39;
-            }
-        },
-        {
-            &#39;_id&#39;: &#39;MONDO:0010704&#39;,
-            &#39;_score&#39;: 6.271054,
-            &#39;mondo&#39;: {
-                &#39;label&#39;: &#39;otopalatodigital syndrome type 1&#39;
-            }
-        },
-        {
-            &#39;_id&#39;: &#39;MONDO:0016023&#39;,
-            &#39;_score&#39;: 6.271054,
-            &#39;mondo&#39;: {
-                &#39;label&#39;: &#39;ocular coloboma&#39;
-            }
-        },
-        {
-            &#39;_id&#39;: &#39;MONDO:0010176&#39;,
-            &#39;_score&#39;: 6.271054,
-            &#39;mondo&#39;: {
-                &#39;label&#39;: &#39;orofaciodigital syndrome type 6&#39;
-            }
-        },
-        {
-            &#39;_id&#39;: &#39;MONDO:0010265&#39;,
-            &#39;_score&#39;: 6.271054,
-            &#39;mondo&#39;: {
-                &#39;label&#39;: &#39;Simpson-Golabi-Behmel syndrome type 2&#39;
-            }
-        },
-        {
-            &#39;_id&#39;: &#39;MONDO:0010320&#39;,
-            &#39;_score&#39;: 6.271054,
-            &#39;mondo&#39;: {
-                &#39;label&#39;: &#39;retinitis pigmentosa 23&#39;
-            }
-        },
-        {
-            &#39;_id&#39;: &#39;MONDO:0010431&#39;,
-            &#39;_score&#39;: 6.271054,
-            &#39;mondo&#39;: {
-                &#39;label&#39;: &#39;Joubert syndrome 10&#39;
-            }
-        }
-    ]
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ook&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">o</span><span class="kc">tal</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span>
+<span class="w">    </span><span class="err">&#39;max_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span><span class="p">,</span>
+<span class="w">    </span><span class="err">&#39;hi</span><span class="kc">ts</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;C</span><span class="mi">4277690</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0017892</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;label&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;au</span><span class="kc">t</span><span class="err">osomal</span><span class="w"> </span><span class="err">recessive</span><span class="w"> </span><span class="err">myoge</span><span class="kc">n</span><span class="err">ic</span><span class="w"> </span><span class="err">ar</span><span class="kc">t</span><span class="err">hrogryposis</span><span class="w"> </span><span class="err">mul</span><span class="kc">t</span><span class="err">iplex</span><span class="w"> </span><span class="err">co</span><span class="kc">n</span><span class="err">ge</span><span class="kc">n</span><span class="err">i</span><span class="kc">ta</span><span class="err">&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0009360</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;label&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;hydrocephalus</span><span class="p">,</span><span class="w"> </span><span class="kc">n</span><span class="err">o</span><span class="kc">ns</span><span class="err">y</span><span class="kc">n</span><span class="err">dromic</span><span class="p">,</span><span class="w"> </span><span class="err">au</span><span class="kc">t</span><span class="err">osomal</span><span class="w"> </span><span class="err">recessive</span><span class="w"> </span><span class="mi">1</span><span class="err">&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0010702</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;label&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;oro</span><span class="kc">fa</span><span class="err">ciodigi</span><span class="kc">tal</span><span class="w"> </span><span class="err">sy</span><span class="kc">n</span><span class="err">drome</span><span class="w"> </span><span class="err">I&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0010704</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;label&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;o</span><span class="kc">t</span><span class="err">opala</span><span class="kc">t</span><span class="err">odigi</span><span class="kc">tal</span><span class="w"> </span><span class="err">sy</span><span class="kc">n</span><span class="err">drome</span><span class="w"> </span><span class="kc">t</span><span class="err">ype</span><span class="w"> </span><span class="mi">1</span><span class="err">&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0016023</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;label&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;ocular</span><span class="w"> </span><span class="err">coloboma&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0010176</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;label&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;oro</span><span class="kc">fa</span><span class="err">ciodigi</span><span class="kc">tal</span><span class="w"> </span><span class="err">sy</span><span class="kc">n</span><span class="err">drome</span><span class="w"> </span><span class="kc">t</span><span class="err">ype</span><span class="w"> </span><span class="mi">6</span><span class="err">&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0010265</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;label&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Simpso</span><span class="kc">n</span><span class="mi">-</span><span class="err">Golabi</span><span class="mi">-</span><span class="err">Behmel</span><span class="w"> </span><span class="err">sy</span><span class="kc">n</span><span class="err">drome</span><span class="w"> </span><span class="kc">t</span><span class="err">ype</span><span class="w"> </span><span class="mi">2</span><span class="err">&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0010320</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;label&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;re</span><span class="kc">t</span><span class="err">i</span><span class="kc">n</span><span class="err">i</span><span class="kc">t</span><span class="err">is</span><span class="w"> </span><span class="err">pigme</span><span class="kc">nt</span><span class="err">osa</span><span class="w"> </span><span class="mi">23</span><span class="err">&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0010431</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">6.271054</span><span class="p">,</span>
+<span class="w">            </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">do&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">&#39;label&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Jouber</span><span class="kc">t</span><span class="w"> </span><span class="err">sy</span><span class="kc">n</span><span class="err">drome</span><span class="w"> </span><span class="mi">10</span><span class="err">&#39;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>“<strong>total</strong>” in the output gives the total number of matching hits, while the actual hits are returned under “<strong>hits</strong>” field. “<strong>size</strong>” parameter controls how many hits will be returned in one request (default is 10). Adjust “<strong>size</strong>” parameter and “<strong>from</strong>” parameter to retrieve the additional hits.</p>
-</div>
-<div class="section" id="faceted-queries">
-<h3>Faceted queries<a class="headerlink" href="#faceted-queries" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="faceted-queries">
+<h3>Faceted queries<a class="headerlink" href="#faceted-queries" title="Link to this heading"></a></h3>
 <p>If you need to perform a faceted query, you can pass an optional “<a class="reference external" href="#facets">facets</a>” parameter.</p>
 <p>A GET request like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://mydisease.info/v1/query?q=disgenet.genes_related_to_disease.gene_name:OFD1&amp;facets=disgenet.genes_related_to_disease.YearFinal&amp;size=0
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://mydisease.info/v1/query?q=mondo.label:cardiomyopathy&amp;facets=mondo.parents&amp;size=0
 </pre></div>
 </div>
 <p>should return hits as:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-    &#39;took&#39;: 130,
-    &#39;total&#39;: 14,
-    &#39;max_score&#39;: 0.0,
-    &#39;facets&#39;: {
-        &#39;disgenet.genes_related_to_disease.YearFinal&#39;: {
-            &#39;_type&#39;: &#39;terms&#39;,
-            &#39;terms&#39;: [
-                {
-                    &#39;count&#39;: 9,
-                    &#39;term&#39;: 2013.0
-                },
-                {
-                    &#39;count&#39;: 9,
-                    &#39;term&#39;: 2017.0
-                },
-                {
-                    &#39;count&#39;: 7,
-                    &#39;term&#39;: 2007.0
-                },
-                {
-                    &#39;count&#39;: 7,
-                    &#39;term&#39;: 2015.0
-                },
-                {
-                    &#39;count&#39;: 7,
-                    &#39;term&#39;: 2016.0
-                },
-                {
-                    &#39;count&#39;: 7,
-                    &#39;term&#39;: 2018.0
-                },
-                {
-                    &#39;count&#39;: 6,
-                    &#39;term&#39;: 2010.0
-                },
-                {
-                    &#39;count&#39;: 6,
-                    &#39;term&#39;: 2012.0
-                },
-                {
-                    &#39;count&#39;: 6,
-                    &#39;term&#39;: 2014.0
-                },
-                {
-                    &#39;count&#39;: 5,
-                    &#39;term&#39;: 2011.0
-                }
-            ],
-            &#39;other&#39;: 38,
-            &#39;missing&#39;: 0,
-            &#39;total&#39;: 69
-        }
-    },
-    &#39;hits&#39;: []
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">531</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">189</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;max_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;facets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;mondo.parents&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;terms&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;terms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mondo:0700335&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mondo:0024573&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mondo:0016333&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mondo:1010010&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mondo:0004994&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mondo:1010015&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mondo:1011321&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mondo:0002254&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mondo:1010011&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mondo:0003847&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;other&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">107</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;missing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">143</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="batch-queries-via-post">
-<h2>Batch queries via POST<a class="headerlink" href="#batch-queries-via-post" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="batch-queries-via-post">
+<h2>Batch queries via POST<a class="headerlink" href="#batch-queries-via-post" title="Link to this heading"></a></h2>
 <p>Although making simple GET requests above to our disease query service is sufficient for most use cases,
 there are times you might find it more efficient to make batch queries (e.g., retrieving disease
 annotation for multiple diseases). Fortunately, you can also make batch queries via POST requests when you
@@ -419,36 +490,36 @@ need:</p>
 <span class="n">HTTP</span> <span class="n">method</span><span class="p">:</span>  <span class="n">POST</span>
 </pre></div>
 </div>
-<div class="section" id="id2">
-<h3>Query parameters<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="id3">
-<h4>q<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<section id="id2">
+<h3>Query parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<section id="id3">
+<h4>q<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Required, multiple query terms seperated by comma (also support “+” or white space), but no wildcard, e.g., ‘q=SDUQYLNIPVEERB-QPPQHZFASA-N,SESFRYSPDFLNCH-UHFFFAOYSA-N’</p>
 </div></blockquote>
-</div>
-<div class="section" id="scopes">
-<h4>scopes<a class="headerlink" href="#scopes" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="scopes">
+<h4>scopes<a class="headerlink" href="#scopes" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, specify one or more fields (separated by comma) as the search “scopes”, e.g., “scopes=ctd”.  The available “fields” can be passed to “<strong>scopes</strong>” parameter are
 <a class="reference internal" href="data.html#available-fields"><span class="std std-ref">listed here</span></a>. Default:</p>
 </div></blockquote>
-</div>
-<div class="section" id="id4">
-<h4>fields<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="id4">
+<h4>fields<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, a comma-separated string to limit the fields returned from the matching disease hits. The supported field names can be found from any disease object. Note that it supports dot notation, and wildcards as well, e.g., you can pass “ctd”, “mondo.label”, or “mondo.xrefs.*”. If “fields=all”, all available fields will be returned. Default: “all”.</p>
 </div></blockquote>
-</div>
-<div class="section" id="id5">
-<h4>email<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="id5">
+<h4>email<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
 <blockquote>
 <div><p>Optional, if you are regular users of our services, we encourage you to provide us an email, so that we can better track the usage or follow up with you.</p>
 </div></blockquote>
-</div>
-</div>
-<div class="section" id="example-code">
-<h3>Example code<a class="headerlink" href="#example-code" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="example-code">
+<h3>Example code<a class="headerlink" href="#example-code" title="Link to this heading"></a></h3>
 <p>Unlike GET requests, you can easily test them from browser, make a POST request is often done via a
 piece of code. Here is a sample python snippet using <a class="reference external" href="https://pypi.org/project/httplib2/">httplib2</a> module:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">httplib2</span>
@@ -465,30 +536,30 @@ piece of code. Here is a sample python snippet using <a class="reference externa
 <span class="n">con</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id6">
-<h3>Returned object<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id6">
+<h3>Returned object<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
 <p>Returned result (the value of “con” variable above) from above example code should look like this:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[
-    {
-        &#39;query&#39;: &#39;DOID:14566&#39;,
-        &#39;_id&#39;: &#39;MONDO:0005070&#39;,
-        &#39;_score&#39;: 8.824187,
-        &#39;disease_ontology&#39;: {
-            &#39;_license&#39;: &#39;https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/master/DO_LICENSE.txt&#39;,
-            &#39;name&#39;: &#39;disease of cellular proliferation&#39;
-        }
-    },
-    {
-        &#39;query&#39;: &#39;DOID:1240&#39;,
-        &#39;_id&#39;: &#39;MONDO:0005059&#39;,
-        &#39;_score&#39;: 8.824187,
-        &#39;disease_ontology&#39;: {
-            &#39;_license&#39;: &#39;https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/master/DO_LICENSE.txt&#39;,
-            &#39;name&#39;: &#39;leukemia&#39;
-        }
-    }
-]
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="err">&#39;query&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;DOID</span><span class="p">:</span><span class="mi">14566</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0005070</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">8.824187</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;disease_o</span><span class="kc">nt</span><span class="err">ology&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_lice</span><span class="kc">nse</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;h</span><span class="kc">tt</span><span class="err">ps</span><span class="p">:</span><span class="c1">//github.com/DiseaseOntology/HumanDiseaseOntology/blob/master/DO_LICENSE.txt&#39;,</span>
+<span class="w">            </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;disease</span><span class="w"> </span><span class="err">o</span><span class="kc">f</span><span class="w"> </span><span class="err">cellular</span><span class="w"> </span><span class="err">proli</span><span class="kc">ferat</span><span class="err">io</span><span class="kc">n</span><span class="err">&#39;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="err">&#39;query&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;DOID</span><span class="p">:</span><span class="mi">1240</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;_id&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;MONDO</span><span class="p">:</span><span class="mi">0005059</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;_score&#39;</span><span class="p">:</span><span class="w"> </span><span class="mf">8.824187</span><span class="p">,</span>
+<span class="w">        </span><span class="err">&#39;disease_o</span><span class="kc">nt</span><span class="err">ology&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="err">&#39;_lice</span><span class="kc">nse</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;h</span><span class="kc">tt</span><span class="err">ps</span><span class="p">:</span><span class="c1">//github.com/DiseaseOntology/HumanDiseaseOntology/blob/master/DO_LICENSE.txt&#39;,</span>
+<span class="w">            </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;leukemia&#39;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -496,121 +567,47 @@ piece of code. Here is a sample python snippet using <a class="reference externa
 <p>“query” field in returned object indicates the matching query term.</p>
 </div>
 <p>If a query term has no match, it will return with “<strong>notfound</strong>” field as “<strong>true</strong>”:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[
-  ...,
-  {&#39;query&#39;: &#39;...&#39;,
-   &#39;notfound&#39;: true},
-  ...
-]
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="err">...</span><span class="p">,</span>
+<span class="w">  </span><span class="p">{</span><span class="err">&#39;query&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;...&#39;</span><span class="p">,</span>
+<span class="w">   </span><span class="err">&#39;</span><span class="kc">n</span><span class="err">o</span><span class="kc">tf</span><span class="err">ou</span><span class="kc">n</span><span class="err">d&#39;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">},</span>
+<span class="w">  </span><span class="err">...</span>
+<span class="p">]</span>
 </pre></div>
 </div>
-<div id="spacer" style="height:300px"></div></div>
-</div>
-</div>
+<div id="spacer" style="height:300px"></div></section>
+</section>
+</section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Disease query service</a><ul>
-<li><a class="reference internal" href="#service-endpoint">Service endpoint</a></li>
-<li><a class="reference internal" href="#get-request">GET request</a><ul>
-<li><a class="reference internal" href="#query-parameters">Query parameters</a><ul>
-<li><a class="reference internal" href="#q">q</a></li>
-<li><a class="reference internal" href="#fields">fields</a></li>
-<li><a class="reference internal" href="#size">size</a></li>
-<li><a class="reference internal" href="#from">from</a></li>
-<li><a class="reference internal" href="#fetch-all">fetch_all</a></li>
-<li><a class="reference internal" href="#scroll-id">scroll_id</a></li>
-<li><a class="reference internal" href="#sort">sort</a></li>
-<li><a class="reference internal" href="#facets">facets</a></li>
-<li><a class="reference internal" href="#facet-size">facet_size</a></li>
-<li><a class="reference internal" href="#callback">callback</a></li>
-<li><a class="reference internal" href="#dotfield">dotfield</a></li>
-<li><a class="reference internal" href="#email">email</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#query-syntax">Query syntax</a><ul>
-<li><a class="reference internal" href="#simple-queries">Simple queries</a></li>
-<li><a class="reference internal" href="#fielded-queries">Fielded queries</a></li>
-<li><a class="reference internal" href="#range-queries">Range queries</a></li>
-<li><a class="reference internal" href="#wildcard-queries">Wildcard queries</a></li>
-<li><a class="reference internal" href="#scrolling-queries">Scrolling queries</a></li>
-<li><a class="reference internal" href="#boolean-operators-and-grouping">Boolean operators and grouping</a></li>
-<li><a class="reference internal" href="#escaping-reserved-characters">Escaping reserved characters</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#returned-object">Returned object</a></li>
-<li><a class="reference internal" href="#faceted-queries">Faceted queries</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#batch-queries-via-post">Batch queries via POST</a><ul>
-<li><a class="reference internal" href="#id2">Query parameters</a><ul>
-<li><a class="reference internal" href="#id3">q</a></li>
-<li><a class="reference internal" href="#scopes">scopes</a></li>
-<li><a class="reference internal" href="#id4">fields</a></li>
-<li><a class="reference internal" href="#id5">email</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#example-code">Example code</a></li>
-<li><a class="reference internal" href="#id6">Returned object</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="release_changes.html" class="btn btn-neutral float-left" title="Data release notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="disease_annotation_service.html" class="btn btn-neutral float-right" title="Disease annotation service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="release_changes.html"
-                        title="previous chapter">Data release notes</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="disease_annotation_service.html"
-                        title="next chapter">Disease annotation service</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/doc/disease_query_service.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, The Su and Wu Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="disease_annotation_service.html" title="Disease annotation service"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="release_changes.html" title="Data release notes"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">mydisease.info v1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Disease query service</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, The Su and Wu Labs.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>
