@@ -1,9 +1,21 @@
 import json
+import math
 import os
 from collections import defaultdict
 
 import pandas as pd
 from biothings.utils.dataload import dict_sweep, unlist
+
+
+def clean_nan(obj):
+    """Recursively replace float NaN with None so dict_sweep can remove them."""
+    if isinstance(obj, dict):
+        return {k: clean_nan(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_nan(v) for v in obj]
+    elif isinstance(obj, float) and math.isnan(obj):
+        return None
+    return obj
 
 
 # Build a dictionary to map from UMLS identifier to MONDO ID
@@ -148,7 +160,7 @@ def load_data(data_folder):
                                 'chemical_related_to_disease': d_chemical.get(disease_id, {})
                             }
                             }
-                _doc = (dict_sweep(unlist(_doc), [None]))
+                _doc = dict_sweep(unlist(clean_nan(_doc)), [None])
                 yield _doc
         else:
             if disease_id.startswith('MESH'):
@@ -167,5 +179,5 @@ def load_data(data_folder):
                             'chemical_related_to_disease': d_chemical.get(disease_id, {})
                         }
                         }
-            _doc = (dict_sweep(unlist(_doc), [None]))
+            _doc = dict_sweep(unlist(clean_nan(_doc)), [None])
             yield _doc

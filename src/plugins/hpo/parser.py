@@ -1,10 +1,23 @@
 import json
+import math
 import os
 from collections import defaultdict
 
 import pandas as pd
 from biothings import config
 from biothings.utils.dataload import dict_sweep, unlist
+
+
+def clean_nan(obj):
+    """Recursively replace float NaN with None so dict_sweep can remove them."""
+    if isinstance(obj, dict):
+        return {k: clean_nan(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_nan(v) for v in obj]
+    elif isinstance(obj, float) and math.isnan(obj):
+        return None
+    return obj
+
 
 logging = config.logger
 
@@ -398,7 +411,7 @@ def load_data(data_folder):
                         "inheritance": d_hpo.get(disease_id, {})[4],
                     },
                 }
-            _doc = dict_sweep(unlist(_doc), [None])
+            _doc = dict_sweep(unlist(clean_nan(_doc)), [None])
             yield _doc
 
     # logging.info mapping statistics
@@ -410,5 +423,5 @@ def load_data(data_folder):
     logging.info(f"Unmapped records: {total_records - mapped_records}")
 
     for _doc in documents.values():
-        _doc = dict_sweep(unlist(_doc), [None])
+        _doc = dict_sweep(unlist(clean_nan(_doc)), [None])
         yield _doc
