@@ -168,4 +168,4 @@ def load_data(data_folder):
                         }
                         }
             _doc = (dict_sweep(unlist(_doc), [None]))
-            yield _doc yield _doc
+            yield _doc
