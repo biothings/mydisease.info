@@ -187,9 +187,9 @@ def process_disease2hp(file_path_disease_hpo, hpo_lookup):
                 continue
             for k, v in record.items():
                 # name the field based on pathway database
-                if (k == "sex") and v:
+                if (k == "sex") and isinstance(v, str):
                     record_dict['sex'] = v.lower()
-                elif (k == 'reference') and v:
+                elif (k == 'reference') and isinstance(v, str):
                     # only process if Reference has a value
                     # notes: OMIM:194190, OMIM:180849, OMIM:212050 are disease examples with > 1 type of reference
                     # this is a string representing a list
@@ -231,11 +231,11 @@ def process_disease2hp(file_path_disease_hpo, hpo_lookup):
                                 record_dict['omim_refs'] = v
                             elif k == 'ORPHA':
                                 record_dict['orphanet_refs'] = v
-                elif (k == 'frequency') and v:
+                elif (k == 'frequency') and isinstance(v, str):
                     result = process_frequency(v)
                     if result:
                         record_dict.update(result)
-                elif (k == 'modifier') and v:
+                elif (k == 'modifier') and isinstance(v, str):
                     # only process if modifier has a value
                     # in <20 records, this is a delimited list with repeated values
                     # this behavior matches the unlist behavior used with biothings APIs
@@ -247,7 +247,7 @@ def process_disease2hp(file_path_disease_hpo, hpo_lookup):
                         record_dict['clinical_modifier'] = tempMods
                     else:
                         record_dict['clinical_modifier'] = v
-                elif (k == 'biocuration') and v:
+                elif (k == 'biocuration') and isinstance(v, str):
                     processed_entries = biocuration_parser(v)
                     record_dict['biocuration'] = processed_entries
                 elif k not in {"disease_id", "disease_name",
