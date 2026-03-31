@@ -68,8 +68,8 @@ def process_frequency(frequency):
     # only process if frequency has a value
     tempDict = {}
 
-    # Skip processing if the frequency value is empty
-    if not frequency:
+    # Skip processing if the frequency value is empty or not a string (e.g. float NaN from pandas)
+    if not frequency or not isinstance(frequency, str):
         return None
 
     # catching an error in the data
