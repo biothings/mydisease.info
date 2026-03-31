@@ -88,17 +88,28 @@ class MondoOntologyHelper:
 
         xrefs = defaultdict(set)
         for curie in node_obj.get("xref"):
-            # E.g. curie == "DOID:0080637", curie_prefix == "DOID", curie_id == "0080637"
-            curie_prefix, curie_id = curie.split(":", 1)
+            # E.g. curie == "icd11.foundation:1189702844"
+            # curie_prefix_raw == "icd11.foundation", curie_id == "1189702844"
+            curie_prefix_raw, curie_id = curie.split(":", 1)
 
-            if curie_prefix in cls.XREF_INVALID_PREFIXES:
+            qualifier = None
+            if "." in curie_prefix_raw:
+                curie_prefix_raw, qualifier = curie_prefix_raw.split(".", 1)
+
+            prefix_key = curie_prefix_raw.lower()
+            if prefix_key in cls.XREF_INVALID_PREFIXES:
                 continue
 
-            if curie_prefix in cls.XREF_ALWAYS_PREFIXED:
-                xrefs[curie_prefix.lower()].add(curie)
-            else:
-                xrefs[curie_prefix.lower()].add(curie_id)
+            always_prefixed = (
+                curie_prefix_raw.upper() in cls.XREF_ALWAYS_PREFIXED
+            )
+            curie_value = curie if always_prefixed else curie_id
 
+            if qualifier:
+                # Keep qualifier text (e.g. "foundation") inside the value
+                curie_value = f"{qualifier}:{curie_id}"
+
+            xrefs[prefix_key].add(curie_value)
         # change the data type of values from `set` to `list`
         for curie_prefix, curie_id_col in xrefs.items():
             xrefs[curie_prefix] = list(curie_id_col)
