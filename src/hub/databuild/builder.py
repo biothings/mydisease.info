@@ -89,6 +89,8 @@ class CanonicalDataBuilder(DataBuilder):
         self.logger.info("Computing canonical mapping statistics...")
         meta = {"__REPLACE__": True}
         col = self.target_backend.target_collection
-        meta["total_documents"] = col.count_documents({})
+        total = col.count_documents({})
+        meta["total"] = total
+        meta["total_documents"] = total
         self.logger.info("Canonical mapping stats: %s", meta)
         return meta
