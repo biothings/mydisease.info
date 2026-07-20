@@ -32,6 +32,24 @@ class CanonicalDataBuilder(DataBuilder):
                         v2 if isinstance(v2, list) else [v1, v2]
         return merged
 
+    def upsert_merged_docs(self, temp_col, merged_docs):
+        if not merged_docs:
+            return
+
+        # Canonical aliases can span doc_feeder batches; merge before replacing.
+        existing_docs = {
+            doc["_id"]: doc
+            for doc in temp_col.find({"_id": {"$in": list(merged_docs)}})
+        }
+        for doc_id, existing_doc in existing_docs.items():
+            merged_docs[doc_id] = self.merge_docs_array(
+                existing_doc, merged_docs[doc_id])
+
+        ops = [ReplaceOne({"_id": doc["_id"]}, doc, upsert=True)
+               for doc in merged_docs.values()]
+        if ops:
+            temp_col.bulk_write(ops)
+
     def post_merge(self, source_names, batch_size, job_manager):
         # Instantiate and load the canonical mapper.
         mapper = CanonicalIDMapper(name="canonical")
@@ -69,11 +87,7 @@ class CanonicalDataBuilder(DataBuilder):
                 else:
                     merged_docs[new_id] = doc
 
-            if merged_docs:
-                ops = [ReplaceOne({"_id": doc["_id"]}, doc, upsert=True)
-                       for doc in merged_docs.values()]
-                if ops:
-                    temp_col.bulk_write(ops)
+            self.upsert_merged_docs(temp_col, merged_docs)
 
         # After processing all batches, drop the original collection and rename the temporary one.
         orig_col.drop()
