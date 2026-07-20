@@ -19,8 +19,7 @@ class DataBuilder:
 
 
 class IDBaseMapper:
-    def __init__(self, *args, **kwargs):
-        pass
+    pass
 
 
 class ReplaceOne:
@@ -51,6 +50,7 @@ from hub.databuild.builder import CanonicalDataBuilder
 
 class FakeReplaceOne:
     def __init__(self, filter_, replacement, upsert=False):
+        """Store the replacement operation arguments."""
         self.filter = filter_
         self.replacement = replacement
         self.upsert = upsert
@@ -58,6 +58,7 @@ class FakeReplaceOne:
 
 class FakeCollection:
     def __init__(self, docs):
+        """Create an in-memory collection with initial documents."""
         self.docs = docs
         self.ops = []
 
