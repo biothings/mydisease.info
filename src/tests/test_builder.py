@@ -1,5 +1,7 @@
 import sys
 import types
+import unittest
+from unittest import mock
 
 
 biothings = types.ModuleType("biothings")
@@ -69,34 +71,39 @@ class FakeCollection:
             self.docs[op.filter["_id"]] = op.replacement
 
 
-def test_upsert_merged_docs_merges_canonical_docs_across_batches(monkeypatch):
-    monkeypatch.setattr(builder_module, "ReplaceOne", FakeReplaceOne)
-    builder = CanonicalDataBuilder.__new__(CanonicalDataBuilder)
-    temp_col = FakeCollection({
-        "MONDO:0005072": {
-            "_id": "MONDO:0005072",
-            "mondo": {
-                "mondo": "MONDO:0005072",
-                "label": "neuroblastoma",
-            },
-        }
-    })
-    merged_docs = {
-        "MONDO:0005072": {
-            "_id": "MONDO:0005072",
-            "original_id": "UMLS:C0700095",
-            "umls": {
-                "umls": "C0700095",
-            },
-        }
-    }
+class TestCanonicalDataBuilder(unittest.TestCase):
+    def test_upsert_merged_docs_merges_canonical_docs_across_batches(self):
+        with mock.patch.object(builder_module, "ReplaceOne", FakeReplaceOne):
+            builder = CanonicalDataBuilder()
+            temp_col = FakeCollection({
+                "MONDO:0005072": {
+                    "_id": "MONDO:0005072",
+                    "mondo": {
+                        "mondo": "MONDO:0005072",
+                        "label": "neuroblastoma",
+                    },
+                }
+            })
+            merged_docs = {
+                "MONDO:0005072": {
+                    "_id": "MONDO:0005072",
+                    "original_id": "UMLS:C0700095",
+                    "umls": {
+                        "umls": "C0700095",
+                    },
+                }
+            }
 
-    builder.upsert_merged_docs(temp_col, merged_docs)
+            builder.upsert_merged_docs(temp_col, merged_docs)
 
-    assert len(temp_col.ops) == 1
-    replacement = temp_col.ops[0].replacement
-    assert replacement["_id"] == "MONDO:0005072"
-    assert replacement["mondo"]["mondo"] == "MONDO:0005072"
-    assert replacement["mondo"]["label"] == "neuroblastoma"
-    assert replacement["umls"]["umls"] == "C0700095"
-    assert replacement["original_id"] == "UMLS:C0700095"
+        self.assertEqual(len(temp_col.ops), 1)
+        replacement = temp_col.ops[0].replacement
+        self.assertEqual(replacement["_id"], "MONDO:0005072")
+        self.assertEqual(replacement["mondo"]["mondo"], "MONDO:0005072")
+        self.assertEqual(replacement["mondo"]["label"], "neuroblastoma")
+        self.assertEqual(replacement["umls"]["umls"], "C0700095")
+        self.assertEqual(replacement["original_id"], "UMLS:C0700095")
+
+
+if __name__ == "__main__":
+    unittest.main()
