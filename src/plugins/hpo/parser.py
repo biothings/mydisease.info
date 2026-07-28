@@ -1,9 +1,25 @@
 import json
+import math
 import os
 from collections import defaultdict
 
 import pandas as pd
+from biothings import config
 from biothings.utils.dataload import dict_sweep, unlist
+
+
+def clean_nan(obj):
+    """Recursively replace float NaN with None so dict_sweep can remove them."""
+    if isinstance(obj, dict):
+        return {k: clean_nan(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_nan(v) for v in obj]
+    elif isinstance(obj, float) and math.isnan(obj):
+        return None
+    return obj
+
+
+logging = config.logger
 
 
 # Build a dictionary to map from UMLS identifier to MONDO ID
@@ -16,12 +32,26 @@ def construct_orphanet_omim_to_mondo_library(file_path_mondo):
             if "id" in record and record["id"].startswith(
                 "http://purl.obolibrary.org/obo/MONDO_"
             ):
+                mondo_id = "MONDO:" + record["id"].split("_")[-1]
+
+                # Add mapping for DECIPHER IDs in the meta.xrefs section
                 if "meta" in record and "xrefs" in record["meta"]:
                     for _xref in record["meta"]["xrefs"]:
-                        prefix = _xref["val"].split(":")[0]
-                        if prefix.lower() == "orphanet" or prefix.lower() == "omim":
-                            mondo_id = "MONDO:" + record["id"].split("_")[-1]
-                            umls_2_mondo[_xref["val"].upper()].append(mondo_id)
+                        xref_val = _xref["val"].upper()
+                        # Add explicit support for DECIPHER IDs
+                        if xref_val.startswith("DECIPHER:"):
+                            umls_2_mondo[xref_val].append(mondo_id)
+                        elif ":" in xref_val:
+                            prefix = xref_val.split(":")[0]
+                            if prefix.lower() in ["orphanet", "omim"]:
+                                umls_2_mondo[xref_val].append(mondo_id)
+
+                # Also check for DECIPHER IDs in other metadata fields like dbxrefs
+                if "meta" in record and "dbxrefs" in record["meta"]:
+                    for dbxref in record["meta"]["dbxrefs"]:
+                        if dbxref.upper().startswith("DECIPHER:"):
+                            umls_2_mondo[dbxref.upper()].append(mondo_id)
+
     return umls_2_mondo
 
 
@@ -51,8 +81,8 @@ def process_frequency(frequency):
     # only process if frequency has a value
     tempDict = {}
 
-    # Skip processing if the frequency value is empty
-    if not frequency:
+    # Skip processing if the frequency value is empty or not a string (e.g. float NaN from pandas)
+    if not frequency or not isinstance(frequency, str):
         return None
 
     # catching an error in the data
@@ -142,8 +172,8 @@ def process_disease2hp(file_path_disease_hpo, hpo_lookup):
     df_disease_hpo = df_disease_hpo.where((pd.notnull(df_disease_hpo)), None)
     d = []
     for did, subdf in df_disease_hpo.groupby("disease_id"):
-        # Replace ORPHA:79414 with ORPHANET:79414 to match the mondo mapping
-        did = did.replace("ORPHA", "ORPHANET")
+        # Replace ORPHA:79414 with orphanet:79414 to match the mondo mapping
+        did = did.replace("ORPHA", "orphanet")
         records = subdf.to_dict(orient="records")
         pathway_related = []
         # Changed course to clinical_course, modifier to clinical_modifier to match the source
@@ -170,9 +200,9 @@ def process_disease2hp(file_path_disease_hpo, hpo_lookup):
                 continue
             for k, v in record.items():
                 # name the field based on pathway database
-                if (k == "sex") and v:
+                if (k == "sex") and isinstance(v, str):
                     record_dict['sex'] = v.lower()
-                elif (k == 'reference') and v:
+                elif (k == 'reference') and isinstance(v, str):
                     # only process if Reference has a value
                     # notes: OMIM:194190, OMIM:180849, OMIM:212050 are disease examples with > 1 type of reference
                     # this is a string representing a list
@@ -196,7 +226,7 @@ def process_disease2hp(file_path_disease_hpo, hpo_lookup):
                                         'ISBN:' + i.split(":")[1])
                                 elif key == 'ORPHA':
                                     tempProperties[key].append(
-                                        'ORPHANET:' + i.split(":")[1])
+                                        'orphanet:' + i.split(":")[1])
                                 else:
                                     tempProperties[key].append(i)
                     # ONLY add reference keys/values to the record if there are values
@@ -214,11 +244,11 @@ def process_disease2hp(file_path_disease_hpo, hpo_lookup):
                                 record_dict['omim_refs'] = v
                             elif k == 'ORPHA':
                                 record_dict['orphanet_refs'] = v
-                elif (k == 'frequency') and v:
+                elif (k == 'frequency') and isinstance(v, str):
                     result = process_frequency(v)
                     if result:
                         record_dict.update(result)
-                elif (k == 'modifier') and v:
+                elif (k == 'modifier') and isinstance(v, str):
                     # only process if modifier has a value
                     # in <20 records, this is a delimited list with repeated values
                     # this behavior matches the unlist behavior used with biothings APIs
@@ -230,7 +260,7 @@ def process_disease2hp(file_path_disease_hpo, hpo_lookup):
                         record_dict['clinical_modifier'] = tempMods
                     else:
                         record_dict['clinical_modifier'] = v
-                elif (k == 'biocuration') and v:
+                elif (k == 'biocuration') and isinstance(v, str):
                     processed_entries = biocuration_parser(v)
                     record_dict['biocuration'] = processed_entries
                 elif k not in {"disease_id", "disease_name",
@@ -272,10 +302,15 @@ def load_data(data_folder):
     orphanet_omim_2_mondo = construct_orphanet_omim_to_mondo_library(
         file_path_mondo)
 
+    # Count total mappings for logging
+    total_records = len(d_hpo)
+    mapped_records = 0
+
     documents = {}  # Dictionary to track documents by MONDO ID
 
     for disease_id, hpo_info in d_hpo.items():
         if disease_id in orphanet_omim_2_mondo:
+            mapped_records += 1
             mondo_ids = orphanet_omim_2_mondo[disease_id]
             for _mondo in mondo_ids:
                 if _mondo not in documents:
@@ -289,6 +324,7 @@ def load_data(data_folder):
                             "inheritance": [],
                             "omim": [],
                             "orphanet": [],
+                            "decipher": [],
                         },
                     }
 
@@ -300,10 +336,14 @@ def load_data(data_folder):
                     omim_id = disease_id.split(":")[1]
                     if omim_id not in _doc_hpo["omim"]:
                         _doc_hpo["omim"].append(omim_id)
-                elif disease_id.startswith("ORPHANET"):
+                elif disease_id.startswith("orphanet"):
                     orphanet_id = disease_id.split(":")[1]
                     if orphanet_id not in _doc_hpo["orphanet"]:
                         _doc_hpo["orphanet"].append(orphanet_id)
+                elif disease_id.startswith("DECIPHER"):
+                    decipher_id = disease_id.split(":")[1]
+                    if decipher_id not in _doc_hpo["decipher"]:
+                        _doc_hpo["decipher"].append(decipher_id)
 
                 # Merge the phenotype_related_to_disease lists
                 existing_phenotypes = _doc_hpo["phenotype_related_to_disease"]
@@ -316,7 +356,7 @@ def load_data(data_folder):
                     source_prefix, source_id = disease_id.split(":")
 
                     if source_prefix.upper() == "ORPHA":
-                        source_prefix = "ORPHANET"
+                        source_prefix = "orphanet"
 
                     full_source_id = f"{source_prefix}:{source_id}"
 
@@ -347,7 +387,7 @@ def load_data(data_folder):
 
                     },
                 }
-            elif disease_id.startswith("ORPHANET"):
+            elif disease_id.startswith("orphanet"):
                 _doc = {
                     "_id": disease_id,
                     "hpo": {
@@ -371,9 +411,17 @@ def load_data(data_folder):
                         "inheritance": d_hpo.get(disease_id, {})[4],
                     },
                 }
-            _doc = dict_sweep(unlist(_doc), [None])
+            _doc = dict_sweep(unlist(clean_nan(_doc)), [None])
             yield _doc
 
+    # logging.info mapping statistics
+    mapping_rate = (mapped_records / total_records) * \
+        100 if total_records > 0 else 0
+    logging.info(f"Total disease records: {total_records}")
+    logging.info(
+        f"Successfully mapped to MONDO: {mapped_records} ({mapping_rate:.2f}%)")
+    logging.info(f"Unmapped records: {total_records - mapped_records}")
+
     for _doc in documents.values():
-        _doc = dict_sweep(unlist(_doc), [None])
+        _doc = dict_sweep(unlist(clean_nan(_doc)), [None])
         yield _doc

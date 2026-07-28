@@ -1,20 +1,68 @@
 #!/usr/bin/env python
+
 import os
-import config
-import biothings
+from functools import partial
+
+import biothings.hub.databuild.builder as builder
+from biothings.hub import HubServer
+from biothings.hub.databuild.syncer import (
+    SyncerManager,
+    ThrottledESJsonDiffSelfContainedSyncer,
+    ThrottledESJsonDiffSyncer,
+)
 from biothings.utils.version import set_versions
 
-app_folder,_src = os.path.split(os.path.split(os.path.split(os.path.abspath(__file__))[0])[0])
+import config
+import hub.dataload.sources
+from hub.databuild.builder import CanonicalDataBuilder
+from hub.databuild.mapper import CanonicalIDMapper
+
+app_folder, _src = os.path.split(os.path.split(
+    os.path.split(os.path.abspath(__file__))[0])[0])
+del _src
+
 set_versions(config, app_folder)
 
-from biothings.hub import HubServer
-import hub.dataload.sources
 
-server = HubServer(hub.dataload.sources, name=config.HUB_NAME)
+class MyCanonicalHubServer(HubServer):
 
+    def configure_build_manager(self):
+        # Instantiate the canonical mapper
+        canonical_mapper = CanonicalIDMapper(name="canonical")
+        # Create a custom builder that includes the canonical mapper
+        pbuilder = partial(CanonicalDataBuilder, mappers=[canonical_mapper])
+        build_manager = builder.BuilderManager(
+            job_manager=self.managers["job_manager"],
+            builder_class=pbuilder,
+            poll_schedule="* * * * * */10"
+        )
+        build_manager.configure()
+        build_manager.poll()
+        self.managers["build_manager"] = build_manager
+        self.logger.info("Using custom builder %s", CanonicalDataBuilder)
+
+    def configure_sync_manager(self):
+        # Production sync manager with throttled syncers.
+        sync_manager_prod = SyncerManager(
+            job_manager=self.managers["job_manager"])
+        sync_manager_prod.configure(klasses=[
+            partial(ThrottledESJsonDiffSyncer, config.MAX_SYNC_WORKERS),
+            partial(ThrottledESJsonDiffSelfContainedSyncer,
+                    config.MAX_SYNC_WORKERS)
+        ])
+        self.managers["sync_manager"] = sync_manager_prod
+
+        # Test sync manager (typically for localhost ES)
+        sync_manager_test = SyncerManager(
+            job_manager=self.managers["job_manager"])
+        sync_manager_test.configure()
+        self.managers["sync_manager_test"] = sync_manager_test
+        self.logger.info("Using custom syncer, prod(throttled): %s, test: %s",
+                         sync_manager_prod, sync_manager_test)
+
+
+# Pass explicit list of datasources
+server = MyCanonicalHubServer(hub.dataload.sources, name=config.HUB_NAME)
 
 if __name__ == "__main__":
-    logging = config.logger
-    logging.info("Hub DB backend: %s", biothings.config.HUB_DB_BACKEND)
-    logging.info("Hub database: %s", biothings.config.DATA_HUB_DB_DATABASE)
     server.start()

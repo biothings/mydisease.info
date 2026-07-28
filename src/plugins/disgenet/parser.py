@@ -80,7 +80,8 @@ def process_gene(file_path_gene_disease):
         encoding="ISO-8859-1",
         sep="\t",
         comment="#",
-        compression="gzip",
+        # compression="gzip",
+        compression="infer",
     )
     rename_gene = {
         "diseaseId": "umls",
@@ -121,7 +122,7 @@ def process_gene(file_path_gene_disease):
 
 def process_snp(file_path_snp_disease):
     df_snp = pd.read_csv(
-        file_path_snp_disease, sep="\t", comment="#", compression="gzip"
+        file_path_snp_disease, sep="\t", comment="#", compression="infer"
     )
     rename_variant = {
         "diseaseId": "umls",
@@ -234,10 +235,12 @@ def construct_umls_to_mondo_library(file_path_mondo):
 def load_data(data_folder):
     file_path_mondo = os.path.join(data_folder, "mondo.json")
     file_path_gene_disease = os.path.join(
-        data_folder, "all_gene_disease_pmid_associations.tsv.gz"
+        # data_folder, "all_gene_disease_pmid_associations.tsv.gz"
+        data_folder, "filtered_gene_disease_associations.tsv"
     )
     file_path_snp_disease = os.path.join(
-        data_folder, "all_variant_disease_pmid_associations.tsv.gz"
+        # data_folder, "all_variant_disease_pmid_associations.tsv.gz"
+        data_folder, "filtered_variant_disease_pmid_associations.tsv"
     )
     file_path_disease_mapping = os.path.join(
         data_folder, "disease_mappings.tsv.gz")
