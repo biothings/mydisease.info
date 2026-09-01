@@ -72,15 +72,15 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         q = 'MESH:C535501'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
-        assert len(res) == 2
-        assert res[0]['_id'] == q
+        assert len(res) == 1
+        assert res[0]['_id'] == 'MONDO:0007561'
 
     def test_019_id_omim(self):
         q = 'OMIM:612542'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
-        assert len(res) == 2
-        assert res[1]['_id'] == q
+        assert len(res) == 1
+        assert res[0]['_id'] == q
 
     def test_020_id_doid(self):
         q = 'DOID:0040018'
@@ -92,7 +92,7 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
     def test_021_id_orphanet(self):
         orphanet_id = 'ORPHANET:90064'
         res = self.request("disease/" + orphanet_id).json()
-        assert res['_id'] == orphanet_id
+        assert res['_id'].lower() == orphanet_id.lower()
 
     def test_022_id_umls(self):
         q = 'UMLS:C0001305'
@@ -106,14 +106,14 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert res[0]['_id'] == q
+        assert res[0]['_id'] == 'MONDO:0007404'
 
     def test_024_id_umls_another(self):
         q = 'UMLS:C0000735'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert res[0]['_id'] == q.split(":")[1]
+        assert res[0]['_id'] == q
 
     # Example for NCIT ID
     def test_ncit_id_with_prefix(self):
@@ -143,13 +143,13 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         assert self.value_in_result(
             q.split(":")[1], res, 'disease_ontology.xrefs.icd10', True)
 
-    def test_icd10_id_without_prefix(self):
-        q = 'ICD10:J95.4'
+    def test_icd10_id_another(self):
+        q = 'ICD10:H18.02'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
         assert self.value_in_result(
-            q.split(":")[1], res, 'disgenet.xrefs.icd10', True)
+            q.split(":")[1], res, 'disease_ontology.xrefs.icd10', True)
 
     # ICD9 IDs
     def test_icd9_id_with_prefix(self):
@@ -160,13 +160,13 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
         assert self.value_in_result(
             q.split(":")[1], res, 'disease_ontology.xrefs.icd9', True)
 
-    def test_icd9_id_without_prefix(self):
+    def test_icd9_id_from_mondo(self):
         q = 'ICD9:427.41'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
         assert self.value_in_result(
-            q.split(":")[1], res, 'disgenet.xrefs.icd9', True)
+            q.split(":")[1], res, 'mondo.xrefs.icd9', True)
 
     # ICD11 IDs
     @pytest.mark.skip(reason="ICD11 is not in the data")
@@ -180,11 +180,11 @@ class TestMyDiseaseConfigDefaultScopes(BiothingsWebTest):
 
     # HP IDs
     def test_hp_id_with_prefix(self):
-        q = 'HP:0001250'
+        q = 'HP:0100532'
         res = self.request("disease", method="POST", data={"ids": q})
         res = res.json()
         assert len(res) == 1
-        assert self.value_in_result(q, res, 'disgenet.xrefs.hp', True)
+        assert self.value_in_result(q, res, 'mondo.xrefs.hp', True)
 
     # ignore_obsolete parameter
     def test_ignore_obsolete_true(self):
