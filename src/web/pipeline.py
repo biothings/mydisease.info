@@ -1,5 +1,5 @@
 from biothings.web.query import ESQueryBuilder
-from elasticsearch_dsl import Q
+from elasticsearch.dsl import Q
 
 
 class MyDiseaseQueryBuilder(ESQueryBuilder):

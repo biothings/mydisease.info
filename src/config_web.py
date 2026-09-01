@@ -64,8 +64,6 @@ disease_prefix_handling = [
         (
             "mondo.mondo",  # Has prefix
             "mondo.xrefs.mondo",  # Has prefix
-            "disgenet.xrefs.mondo",  # Has prefix
-            "disease_ontology.xrefs.mondo",  # Has prefix
         ),
     ),
     # Matches MESH IDs (e.g., "MESH:XXXX") regardless of case
@@ -76,7 +74,6 @@ disease_prefix_handling = [
             "umls.mesh",  # No prefix
             "mondo.xrefs.mesh",  # No prefix
             "disease_ontology.xrefs.mesh",  # No prefix
-            "disgenet.xrefs.mesh",  # No prefix
         ),
     ),
     # Matches NCIT IDs (NCIT:xxxx) regardless of case
@@ -92,7 +89,6 @@ disease_prefix_handling = [
         re.compile(r"DOID\:[0-9]+", re.I),
         (
             "disease_ontology.doid",  # Has prefix
-            "disgenet.xrefs.doid",  # Has prefix
             "mondo.xrefs.doid"  # Has prefix
         ),
     ),
@@ -102,17 +98,14 @@ disease_prefix_handling = [
         (
             "ctd.omim",  # No prefix
             "disease_ontology.xrefs.omim",  # No prefix
-            "disgenet.xrefs.omim",  # No prefix
             "hpo.omim",  # No prefix
             "mondo.xrefs.omim",  # No prefix
         ),
     ),
     # Matches HP IDs (HP:xxxx) regardless of case
-    (re.compile(r"HP\:[0-9]+", re.I),
-     (
-        "disgenet.xrefs.hp",  # Has prefix
-        "mondo.xrefs.hp"  # Has prefix
-    )
+    (
+        re.compile(r"HP\:[0-9]+", re.I),
+        ("mondo.xrefs.hp",),  # Has prefix
     ),
     # Matches ORPHANET IDs (ORPHANET:464724)
     (
@@ -128,7 +121,6 @@ disease_prefix_handling = [
         (
             "mondo.xrefs.umls",  # No prefix
             "umls.umls",  # No prefix
-            "disgenet.xrefs.umls"  # No prefix
         ),
     ),
     # Matches DECIPHER IDs (DECIPHER:xxxx) regardless of case
@@ -151,7 +143,6 @@ disease_prefix_handling = [
         re.compile(r"ICD9:(?P<term>\d{3}(?:\.\d{1,2})?)", re.I),
         (
             "disease_ontology.xrefs.icd9",  # No prefix
-            "disgenet.xrefs.icd9",  # No prefix
             "mondo.xrefs.icd9"  # No prefix
         ),
     ),
@@ -161,7 +152,6 @@ disease_prefix_handling = [
             r"ICD10:(?P<term>[A-Z][0-9][0-9A-Z]?(?:\.[0-9A-Z]{1,5})?)", re.I),
         (
             "disease_ontology.xrefs.icd10",  # No prefix
-            "disgenet.xrefs.icd10",  # No prefix
             "mondo.xrefs.icd10"  # Not in the data
         ),
     ),
